@@ -1,4 +1,3 @@
-@@ -0,0 +1,79 @@
 # SD-4_NovruzovAslan
 
 Before start working check that following tools are present on your environment:
