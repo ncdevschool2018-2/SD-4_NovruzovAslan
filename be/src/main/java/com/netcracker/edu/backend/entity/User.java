@@ -9,7 +9,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "username")
     private String username;
+    @Column(name = "password")
     private String password;
 
     public User(String username, String password) {
@@ -63,7 +65,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "BillingAccount{" +
+        return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

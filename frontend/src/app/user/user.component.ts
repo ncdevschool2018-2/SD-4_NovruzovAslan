@@ -77,9 +77,9 @@ export class UserComponent implements OnInit {
   private loadUsers(): void {
     // Get data from UserService
     this.subscriptions.push(
-      this.userService.getUsers().subscribe(accounts => {
+      this.userService.getUsers().subscribe(users => {
         // Parse json response into local array
-        this.users = accounts as User[];
+        this.users = users as User[];
         // Check data in console
         console.log(this.users); // don't use console.log in angular :)
       })

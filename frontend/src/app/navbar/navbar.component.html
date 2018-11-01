@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container">
+    <a href="#top" class="navbar-brand">
+      <!-- <img src="../../img/ntc_logo.png" width="40" height="40" alt="logo"> -->
+      <img src="https://cdn.dribbble.com/users/3013/screenshots/3538551/ntc_logo_grid_teaser.png" width="40" height="40"
+        alt="logo">
+    </a>
+
+    <button type="button" class="navbar-toggler" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+      aria-controls="navbarSupportedContent"><span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbarSupportedContent" [collapse]="isCollapsed" class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a href="#top" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">My subscriptions</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">Wallets</a>
+        </li>
+
+      </ul>
+
+      <form class="form-inline my-2 my-lg-0">
+        <div class="btn-group mr-sm-2" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+            Categories <span class="caret"></span>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li role="menuitem"><button class="dropdown-item">Sales</button></li>
+            <li class="divider dropdown-divider"></li>
+            <li role="menuitem"><button class="dropdown-item">Text editors</button></li>
+            <li role="menuitem"><button class="dropdown-item">IDE's</button></li>
+            <li role="menuitem"><button class="dropdown-item">Graphic editors</button></li>
+            <li role="menuitem"><button class="dropdown-item">Video editors</button></li>
+
+          </ul>
+        </div>
+        <input type="text" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-light my-2 my-sm-0 mr-sm-2">Search</button>
+        <app-signin-modal></app-signin-modal>
+      </form>
+
+    </div>
+  </div>
+</nav>

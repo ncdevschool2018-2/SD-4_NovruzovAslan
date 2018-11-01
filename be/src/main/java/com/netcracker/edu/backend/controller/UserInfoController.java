@@ -1,7 +1,7 @@
 package com.netcracker.edu.backend.controller;
 
-import com.netcracker.edu.backend.entity.User;
-import com.netcracker.edu.backend.service.UserService;
+import com.netcracker.edu.backend.entity.UserInfo;
+import com.netcracker.edu.backend.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/users")
-public class UserController {
+@RequestMapping("/api/userinfos")
+public class UserInfoController {
 
-    private UserService userService;
+    private UserInfoService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserInfoController(UserInfoService userService) {
         this.userService = userService;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<User> getUserById(@PathVariable(name = "id") Long id) {
-        Optional<User> user = userService.getUserById(id);
+    public ResponseEntity<UserInfo> getUserInfoById(@PathVariable(name = "id") Long id) {
+        Optional<UserInfo> user = userService.getUserInfoById(id);
         if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
         } else {
@@ -30,18 +30,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Iterable<User> getAllUsers() {
-        return userService.getAllUsers();
+    public Iterable<UserInfo> getAllUserInfos() {
+        return userService.getAllUserInfos();
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public User saveUser(@RequestBody User account) {
-        return userService.saveUser(account);
+    public UserInfo saveUserInfo(@RequestBody UserInfo account) {
+        return userService.saveUserInfo(account);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteUser(@PathVariable(name = "id") Long id) {
-        userService.deleteUser(id);
+    public ResponseEntity deleteUserInfo(@PathVariable(name = "id") Long id) {
+        userService.deleteUserInfo(id);
         return ResponseEntity.noContent().build();
     }
 
