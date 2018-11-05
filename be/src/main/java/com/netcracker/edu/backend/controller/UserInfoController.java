@@ -35,8 +35,8 @@ public class UserInfoController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public UserInfo saveUserInfo(@RequestBody UserInfo account) {
-        return userService.saveUserInfo(account);
+    public UserInfo saveUserInfo(@RequestBody UserInfo userInfo) {
+        return userService.saveUserInfo(userInfo);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

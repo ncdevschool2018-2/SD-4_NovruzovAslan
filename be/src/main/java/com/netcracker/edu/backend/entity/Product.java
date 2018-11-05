@@ -5,7 +5,9 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -24,6 +26,14 @@ public class Product {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Category category;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "product")
+    private Set<Specialproduct> specialproducts = new HashSet<>();
 
     public Product(String name, String short_description, String full_description, String img_src, int cost, Category category) {
         this.name = name;
@@ -94,6 +104,14 @@ public class Product {
         this.category = category;
     }
 
+    public Set<Specialproduct> getSpecialproducts() {
+        return specialproducts;
+    }
+
+    public void setSpecialproducts(Set<Specialproduct> specialproducts) {
+        this.specialproducts = specialproducts;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,16 +119,17 @@ public class Product {
         Product product = (Product) o;
         return id == product.id &&
                 cost == product.cost &&
-                category == product.category &&
                 Objects.equals(name, product.name) &&
                 Objects.equals(short_description, product.short_description) &&
                 Objects.equals(full_description, product.full_description) &&
-                Objects.equals(img_src, product.img_src);
+                Objects.equals(img_src, product.img_src) &&
+                Objects.equals(category, product.category) &&
+                Objects.equals(specialproducts, product.specialproducts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, short_description, full_description, img_src, cost, category);
+        return Objects.hash(id, name, short_description, full_description, img_src, cost, category, specialproducts);
     }
 
     @Override
@@ -123,7 +142,7 @@ public class Product {
                 ", img_src='" + img_src + '\'' +
                 ", cost=" + cost +
                 ", category=" + category +
+                ", specialproducts=" + specialproducts +
                 '}';
     }
-
 }
