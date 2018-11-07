@@ -12,19 +12,19 @@ export class CategoryService {
 
   // Ajax request for user data
   getCategorys(): Observable<Category[]> {
-    return this.http.get<Category[]>("http://localhost:8081/api/categorys");
+    return this.http.get<Category[]>("http://localhost:8081/api/categories");
   }
 
   saveCategory(category: Category): Observable<Category> {
     return this.http.post<Category>(
-      "http://localhost:8081/api/categorys",
+      "http://localhost:8081/api/categories",
       category
     );
   }
 
   deleteCategory(categoryId: string): Observable<void> {
     return this.http.delete<void>(
-      "http://localhost:8081/api/categorys/" + categoryId
+      "http://localhost:8081/api/categories/" + categoryId
     );
   }
 }
