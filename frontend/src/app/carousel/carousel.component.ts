@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-carousel',
+  selector: 'carouselOfSpecialProducts',
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css']
 })

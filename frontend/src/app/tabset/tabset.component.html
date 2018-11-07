@@ -1,13 +1,16 @@
 <div class="mt-2">
   <tabset>
-    <tab heading="Main" id="tab1">
-      <app-carousel></app-carousel>
+    <tab heading="Main" id="tab1" (select)="onSelect($event)">
+      <!--<carouselOfSpecialProducts></carouselOfSpecialProducts>-->
+      <products [categoryId]="2"></products>
     </tab>
-    <tab heading="Sales">
-      <app-cards></app-cards>
+    <tab heading="Sales" (select)="onSelect($event)">
+      <products></products>
     </tab>
-    <tab heading="Text editors">Basic content 2</tab>
-    <tab heading="Graphic editors">Basic content 2</tab>
-    <tab heading="Video editors">Basic content 2</tab>
+    <tab heading="Text editors" (select)="onSelect($event)">
+      <products></products>
+    </tab>
+    <tab heading="Graphic editors" (select)="onSelect($event)">Basic content 2</tab>
+    <tab heading="Video editors" (select)="onSelect($event)">Basic content 2</tab>
   </tabset>
 </div>

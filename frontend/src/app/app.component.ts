@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { User } from "./model/user";
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,15 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'frontend';
+  private static _currentUser: User;
+
+
+  static get currentUser(): User {
+    return this._currentUser;
+  }
+
+  static set currentUser(value: User) {
+    this._currentUser = value;
+  }
+
 }

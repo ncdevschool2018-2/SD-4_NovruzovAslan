@@ -16,7 +16,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fas fa-envelope"></i></span>
             </div>
-            <input type="email" class="form-control" placeholder="Email" required>
+            <input id="emailInput" type="email" class="form-control" placeholder="Email" required>
           </div>
         </div>
         <div class="form-group">
@@ -24,14 +24,14 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fas fa-unlock"></i></span>
             </div>
-            <input type="password" class="form-control" placeholder="Password" required>
+            <input id="passwordInput" type="password" class="form-control" placeholder="Password" required>
             <!-- &lt;!&ndash; I need to delete "required" atribute and add check of valide data in script.js   &ndash;&gt; -->
           </div>
         </div>
         <div class="container">
           <div class="row justify-content-between">
-            <button type="button" class="btn btn-primary" (click)="openModal2(registerModal)">Register</button>
-            <button type="submit" class="btn btn-primary">Sign in</button>
+            <button type="button" class="btn btn-primary" (click)="openRegisterModal(registerModal)">Register</button>
+            <button type="submit" class="btn btn-primary" (click)="setCurrentUser($event)">Sign in</button>
           </div>
         </div>
       </form>

@@ -1,16 +1,18 @@
-import { Component, OnInit, TemplateRef } from "@angular/core";
+import {Component, Input, OnInit, TemplateRef} from "@angular/core";
 import { Subscription } from "rxjs/internal/Subscription";
 import { Product } from "../model/product";
 import { ProductService } from "../service/product/product.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 
 @Component({
-  selector: "app-cards",
+  selector: "products",
   templateUrl: "./products.component.html",
   styleUrls: ["./products.component.css"]
 })
 export class ProductsComponent implements OnInit {
   public editMode = false;
+  @Input()
+  private categoryId;
 
   public products: Product[];
   public editableProduct: Product = new Product();
@@ -74,13 +76,21 @@ export class ProductsComponent implements OnInit {
   private loadProducts(): void {
     // Get data from ProductService
     this.subscriptions.push(
-      this.productService.getProducts().subscribe(products => {
+      this.productService.getProducts(this.categoryId).subscribe(products => {
         // Parse json response into local array
         this.products = products as Product[];
         // Check data in console
         console.log(this.products); // don't use console.log in angular :)
       })
     );
+  }
+
+  setCategoryId(categoryId: number) {
+    this.categoryId = categoryId;
+  }
+
+  getCategoryId(): number {
+    return this.categoryId
   }
 
   ngOnDestroy(): void {

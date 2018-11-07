@@ -11,8 +11,20 @@ export class ProductService {
   constructor(private http: HttpClient) {}
 
   // Ajax request for user data
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>("http://localhost:8081/api/products");
+  // getProducts(): Observable<Product[]> {
+  //   return this.http.get<Product[]>("http://localhost:8081/api/products");
+  // }
+
+  getProducts(categoryId: number = 0): Observable<Product[]> {
+    let products: Observable<Product[]>;
+    let temp: Observable<Product[]>;
+    products = this.http.get<Product[]>("http://localhost:8081/api/products");
+    if(categoryId == 0)
+      return products;
+    // for(let product in products) {
+    //   if(product.category.id == 1)
+    // }
+    // todo: fill temp
   }
 
   saveProduct(product: Product): Observable<Product> {

@@ -1,4 +1,5 @@
 import {Category} from "./category";
+import {SpecialProduct} from "./specialProduct";
 
 export class Product {
   id: number;
@@ -8,6 +9,7 @@ export class Product {
   img_src: string;
   cost: number;
   category: Category;
+  specialProducts: SpecialProduct[];
 
   constructor() {
     this.category = new Category();
@@ -22,6 +24,7 @@ export class Product {
     clonedProduct.img_src = product.img_src;
     clonedProduct.cost = product.cost;
     clonedProduct.category = product.category;
+    clonedProduct.specialProducts = product.specialProducts;
     return clonedProduct;
   }
 }
