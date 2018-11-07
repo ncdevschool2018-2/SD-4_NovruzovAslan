@@ -3,7 +3,9 @@ package com.netcracker.edu.fapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductViewModel {
@@ -16,11 +18,12 @@ public class ProductViewModel {
     private int cost;
     @JsonIgnore
     private CategoryViewModel category;
+    private Set<SpecialproductViewModel> specialproducts = new HashSet<>();
 
     public ProductViewModel() {
     }
 
-    public ProductViewModel(int id, String name, String short_description, String full_description, String img_src, int cost, CategoryViewModel category) {
+    public ProductViewModel(int id, String name, String short_description, String full_description, String img_src, int cost, CategoryViewModel category, Set<SpecialproductViewModel> specialproducts) {
         this.id = id;
         this.name = name;
         this.short_description = short_description;
@@ -28,6 +31,7 @@ public class ProductViewModel {
         this.img_src = img_src;
         this.cost = cost;
         this.category = category;
+        this.specialproducts = specialproducts;
     }
 
     public int getId() {
@@ -85,4 +89,13 @@ public class ProductViewModel {
     public void setCategory(CategoryViewModel category) {
         this.category = category;
     }
+
+    public Set<SpecialproductViewModel> getSpecialproducts() {
+        return specialproducts;
+    }
+
+    public void setSpecialproducts(Set<SpecialproductViewModel> specialproducts) {
+        this.specialproducts = specialproducts;
+    }
+
 }

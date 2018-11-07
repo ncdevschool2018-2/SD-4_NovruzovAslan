@@ -35,13 +35,14 @@ public class Product {
             mappedBy = "product")
     private Set<Specialproduct> specialproducts = new HashSet<>();
 
-    public Product(String name, String short_description, String full_description, String img_src, int cost, Category category) {
+    public Product(String name, String short_description, String full_description, String img_src, int cost, Category category, Set<Specialproduct> specialproducts) {
         this.name = name;
         this.short_description = short_description;
         this.full_description = full_description;
         this.img_src = img_src;
         this.cost = cost;
         this.category = category;
+        this.specialproducts = specialproducts;
     }
 
     public Product() {
