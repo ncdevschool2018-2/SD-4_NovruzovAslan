@@ -13,37 +13,34 @@ import java.util.Objects;
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "prodId", nullable = false)
+    @JoinColumn(name = "prod_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Product product;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
     @Column(name = "duration")
-    private int duration;
+    private Integer duration;
     @Column(name = "start")
     private Date start;
-    @Column(name = "end")
-    private Date end;
     @Column(name = "active")
     private boolean active;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "valletId", nullable = false)
+    @JoinColumn(name = "wallet_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Wallet wallet;
 
-    public Subscription(Product product, User user, int duration, Date start, Date end, boolean active, Wallet wallet) {
+    public Subscription(Product product, User user, Integer duration, Date start, boolean active, Wallet wallet) {
         this.product = product;
         this.user = user;
         this.duration = duration;
         this.start = start;
-        this.end = end;
         this.active = active;
         this.wallet = wallet;
     }
@@ -52,11 +49,11 @@ public class Subscription {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -76,11 +73,11 @@ public class Subscription {
         this.user = user;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
@@ -90,14 +87,6 @@ public class Subscription {
 
     public void setStart(Date start) {
         this.start = start;
-    }
-
-    public Date getEnd() {
-        return end;
-    }
-
-    public void setEnd(Date end) {
-        this.end = end;
     }
 
     public boolean isActive() {
@@ -127,13 +116,12 @@ public class Subscription {
                 Objects.equals(product, that.product) &&
                 Objects.equals(user, that.user) &&
                 Objects.equals(start, that.start) &&
-                Objects.equals(end, that.end) &&
                 Objects.equals(wallet, that.wallet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, product, user, duration, start, end, active, wallet);
+        return Objects.hash(id, product, user, duration, start, active, wallet);
     }
 
     @Override
@@ -144,7 +132,6 @@ public class Subscription {
                 ", user=" + user +
                 ", duration=" + duration +
                 ", start=" + start +
-                ", end=" + end +
                 ", active=" + active +
                 ", wallet=" + wallet +
                 '}';

@@ -14,12 +14,12 @@ import java.util.Set;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     private String short_description;
     private String full_description;
     private String img_src;
-    private int cost;
+    private Integer cost;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
@@ -33,27 +33,28 @@ public class Product {
                     CascadeType.MERGE
             },
             mappedBy = "product")
-    private Set<Specialproduct> specialproducts = new HashSet<>();
+    @JsonIgnore
+    private Set<SpecialProduct> specialProducts = new HashSet<>();
 
-    public Product(String name, String short_description, String full_description, String img_src, int cost, Category category, Set<Specialproduct> specialproducts) {
+    public Product(String name, String short_description, String full_description, String img_src, Integer cost, Category category, Set<SpecialProduct> specialProducts) {
         this.name = name;
         this.short_description = short_description;
         this.full_description = full_description;
         this.img_src = img_src;
         this.cost = cost;
         this.category = category;
-        this.specialproducts = specialproducts;
+        this.specialProducts = specialProducts;
     }
 
     public Product() {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -89,11 +90,11 @@ public class Product {
         this.img_src = img_src;
     }
 
-    public int getCost() {
+    public Integer getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(Integer cost) {
         this.cost = cost;
     }
 
@@ -105,12 +106,12 @@ public class Product {
         this.category = category;
     }
 
-    public Set<Specialproduct> getSpecialproducts() {
-        return specialproducts;
+    public Set<SpecialProduct> getSpecialProducts() {
+        return specialProducts;
     }
 
-    public void setSpecialproducts(Set<Specialproduct> specialproducts) {
-        this.specialproducts = specialproducts;
+    public void setSpecialProducts(Set<SpecialProduct> specialProducts) {
+        this.specialProducts = specialProducts;
     }
 
     @Override
@@ -125,12 +126,12 @@ public class Product {
                 Objects.equals(full_description, product.full_description) &&
                 Objects.equals(img_src, product.img_src) &&
                 Objects.equals(category, product.category) &&
-                Objects.equals(specialproducts, product.specialproducts);
+                Objects.equals(specialProducts, product.specialProducts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, short_description, full_description, img_src, cost, category, specialproducts);
+        return Objects.hash(id, name, short_description, full_description, img_src, cost, category, specialProducts);
     }
 
     @Override
@@ -143,7 +144,7 @@ public class Product {
                 ", img_src='" + img_src + '\'' +
                 ", cost=" + cost +
                 ", category=" + category +
-                ", specialproducts=" + specialproducts +
+                ", specialProducts=" + specialProducts +
                 '}';
     }
 }

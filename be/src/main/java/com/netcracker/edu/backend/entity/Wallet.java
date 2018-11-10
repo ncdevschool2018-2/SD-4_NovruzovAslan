@@ -13,22 +13,22 @@ import java.util.Objects;
 public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "userid", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
-    @Column(name = "walletName")
+    @Column(name = "wallet_name")
     private String name;
     @Column(name = "description")
     private String description;
     @Column(name = "value")
-    private double value;
+    private Double value;
     @Column(name = "valute")
-    private char valute;
+    private Character valute;
 
-    public Wallet(User user, String name, String description, double value, char valute) {
+    public Wallet(User user, String name, String description, Double value, Character valute) {
         this.user = user;
         this.name = name;
         this.description = description;
@@ -40,11 +40,11 @@ public class Wallet {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -72,19 +72,19 @@ public class Wallet {
         this.description = description;
     }
 
-    public double getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 
-    public char getValute() {
+    public Character getValute() {
         return valute;
     }
 
-    public void setValute(char valute) {
+    public void setValute(Character valute) {
         this.valute = valute;
     }
 

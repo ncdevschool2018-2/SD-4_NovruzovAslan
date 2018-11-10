@@ -8,5 +8,6 @@ public interface ProductService {
     Product saveProduct(Product user);
     Optional<Product> getProductById(Long id);
     Iterable<Product> getAllProducts();
+    Iterable<Product> getProductsByCategoryId(Long id);
     void deleteProduct(Long id);
 }

@@ -13,24 +13,24 @@ import java.util.Objects;
 public class Rate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "prodId", nullable = false)
+    @JoinColumn(name = "prod_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Product product;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
     @Column(name = "rate")
-    private int rate;
+    private Integer rate;
     @Basic
     @Column(name = "date")
     private Date date;
 
-    public Rate(Product product, User user, int rate, Date date) {
+    public Rate(Product product, User user, Integer rate, Date date) {
         this.product = product;
         this.user = user;
         this.rate = rate;
@@ -41,11 +41,11 @@ public class Rate {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -65,11 +65,11 @@ public class Rate {
         this.user = user;
     }
 
-    public int getRate() {
+    public Integer getRate() {
         return rate;
     }
 
-    public void setRate(int rate) {
+    public void setRate(Integer rate) {
         this.rate = rate;
     }
 

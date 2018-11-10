@@ -34,6 +34,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Iterable<Product> getProductsByCategoryId(Long id) {
+        return repository.findProductsByCategoryId(id);
+    }
+
+    @Override
     public void deleteProduct(Long id) {
         repository.deleteById(id);
     }

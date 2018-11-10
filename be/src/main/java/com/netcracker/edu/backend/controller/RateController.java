@@ -35,8 +35,8 @@ public class RateController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Rate saveRate(@RequestBody Rate account) {
-        return rateService.saveRate(account);
+    public Rate saveRate(@RequestBody Rate rate) {
+        return rateService.saveRate(rate);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

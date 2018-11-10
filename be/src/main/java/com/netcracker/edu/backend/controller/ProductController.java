@@ -43,6 +43,17 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public Iterable<Product> getProductsByCategoryId(@RequestParam(name = "category_id") long id) {
+        return productService.getProductsByCategoryId(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public Product saveProduct(@RequestBody Product product) {
+        return productService.saveProduct(product);
+    }
+
+
 //    @RequestMapping(method = RequestMethod.POST)
 //    public Product saveProduct(@RequestBody Product product) {
 //        return productService.saveProduct(product);
