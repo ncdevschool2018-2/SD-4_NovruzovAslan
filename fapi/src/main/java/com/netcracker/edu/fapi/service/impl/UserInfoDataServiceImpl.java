@@ -19,13 +19,15 @@ public class UserInfoDataServiceImpl implements UserInfoDataService {
     @Override
     public List<UserInfoViewModel> getAll() {
         RestTemplate restTemplate = new RestTemplate();
-        UserInfoViewModel[] userinfoViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/userinfos/", UserInfoViewModel[].class);
+        UserInfoViewModel[] userinfoViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/userinfos", UserInfoViewModel[].class);
         return userinfoViewModelResponse == null ? Collections.emptyList() : Arrays.asList(userinfoViewModelResponse);
     }
 
     @Override
     public UserInfoViewModel getUserInfoById(Long id) {
-        return null;
+        RestTemplate restTemplate = new RestTemplate();
+        UserInfoViewModel userInfoViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/userInfos/" + String.valueOf(id), UserInfoViewModel.class);
+        return userInfoViewModelResponse;
     }
 
     @Override

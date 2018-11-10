@@ -20,13 +20,15 @@ public class CategoryDataServiceImpl implements CategoryDataService {
     @Override
     public List<CategoryViewModel> getAll() {
         RestTemplate restTemplate = new RestTemplate();
-        CategoryViewModel[] categoryViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/categories/", CategoryViewModel[].class);
+        CategoryViewModel[] categoryViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/categories", CategoryViewModel[].class);
         return categoryViewModelResponse == null ? Collections.emptyList() : Arrays.asList(categoryViewModelResponse);
     }
 
     @Override
     public CategoryViewModel getCategoryById(Long id) {
-        return null;
+        RestTemplate restTemplate = new RestTemplate();
+        CategoryViewModel categoryViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/categories/" + String.valueOf(id), CategoryViewModel.class);
+        return categoryViewModelResponse;
     }
 
     @Override

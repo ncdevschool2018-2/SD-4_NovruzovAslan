@@ -20,13 +20,15 @@ public class RateDataServiceImpl implements RateDataService {
     @Override
     public List<RateViewModel> getAll() {
         RestTemplate restTemplate = new RestTemplate();
-        RateViewModel[] rateViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/rates/", RateViewModel[].class);
+        RateViewModel[] rateViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/rates", RateViewModel[].class);
         return rateViewModelResponse == null ? Collections.emptyList() : Arrays.asList(rateViewModelResponse);
     }
 
     @Override
     public RateViewModel getRateById(Long id) {
-        return null;
+        RestTemplate restTemplate = new RestTemplate();
+        RateViewModel rateViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/rates/" + String.valueOf(id), RateViewModel.class);
+        return rateViewModelResponse;
     }
 
     @Override

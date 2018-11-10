@@ -19,13 +19,15 @@ public class WalletDataServiceImpl implements WalletDataService {
     @Override
     public List<WalletViewModel> getAll() {
         RestTemplate restTemplate = new RestTemplate();
-        WalletViewModel[] walletViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/wallets/", WalletViewModel[].class);
+        WalletViewModel[] walletViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/wallets", WalletViewModel[].class);
         return walletViewModelResponse == null ? Collections.emptyList() : Arrays.asList(walletViewModelResponse);
     }
 
     @Override
     public WalletViewModel getWalletById(Long id) {
-        return null;
+        RestTemplate restTemplate = new RestTemplate();
+        WalletViewModel walletViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/wallets/" + String.valueOf(id), WalletViewModel.class);
+        return walletViewModelResponse;
     }
 
     @Override

@@ -20,13 +20,15 @@ public class CommentDataServiceImpl implements CommentDataService {
     @Override
     public List<CommentViewModel> getAll() {
         RestTemplate restTemplate = new RestTemplate();
-        CommentViewModel[] commentViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/comments/", CommentViewModel[].class);
+        CommentViewModel[] commentViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/comments", CommentViewModel[].class);
         return commentViewModelResponse == null ? Collections.emptyList() : Arrays.asList(commentViewModelResponse);
     }
 
     @Override
     public CommentViewModel getCommentById(Long id) {
-        return null;
+        RestTemplate restTemplate = new RestTemplate();
+        CommentViewModel commentViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/comments/" + String.valueOf(id), CommentViewModel.class);
+        return commentViewModelResponse;
     }
 
     @Override

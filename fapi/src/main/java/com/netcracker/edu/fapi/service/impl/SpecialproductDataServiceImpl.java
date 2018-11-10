@@ -20,13 +20,15 @@ public class SpecialproductDataServiceImpl implements SpecialproductDataService 
     @Override
     public List<SpecialproductViewModel> getAll() {
         RestTemplate restTemplate = new RestTemplate();
-        SpecialproductViewModel[] specialproductViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/specialproducts/", SpecialproductViewModel[].class);
+        SpecialproductViewModel[] specialproductViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/specialproducts", SpecialproductViewModel[].class);
         return specialproductViewModelResponse == null ? Collections.emptyList() : Arrays.asList(specialproductViewModelResponse);
     }
 
     @Override
     public SpecialproductViewModel getSpecialproductById(Long id) {
-        return null;
+        RestTemplate restTemplate = new RestTemplate();
+        SpecialproductViewModel specialproductViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/specialproducts/" + String.valueOf(id), SpecialproductViewModel.class);
+        return specialproductViewModelResponse;
     }
 
     @Override

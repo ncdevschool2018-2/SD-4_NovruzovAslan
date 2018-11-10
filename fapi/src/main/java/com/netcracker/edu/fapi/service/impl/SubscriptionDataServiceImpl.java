@@ -20,13 +20,15 @@ public class SubscriptionDataServiceImpl implements SubscriptionDataService {
     @Override
     public List<SubscriptionViewModel> getAll() {
         RestTemplate restTemplate = new RestTemplate();
-        SubscriptionViewModel[] subscriptionViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/subscriptions/", SubscriptionViewModel[].class);
+        SubscriptionViewModel[] subscriptionViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/subscriptions", SubscriptionViewModel[].class);
         return subscriptionViewModelResponse == null ? Collections.emptyList() : Arrays.asList(subscriptionViewModelResponse);
     }
 
     @Override
     public SubscriptionViewModel getSubscriptionById(Long id) {
-        return null;
+        RestTemplate restTemplate = new RestTemplate();
+        SubscriptionViewModel subscriptionViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/subscriptions/" + String.valueOf(id), SubscriptionViewModel.class);
+        return subscriptionViewModelResponse;
     }
 
     @Override
