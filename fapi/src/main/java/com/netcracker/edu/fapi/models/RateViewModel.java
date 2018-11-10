@@ -8,17 +8,17 @@ import java.sql.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RateViewModel {
 
-    private int id;
+    private Long id;
     private ProductViewModel product;
     @JsonIgnore
     private UserViewModel user;
-    private int rate;
+    private Integer rate;
     private Date date;
 
     public RateViewModel() {
     }
 
-    public RateViewModel(int id, ProductViewModel product, UserViewModel user, int rate, Date date) {
+    public RateViewModel(Long id, ProductViewModel product, UserViewModel user, Integer rate, Date date) {
         this.id = id;
         this.product = product;
         this.user = user;
@@ -26,11 +26,11 @@ public class RateViewModel {
         this.date = date;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -50,11 +50,11 @@ public class RateViewModel {
         this.user = user;
     }
 
-    public int getRate() {
+    public Integer getRate() {
         return rate;
     }
 
-    public void setRate(int rate) {
+    public void setRate(Integer rate) {
         this.rate = rate;
     }
 

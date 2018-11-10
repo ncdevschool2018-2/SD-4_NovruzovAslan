@@ -8,12 +8,12 @@ import java.sql.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SubscriptionViewModel {
 
-    private int id;
+    private Long id;
     @JsonIgnore
     private ProductViewModel product;
     @JsonIgnore
     private UserViewModel user;
-    private int duration;
+    private Integer duration;
     private Date start;
     private Date end;
     private boolean active;
@@ -23,7 +23,7 @@ public class SubscriptionViewModel {
     public SubscriptionViewModel() {
     }
 
-    public SubscriptionViewModel(int id, ProductViewModel product, UserViewModel user, int duration, Date start, Date end, boolean active, WalletViewModel wallet) {
+    public SubscriptionViewModel(Long id, ProductViewModel product, UserViewModel user, Integer duration, Date start, Date end, boolean active, WalletViewModel wallet) {
         this.id = id;
         this.product = product;
         this.user = user;
@@ -34,11 +34,11 @@ public class SubscriptionViewModel {
         this.wallet = wallet;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -58,11 +58,11 @@ public class SubscriptionViewModel {
         this.user = user;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 

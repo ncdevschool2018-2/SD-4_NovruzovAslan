@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ProductDataService {
     List<ProductViewModel> getAll();
+  //  List<ProductViewModel> getProductsByCategoryId(Long id);
     ProductViewModel getProductById(Long id);
     ProductViewModel saveProduct(ProductViewModel product);
     void deleteProduct(Long id);

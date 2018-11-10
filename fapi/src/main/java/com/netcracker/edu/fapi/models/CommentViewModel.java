@@ -8,7 +8,7 @@ import java.sql.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentViewModel {
 
-    private int id;
+    private Long id;
     @JsonIgnore
     private ProductViewModel product;
     @JsonIgnore
@@ -19,7 +19,7 @@ public class CommentViewModel {
     public CommentViewModel() {
     }
 
-    public CommentViewModel(int id, ProductViewModel product, UserViewModel user, String comment, Date date) {
+    public CommentViewModel(Long id, ProductViewModel product, UserViewModel user, String comment, Date date) {
         this.id = id;
         this.product = product;
         this.user = user;
@@ -27,11 +27,11 @@ public class CommentViewModel {
         this.date = date;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

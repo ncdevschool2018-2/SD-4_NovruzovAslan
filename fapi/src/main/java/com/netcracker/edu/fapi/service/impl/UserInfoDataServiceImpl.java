@@ -26,7 +26,7 @@ public class UserInfoDataServiceImpl implements UserInfoDataService {
     @Override
     public UserInfoViewModel getUserInfoById(Long id) {
         RestTemplate restTemplate = new RestTemplate();
-        UserInfoViewModel userInfoViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/userInfos/" + String.valueOf(id), UserInfoViewModel.class);
+        UserInfoViewModel userInfoViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/userinfos/" + String.valueOf(id), UserInfoViewModel.class);
         return userInfoViewModelResponse;
     }
 

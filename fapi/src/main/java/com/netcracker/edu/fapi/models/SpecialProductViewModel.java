@@ -7,29 +7,30 @@ import java.util.HashSet;
 import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SpecialproductViewModel {
+public class SpecialProductViewModel {
 
-    private int id;
+    private Long id;
     @JsonIgnore
     private ProductViewModel product;
-    private int cost;
+    private Integer cost;
+    @JsonIgnore
     private Set<ProductViewModel> products = new HashSet<>();
 
-    public SpecialproductViewModel() {
+    public SpecialProductViewModel() {
     }
 
-    public SpecialproductViewModel(int id, ProductViewModel product, int cost, Set<ProductViewModel> products) {
+    public SpecialProductViewModel(Long id, ProductViewModel product, Integer cost, Set<ProductViewModel> products) {
         this.id = id;
         this.product = product;
         this.cost = cost;
         this.products = products;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -41,11 +42,11 @@ public class SpecialproductViewModel {
         this.product = product;
     }
 
-    public int getCost() {
+    public Integer getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(Integer cost) {
         this.cost = cost;
     }
 

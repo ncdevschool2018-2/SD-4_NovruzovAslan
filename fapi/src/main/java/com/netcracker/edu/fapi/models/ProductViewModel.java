@@ -4,26 +4,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductViewModel {
 
-    private int id;
+    private Long id;
     private String name;
     private String short_description;
     private String full_description;
     private String img_src;
-    private int cost;
+    private Integer cost;
     @JsonIgnore
     private CategoryViewModel category;
-    private Set<SpecialproductViewModel> specialproducts = new HashSet<>();
+    private Set<SpecialProductViewModel> specialproducts = new HashSet<>();
 
     public ProductViewModel() {
     }
 
-    public ProductViewModel(int id, String name, String short_description, String full_description, String img_src, int cost, CategoryViewModel category, Set<SpecialproductViewModel> specialproducts) {
+    public ProductViewModel(Long id, String name, String short_description, String full_description, String img_src, Integer cost, CategoryViewModel category, Set<SpecialProductViewModel> specialproducts) {
         this.id = id;
         this.name = name;
         this.short_description = short_description;
@@ -34,11 +33,11 @@ public class ProductViewModel {
         this.specialproducts = specialproducts;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -74,11 +73,11 @@ public class ProductViewModel {
         this.img_src = img_src;
     }
 
-    public int getCost() {
+    public Integer getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(Integer cost) {
         this.cost = cost;
     }
 
@@ -90,11 +89,11 @@ public class ProductViewModel {
         this.category = category;
     }
 
-    public Set<SpecialproductViewModel> getSpecialproducts() {
+    public Set<SpecialProductViewModel> getSpecialproducts() {
         return specialproducts;
     }
 
-    public void setSpecialproducts(Set<SpecialproductViewModel> specialproducts) {
+    public void setSpecialproducts(Set<SpecialProductViewModel> specialproducts) {
         this.specialproducts = specialproducts;
     }
 

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WalletViewModel {
 
-    private int id;
+    private Long id;
     @JsonIgnore
     private UserViewModel user;
     private String name;
@@ -17,7 +17,7 @@ public class WalletViewModel {
     public WalletViewModel() {
     }
 
-    public WalletViewModel(int id, UserViewModel user, String name, String description, double value, char valute) {
+    public WalletViewModel(Long id, UserViewModel user, String name, String description, double value, char valute) {
         this.id = id;
         this.user = user;
         this.name = name;
@@ -26,11 +26,11 @@ public class WalletViewModel {
         this.valute = valute;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -8,7 +8,7 @@ import java.sql.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserInfoViewModel {
 
-    private int id;
+    private Long id;
     @JsonIgnore
     private UserViewModel user;
     private String name;
@@ -17,18 +17,18 @@ public class UserInfoViewModel {
     public UserInfoViewModel() {
     }
 
-    public UserInfoViewModel(int id, UserViewModel user, String name, Date dateOfBirth) {
+    public UserInfoViewModel(Long id, UserViewModel user, String name, Date dateOfBirth) {
         this.id = id;
         this.user = user;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

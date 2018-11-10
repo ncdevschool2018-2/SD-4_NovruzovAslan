@@ -13,24 +13,29 @@ import java.util.List;
 public class CommentDataController {
 
     @Autowired
-    private CommentDataService billingAccountDataService;
+    private CommentDataService commentDataService;
 
     @RequestMapping
     public ResponseEntity<List<CommentViewModel>> getAllComments() {
-        return ResponseEntity.ok(billingAccountDataService.getAll());
+        return ResponseEntity.ok(commentDataService.getAll());
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<CommentViewModel> getCommentById(@PathVariable(name="id") String id) {
+        return ResponseEntity.ok(commentDataService.getCommentById(Long.valueOf(id)));
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<CommentViewModel> saveComment(@RequestBody CommentViewModel billingAccount /*todo server validation*/) {
-        if (billingAccount != null) {
-            return ResponseEntity.ok(billingAccountDataService.saveComment(billingAccount));
+    public ResponseEntity<CommentViewModel> saveComment(@RequestBody CommentViewModel comment /*todo server validation*/) {
+        if (comment != null) {
+            return ResponseEntity.ok(commentDataService.saveComment(comment));
         }
         return null;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteComment(@PathVariable String id) {
-        billingAccountDataService.deleteComment(Long.valueOf(id));
+        commentDataService.deleteComment(Long.valueOf(id));
     }
 
 }
