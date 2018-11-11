@@ -30,12 +30,12 @@ public class ProductDataServiceImpl implements ProductDataService {
         return productViewModelResponse;
     }
 
-//    @Override
-//    public List<ProductViewModel> getProductsByCategoryId(Long category_id) {
-//        RestTemplate restTemplate = new RestTemplate();
-//        ProductViewModel[] productViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/products/", ProductViewModel[].class, category_id);
-//        return productViewModelResponse == null ? Collections.emptyList() : Arrays.asList(productViewModelResponse);
-//    }
+    @Override
+    public List<ProductViewModel> getProductsByCategoryId(Long category_id) {
+        RestTemplate restTemplate = new RestTemplate();
+        ProductViewModel[] productViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/products/?category_id={category_id}", ProductViewModel[].class, String.valueOf(category_id));
+        return productViewModelResponse == null ? Collections.emptyList() : Arrays.asList(productViewModelResponse);
+    }
 
     @Override
     public ProductViewModel saveProduct(ProductViewModel product) {

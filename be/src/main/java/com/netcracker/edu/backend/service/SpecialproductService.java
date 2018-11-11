@@ -1,12 +1,12 @@
 package com.netcracker.edu.backend.service;
 
-import com.netcracker.edu.backend.entity.Specialproduct;
+import com.netcracker.edu.backend.entity.SpecialProduct;
 
 import java.util.Optional;
 
-public interface SpecialproductService {
-    Specialproduct saveSpecialproduct(Specialproduct category);
-    Optional<Specialproduct> getSpecialproductById(Long id);
-    Iterable<Specialproduct> getAllSpecialproducts();
-    void deleteSpecialproduct(Long id);
+public interface SpecialProductService {
+    SpecialProduct saveSpecialProduct(SpecialProduct category);
+    Optional<SpecialProduct> getSpecialProductById(Long id);
+    Iterable<SpecialProduct> getAllSpecialProducts();
+    void deleteSpecialProduct(Long id);
 }

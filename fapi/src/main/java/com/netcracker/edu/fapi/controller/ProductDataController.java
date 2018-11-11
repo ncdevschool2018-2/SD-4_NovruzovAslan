@@ -21,10 +21,10 @@ public class ProductDataController {
         return ResponseEntity.ok(productDataService.getAll());
     }
 
-//    @RequestMapping(value = "/", method = RequestMethod.GET)
-//    public ResponseEntity<List<ProductViewModel>> getProductsByCategoryId(@RequestParam(name = "category_id") Long id) {
-//        return ResponseEntity.ok(productDataService.getProductsByCategoryId(id));
-//    }
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ResponseEntity<List<ProductViewModel>> getProductsByCategoryId(@RequestParam(name = "category_id") Long id) {
+        return ResponseEntity.ok(productDataService.getProductsByCategoryId(id));
+    }
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

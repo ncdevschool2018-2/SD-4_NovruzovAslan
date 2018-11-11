@@ -1,12 +1,12 @@
 package com.netcracker.edu.fapi.service;
 
-import com.netcracker.edu.fapi.models.SpecialproductViewModel;
+import com.netcracker.edu.fapi.models.SpecialProductViewModel;
 
 import java.util.List;
 
-public interface SpecialproductDataService {
-    List<SpecialproductViewModel> getAll();
-    SpecialproductViewModel getSpecialproductById(Long id);
-    SpecialproductViewModel saveSpecialproduct(SpecialproductViewModel specialproduct);
-    void deleteSpecialproduct(Long id);
+public interface SpecialProductDataService {
+    List<SpecialProductViewModel> getAll();
+    SpecialProductViewModel getSpecialProductById(Long id);
+    SpecialProductViewModel saveSpecialProduct(SpecialProductViewModel specialProduct);
+    void deleteSpecialProduct(Long id);
 }

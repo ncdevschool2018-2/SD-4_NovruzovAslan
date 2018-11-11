@@ -1,7 +1,7 @@
 package com.netcracker.edu.backend.controller;
 
-import com.netcracker.edu.backend.entity.Specialproduct;
-import com.netcracker.edu.backend.service.SpecialproductService;
+import com.netcracker.edu.backend.entity.SpecialProduct;
+import com.netcracker.edu.backend.service.SpecialProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,38 +10,38 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/specialproducts")
-public class SpecialproductController {
+public class SpecialProductController {
 
-    private SpecialproductService specialproductService;
+    private SpecialProductService specialProductService;
 
     @Autowired
-    public SpecialproductController(SpecialproductService specialproductService) {
-        this.specialproductService = specialproductService;
+    public SpecialProductController(SpecialProductService specialProductService) {
+        this.specialProductService = specialProductService;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Specialproduct> getSpecialproductById(@PathVariable(name = "id") Long id) {
-        Optional<Specialproduct> specialproduct = specialproductService.getSpecialproductById(id);
-        if (specialproduct.isPresent()) {
-            return ResponseEntity.ok(specialproduct.get());
+    public ResponseEntity<SpecialProduct> getSpecialProductById(@PathVariable(name = "id") Long id) {
+        Optional<SpecialProduct> specialProduct = specialProductService.getSpecialProductById(id);
+        if (specialProduct.isPresent()) {
+            return ResponseEntity.ok(specialProduct.get());
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Iterable<Specialproduct> getAllSpecialproducts() {
-        return specialproductService.getAllSpecialproducts();
+    public Iterable<SpecialProduct> getAllSpecialProducts() {
+        return specialProductService.getAllSpecialProducts();
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Specialproduct saveSpecialproduct(@RequestBody Specialproduct account) {
-        return specialproductService.saveSpecialproduct(account);
+    public SpecialProduct saveSpecialProduct(@RequestBody SpecialProduct account) {
+        return specialProductService.saveSpecialProduct(account);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteSpecialproduct(@PathVariable(name = "id") Long id) {
-        specialproductService.deleteSpecialproduct(id);
+    public ResponseEntity deleteSpecialProduct(@PathVariable(name = "id") Long id) {
+        specialProductService.deleteSpecialProduct(id);
         return ResponseEntity.noContent().build();
     }
 
