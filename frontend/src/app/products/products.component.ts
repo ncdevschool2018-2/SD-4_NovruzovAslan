@@ -12,7 +12,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 export class ProductsComponent implements OnInit {
   public editMode = false;
   @Input()
-  private categoryId;
+  private categoryId: number;
 
   public products: Product[];
   public editableProduct: Product = new Product();
@@ -71,20 +71,32 @@ export class ProductsComponent implements OnInit {
 
   private refreshProduct(): void {
     this.editableProduct = new Product();
+    if(this.categoryId !== 0) {
+      this.editableProduct.category.id = this.categoryId;
+    }
   }
 
   private loadProducts(): void {
-    // Get data from ProductService
-    this.subscriptions.push(
-      this.productService.getProducts(this.categoryId).subscribe(products => {
-        // Parse json response into local array
-        this.products = products as Product[];
-        // Check data in console
-        console.log(this.products); // don't use console.log in angular :)
-      })
-    );
+    if (this.categoryId == 0) {
+      this.subscriptions.push(
+        this.productService.getProducts().subscribe(products => {
+          // Parse json response into local array
+          this.products = products as Product[];
+          console.log(this.products);
+        })
+      );
+    } else {
+      this.subscriptions.push(
+        this.productService.getProductsByCategoryId(this.categoryId).subscribe(products => {
+          this.products = products as Product[];
+          console.log(this.products);
+          this.products.forEach(product => {
+            console.log(product.category.id);
+          })
+        })
+      );
+    }
   }
-
   setCategoryId(categoryId: number) {
     this.categoryId = categoryId;
   }

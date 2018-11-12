@@ -11,20 +11,14 @@ export class ProductService {
   constructor(private http: HttpClient) {}
 
   // Ajax request for user data
-  // getProducts(): Observable<Product[]> {
-  //   return this.http.get<Product[]>("http://localhost:8081/api/products");
-  // }
+  getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>("http://localhost:8081/api/products");
+  }
 
-  getProducts(categoryId: number = 0): Observable<Product[]> {
+  getProductsByCategoryId(categoryId: number): Observable<Product[]> {
     let products: Observable<Product[]>;
-    let temp: Observable<Product[]>;
-    products = this.http.get<Product[]>("http://localhost:8081/api/products");
-    if(categoryId == 0)
-      return products;
-    // for(let product in products) {
-    //   if(product.category.id == 1)
-    // }
-    // todo: fill temp
+    products = this.http.get<Product[]>("http://localhost:8081/api/products/?category_id="+categoryId);
+    return products;
   }
 
   saveProduct(product: Product): Observable<Product> {
