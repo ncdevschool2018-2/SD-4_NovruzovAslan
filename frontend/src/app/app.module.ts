@@ -18,6 +18,12 @@ import { SigninModalComponent } from "./signin-modal/signin-modal.component";
 import { CarouselComponent } from "./carousel/carousel.component";
 import { TabsetComponent } from './tabset/tabset.component';
 import { ProductsComponent } from './products/products.component';
+import { RouterModule, Routes } from "@angular/router";
+import { WalletTableComponent } from './walletTable/walletTable.component';
+
+const appRoutes: Routes = [
+  { path: ''}
+]
 
 @NgModule({
   declarations: [
@@ -27,7 +33,8 @@ import { ProductsComponent } from './products/products.component';
     SigninModalComponent,
     CarouselComponent,
     TabsetComponent,
-    ProductsComponent
+    ProductsComponent,
+    WalletTableComponent
   ],
   imports: [
     BrowserModule,

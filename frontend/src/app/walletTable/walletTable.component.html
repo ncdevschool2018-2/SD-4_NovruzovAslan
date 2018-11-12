@@ -1,0 +1,133 @@
+<div class="container mt-lg-5">
+  <div class="row">
+
+    <div class="col">
+
+      <h4>Wallets component:</h4>
+
+      <table class="table">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Owner</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Value</th>
+          <th scope="col">Valute</th>
+          <th scope="col">Delete</th>
+          <th scope="col">Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let wallet of wallets">
+          <td scope="row">{{wallet.id}}</td>
+          <td>{{wallet.user.username}}</td>
+          <td>{{wallet.name}}</td>
+          <td>{{wallet.description}}</td>
+          <td>{{wallet.value}}</td>
+          <td>{{wallet.valute}}</td>
+          <td><button type="button" class="btn btn-danger" (click)="_deleteWallet(wallet.id)">Delete</button></td>
+          <td><button type="button" class="btn btn-secondary" (click)="_openModal(template, wallet)">Edit</button></td>
+        </tr>
+
+        </tbody>
+      </table>
+
+      <div>
+        <p>Wallets count: {{wallets ? wallets.length : 0}}</p>
+      </div>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button type="button" class="btn btn-dark" (click)="_updateWallets()">Update</button>
+
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" (click)="_openModal(template)">
+        Create new wallet
+      </button>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Modal -->
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{editMode ? "Edit": "Create"}} new Wallet</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label>Name</label>
+      <input class="form-control" name="w_name" [(ngModel)]="editableWallet.name" #w_name="ngModel" required />
+      <div [hidden]="w_name.valid || w_name.untouched" class="alert alert-danger">
+        Pls set name
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea class="form-control" name="description" [(ngModel)]="editableWallet.description" #description="ngModel" required></textarea>
+      <div [hidden]="description.valid || description.untouched" class="alert alert-danger">
+        Pls set description
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Value</label>
+      <div class="input-group">
+        <input class="form-control" name="value" [(ngModel)]="editableWallet.value" #value="ngModel" required />
+        <div [hidden]="value.valid || value.untouched" class="alert alert-danger">
+          Pls set value
+        </div>
+        <div class="input-group-append">
+          <select class="select form-control" [(ngModel)]="editableWallet.valute" #valute_edit="ngModel" required>
+            <option value="$">$</option>
+            <option value="€">€</option>
+            <option value="£">£</option>
+            <option value="¥">¥</option>
+            <option value="₽">₽</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!--<div class="form-group" *ngIf="!editMode">-->
+      <!--<label>Valute</label>-->
+      <!--<select class="select form-control" [(ngModel)]="editableWallet.valute" #valute_new="ngModel" required>-->
+        <!--<option value="1" selected>$</option>-->
+        <!--<option value="2">€</option>-->
+        <!--<option value="3">£</option>-->
+        <!--<option value="4">¥</option>-->
+        <!--<option value="5">₽</option>-->
+      <!--</select>-->
+    <!--</div>-->
+    <div class="form-group">
+      <label>User</label>
+      <!--<input class="form-control" name="user" [(ngModel)]="editableWallet.user.username" #user="ngModel" required />-->
+      <select class="select form-control" [(ngModel)]="tempUserId" #user="ngModel" required>
+        <!--<option selected>Choose...</option>-->
+        <option *ngFor="let user of usersForSelect" value="{{user.id}}">{{user.username}}</option>
+      </select>
+      <div [hidden]="user.valid || user.untouched" class="alert alert-danger">
+        Pls set user
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button *ngIf="editMode" type="button" class="btn btn-default" (click)="_addWallet()"
+            [disabled]="w_name.invalid || description.invalid || value.invalid || user.invalid">
+      {{editMode ? "Save": "Create"}}
+    </button>
+    <!--<button *ngIf="!editMode" type="button" class="btn btn-default" (click)="_addWallet()"-->
+            <!--[disabled]="w_name.invalid || description.invalid || user.invalid">-->
+      <!--Create-->
+    <!--</button>-->
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
+
+  </div>
+</ng-template>

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class WalletViewModel {
 
     private Long id;
-    @JsonIgnore
+//    @JsonIgnore
     private UserViewModel user;
     private String name;
     private String description;
