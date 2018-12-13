@@ -1,6 +1,7 @@
 package com.netcracker.edu.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -15,34 +16,46 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "name")
     private String name;
-    private String short_description;
-    private String full_description;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "img_src")
     private String img_src;
-    private Integer cost;
+    @Column(name = "cost")
+    private Double cost;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne//(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
+//    @JsonIgnore
     private Category category;
 
-    @ManyToMany(fetch = FetchType.LAZY,
+    @ManyToOne
+    @JoinColumn(name = "wallet_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Wallet wallet;
+
+    @ManyToMany(
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
-            },
-            mappedBy = "product")
-    @JsonIgnore
+            })
+    @JoinTable(name = "product_specialproduct",
+            joinColumns = @JoinColumn(name = "prod_id"),
+            inverseJoinColumns = @JoinColumn(name = "specprod_id")
+    )
+//    @JsonManagedReference
+//    @JsonIgnore
     private Set<SpecialProduct> specialProducts = new HashSet<>();
 
-    public Product(String name, String short_description, String full_description, String img_src, Integer cost, Category category, Set<SpecialProduct> specialProducts) {
+    public Product(String name, String description, String img_src, Double cost, Category category, Wallet wallet, Set<SpecialProduct> specialProducts) {
         this.name = name;
-        this.short_description = short_description;
-        this.full_description = full_description;
+        this.description = description;
         this.img_src = img_src;
         this.cost = cost;
         this.category = category;
+        this.wallet = wallet;
         this.specialProducts = specialProducts;
     }
 
@@ -66,20 +79,12 @@ public class Product {
         this.name = name;
     }
 
-    public String getShort_description() {
-        return short_description;
+    public String getDescription() {
+        return description;
     }
 
-    public void setShort_description(String short_description) {
-        this.short_description = short_description;
-    }
-
-    public String getFull_description() {
-        return full_description;
-    }
-
-    public void setFull_description(String full_description) {
-        this.full_description = full_description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getImg_src() {
@@ -90,11 +95,11 @@ public class Product {
         this.img_src = img_src;
     }
 
-    public Integer getCost() {
+    public Double getCost() {
         return cost;
     }
 
-    public void setCost(Integer cost) {
+    public void setCost(Double cost) {
         this.cost = cost;
     }
 
@@ -104,6 +109,14 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
     }
 
     public Set<SpecialProduct> getSpecialProducts() {
@@ -122,16 +135,16 @@ public class Product {
         return id == product.id &&
                 cost == product.cost &&
                 Objects.equals(name, product.name) &&
-                Objects.equals(short_description, product.short_description) &&
-                Objects.equals(full_description, product.full_description) &&
+                Objects.equals(description, product.description) &&
                 Objects.equals(img_src, product.img_src) &&
                 Objects.equals(category, product.category) &&
+                Objects.equals(wallet, product.wallet) &&
                 Objects.equals(specialProducts, product.specialProducts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, short_description, full_description, img_src, cost, category, specialProducts);
+        return Objects.hash(id, name, description, img_src, cost, category, wallet, specialProducts);
     }
 
     @Override
@@ -139,11 +152,11 @@ public class Product {
         return "Product{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", short_description='" + short_description + '\'' +
-                ", full_description='" + full_description + '\'' +
+                ", description='" + description + '\'' +
                 ", img_src='" + img_src + '\'' +
                 ", cost=" + cost +
                 ", category=" + category +
+                ", wallet=" + wallet +
                 ", specialProducts=" + specialProducts +
                 '}';
     }

@@ -1,6 +1,6 @@
 package com.netcracker.edu.fapi.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.sql.Date;
@@ -9,7 +9,7 @@ import java.sql.Date;
 public class UserInfoViewModel {
 
     private Long id;
-    @JsonIgnore
+    @JsonBackReference
     private UserViewModel user;
     private String name;
     private Date dateOfBirth;
@@ -17,9 +17,14 @@ public class UserInfoViewModel {
     public UserInfoViewModel() {
     }
 
-    public UserInfoViewModel(Long id, UserViewModel user, String name, Date dateOfBirth) {
+    public UserInfoViewModel(UserInfoViewModel user){
+        this.id = user.id;
+        this.name = user.name;
+        this.dateOfBirth = user.dateOfBirth;
+    }
+
+    public UserInfoViewModel(Long id, String name, Date dateOfBirth) {
         this.id = id;
-        this.user = user;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
     }
@@ -32,20 +37,20 @@ public class UserInfoViewModel {
         this.id = id;
     }
 
-    public UserViewModel getUser() {
-        return user;
-    }
-
-    public void setUser(UserViewModel user) {
-        this.user = user;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public UserViewModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserViewModel user) {
+        this.user = user;
     }
 
     public Date getDateOfBirth() {

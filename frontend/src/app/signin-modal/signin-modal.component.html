@@ -14,24 +14,30 @@
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
             </div>
-            <input id="emailInput" type="email" class="form-control" placeholder="Email" required>
+            <input class="form-control" name="username1" [(ngModel)]="this.username" #username1="ngModel" required />
+          </div>
+          <div [hidden]="username1.valid || username1.untouched" class="alert alert-danger">
+            Please set username
           </div>
         </div>
+
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fas fa-unlock"></i></span>
             </div>
-            <input id="passwordInput" type="password" class="form-control" placeholder="Password" required>
-            <!-- &lt;!&ndash; I need to delete "required" atribute and add check of valide data in script.js   &ndash;&gt; -->
+            <input type="password" class="form-control" name="password1" [(ngModel)]="this.password" #password1="ngModel" required />
+          </div>
+          <div [hidden]="password1.valid || password1.untouched" class="alert alert-danger">
+            Pls set password
           </div>
         </div>
         <div class="container">
-          <div class="row justify-content-between">
-            <button type="button" class="btn btn-primary" (click)="openRegisterModal(registerModal)">Register</button>
-            <button type="submit" class="btn btn-primary" (click)="setCurrentUser($event)">Sign in</button>
+          <div class="row justify-content-end">
+            <button type="button" class="btn btn-success" (click)="openRegisterModal(registerModal)">Register</button>
+            <button type="submit" class="btn btn-primary" (click)="login()">Sign in</button>
           </div>
         </div>
       </form>
@@ -42,7 +48,7 @@
 <ng-template #registerModal>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Register</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="this.registerModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -55,55 +61,64 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fas fa-user"></i></span>
             </div>
-            <input type="text" class="form-control" placeholder="Name" required>
+            <input class="form-control" name="username_r" [(ngModel)]="this.editableUser.username" #username_r="ngModel" required />
+            <div [hidden]="username_r.valid || username_r.untouched" class="alert alert-danger">
+              Please set username
+            </div>
           </div>
         </div>
-        <!-- <div class="form-group">
+        <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fas fa-user"></i></span>
             </div>
-            <input type="text" class="form-control" placeholder="Surename" required>
+            <input class="form-control" name="name_u" [(ngModel)]="this.editableUser.userInfo.name" #name_u="ngModel" required />
+            <div [hidden]="name_u.valid || name_u.untouched" class="alert alert-danger">
+              Please set name
+            </div>
           </div>
-        </div> -->
-        <!-- <div class="form-group">
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-unlock"></i></span>
+            </div>
+            <input type="password" class="form-control" name="password_r" [(ngModel)]="this.editableUser.password" #password_r="ngModel" required />
+            <div [hidden]="password_r.valid || password_r.untouched" class="alert alert-danger">
+              Please set password
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-unlock"></i></span>
+            </div>
+            <input type="password" class="form-control" name="conf_password" [(ngModel)]="this.confPass" #conf_password="ngModel" required />
+            <div [hidden]="conf_password.valid || conf_password.untouched" class="alert alert-danger">
+              Please confirm password
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
             </div>
-            <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker>
-          </div>
-        </div> -->
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <input type="text" name="dateOfBirth" [(ngModel)]="this.editableUser.userInfo.dateOfBirth" #dateOfBirth="ngModel"
+                   placeholder="Date of birth"
+                   class="form-control"
+                   bsDatepicker>
+            <div [hidden]="dateOfBirth.valid || dateOfBirth.untouched" class="alert alert-danger">
+              Please set date of birth
             </div>
-            <input type="email" class="form-control" placeholder="Email" required>
           </div>
         </div>
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-unlock"></i></span>
-            </div>
-            <input type="password" class="form-control" placeholder="Password" required>
-            <!-- I need to delete "required" atribute and add check of valide data in script.js   -->
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-unlock"></i></span>
-            </div>
-            <input type="password" class="form-control" placeholder="Confirm password" required>
-            <!-- I need to delete "required" atribute and add check of valide data in script.js   -->
-          </div>
-        </div>
+
         <div class="container">
-          <div class="row justify-content-between">
+          <div class="row justify-content-end">
             <button type="button" class="btn btn-primary" (click)="openModal(signInModal)">Sign in</button>
-            <button type="submit" class="btn btn-primary col-auto">Register</button>
+            <button type="submit" class="btn btn-primary" (click)="register()">Register</button>
           </div>
         </div>
       </form>

@@ -2,7 +2,7 @@ import {User} from "./user";
 
 export class Wallet {
   id: string;
-  user: User; // Don't need
+  user: User;
   name: string;
   description: string;
   value: number;

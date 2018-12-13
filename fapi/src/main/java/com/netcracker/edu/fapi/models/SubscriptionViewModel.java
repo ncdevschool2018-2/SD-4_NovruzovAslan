@@ -9,29 +9,24 @@ import java.sql.Date;
 public class SubscriptionViewModel {
 
     private Long id;
-    @JsonIgnore
+//    @JsonIgnore
     private ProductViewModel product;
-    @JsonIgnore
-    private UserViewModel user;
-    private Integer duration;
+//    @JsonIgnore
+    private WalletViewModel userWallet;
     private Date start;
     private Date end;
-    private boolean active;
-    @JsonIgnore
-    private WalletViewModel wallet;
+    private Boolean active;
 
     public SubscriptionViewModel() {
     }
 
-    public SubscriptionViewModel(Long id, ProductViewModel product, UserViewModel user, Integer duration, Date start, Date end, boolean active, WalletViewModel wallet) {
+    public SubscriptionViewModel(Long id, ProductViewModel product, WalletViewModel userWallet, Date start, Date end, Boolean active) {
         this.id = id;
         this.product = product;
-        this.user = user;
-        this.duration = duration;
+        this.userWallet = userWallet;
         this.start = start;
         this.end = end;
         this.active = active;
-        this.wallet = wallet;
     }
 
     public Long getId() {
@@ -50,20 +45,12 @@ public class SubscriptionViewModel {
         this.product = product;
     }
 
-    public UserViewModel getUser() {
-        return user;
+    public WalletViewModel getUserWallet() {
+        return userWallet;
     }
 
-    public void setUser(UserViewModel user) {
-        this.user = user;
-    }
-
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
+    public void setUserWallet(WalletViewModel userWallet) {
+        this.userWallet = userWallet;
     }
 
     public Date getStart() {
@@ -82,19 +69,12 @@ public class SubscriptionViewModel {
         this.end = end;
     }
 
-    public boolean isActive() {
+    public Boolean getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 
-    public WalletViewModel getWallet() {
-        return wallet;
-    }
-
-    public void setWallet(WalletViewModel wallet) {
-        this.wallet = wallet;
-    }
 }

@@ -1,0 +1,130 @@
+<div class="row">
+  <div class="col">
+    <button type="button" class="btn btn-primary" (click)="_openModal(template)">
+      Create new wallet
+    </button>
+  </div>
+</div>
+
+<!--<app-navbar></app-navbar>-->
+
+<div class="row justify-content-between">
+  <div class="card mp-cards col-sm-12 col-me-5 col-lg-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ total.name }}</h5>
+      <p class="card-text">{{ total.description }}</p>
+    </div>
+    <div class="row justify-content-around">
+      <button href="#" class="btn btn-primary col-auto">Remove</button>
+      <button class="btn btn-primary col-auto">
+        {{ total.value + total.valute }}
+      </button>
+    </div>
+  </div>
+
+  <div class="card mp-cards col-sm-12 col-me-5 col-lg-3" *ngFor="let wallet of wallets">
+    <div class="card-body">
+      <h5 class="card-title">{{ wallet.name }}</h5>
+      <p class="card-text">{{ wallet.description }}</p>
+    </div>
+    <div class="row justify-content-around">
+      <button class="btn btn-primary col-auto">Remove</button>
+      <button class="btn btn-primary col-auto">
+        {{ wallet.value + wallet.valute }}
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modals -->
+<ng-template #template>
+  <form>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{editMode ? "Edit": "Create"}} new Product</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container-fluid">
+        <form>
+          <div class="form-group">
+            <label>Name</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-wallet"></i></span>
+              </div>
+              <input class="form-control" name="Name" [(ngModel)]="editableWallet.name" #name="ngModel" required />
+              <div class="input-group-append">
+                <select class="select form-control" name="Valute" [(ngModel)]="editableWallet.valute" #valute_edit="ngModel" required>
+                  <option value="$">$</option>
+                  <option value="€">€</option>
+                  <option value="£">£</option>
+                  <option value="¥">¥</option>
+                  <option value="₽">₽</option>
+                </select>
+              </div>
+            </div>
+            <div [hidden]="name.valid || name.untouched" class="alert alert-danger">
+              Please set Name
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" name="description" [(ngModel)]="editableWallet.description" #description="ngModel" required></textarea>
+            <div [hidden]="description.valid || description.untouched" class="alert alert-danger">
+              Please set description
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="_addWallet()"
+                    [disabled]="name.invalid || description.invalid">
+              {{editMode ? "Save": "Create"}}
+            </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+<!--<div class="modal fade" id="topUpModal" tabindex="-1" role="dialog" aria-labelledby="topUpModal" aria-hidden="true">-->
+  <!--<div class="modal-dialog" role="document">-->
+    <!--<div class="modal-content">-->
+      <!--<div class="modal-header">-->
+        <!--<h5 class="modal-title" id="addWaletModalLabel">Top up account</h5>-->
+        <!--<button class="close" type="button" data-dismiss="modal" aria-label="Close">-->
+          <!--<span aria-hidden="true">&times;</span>-->
+        <!--</button>-->
+      <!--</div>-->
+
+      <!--<div class="modal-body">-->
+        <!--<div class="container-fluid">-->
+          <!--<form>-->
+            <!--<div class="form-group">-->
+              <!--<div class="input-group">-->
+                <!--<div class="input-group-prepend">-->
+                  <!--<span class="input-group-text"><i class="fas fa-wallet"></i></span>-->
+                <!--</div>-->
+                <!--<input type="text" class="form-control" placeholder="Name" required>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+              <!--<div class="input-group">-->
+                <!--<textarea class="form-control" aria-label="Textarea" placeholder="Description"></textarea>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="container">-->
+              <!--<div class="row justify-content-end">-->
+                <!--<button type="submit" class="btn btn-primary col-auto">Add a wallet</button>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</form>-->
+        <!--</div>-->
+      <!--</div>-->
+
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->

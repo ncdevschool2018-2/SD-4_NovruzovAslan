@@ -29,10 +29,18 @@ public class WalletController {
         }
     }
 
+//    @RequestMapping(value = "", method = RequestMethod.GET)
+//    public Iterable<Wallet> getAllWallets() {
+//        return walletService.getAllWallets();
+//    }
+
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Iterable<Wallet> getAllWallets() {
-        return walletService.getAllWallets();
+    public Iterable<Wallet> getWalletsByUserId(@RequestParam(name = "user_id", required = false) Long id) {
+        if (id == null)
+            return walletService.getAllWallets();
+        return walletService.getWalletsByUserId(id);
     }
+
 
     @RequestMapping(method = RequestMethod.POST)
     public Wallet saveWallet(@RequestBody Wallet account) {

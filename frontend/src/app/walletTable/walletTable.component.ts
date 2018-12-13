@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from "@angular/core";
+import {Component, OnDestroy, OnInit, TemplateRef} from "@angular/core";
 import { Wallet } from "../model/wallet";
 import { User } from "../model/user";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
@@ -6,18 +6,19 @@ import { Subscription } from "rxjs/internal/Subscription";
 import { WalletService } from "../service/wallet/wallet.service";
 import { UserService } from "../service/user/user.service";
 import { toNumber } from "ngx-bootstrap/timepicker/timepicker.utils";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: "walletTable",
   templateUrl: "./walletTable.component.html",
   styleUrls: ["./walletTable.component.css"]
 })
-export class WalletTableComponent implements OnInit {
+export class WalletTableComponent implements OnInit, OnDestroy {
   public editMode = false;
 
   public wallets: Wallet[];
   public usersForSelect: User[];
-  public editableWallet: Wallet = new Wallet();
+  public editableWallet: Wallet;
   public modalRef: BsModalRef;
 
   public tempUserId: number;
@@ -27,7 +28,8 @@ export class WalletTableComponent implements OnInit {
   constructor(
     private walletService: WalletService,
     private modalService: BsModalService,
-    private userService: UserService
+    private userService: UserService,
+    private loadingService: NgxSpinnerService
   ) {
   }
 
@@ -62,22 +64,23 @@ export class WalletTableComponent implements OnInit {
       if( user.id == this.tempUserId.toString() ) {
         this.editableWallet.user = user;
       }
-    })
+    });
 
     console.log(this.editableWallet);
     this.subscriptions.push(
       this.walletService.saveWallet(this.editableWallet).subscribe(() => {
         this._updateWallets();
-        this.refreshWallet();
         this._closeModal();
       })
     );
   }
 
   public _updateWallets(): void {
+    this.loadingService.show();
     this.loadWallets();
-    this.loadUsers();
-    this.editableWallet.user = new User();
+    // this.loadUsers();
+    this.refreshWallet();
+    // this.loadingService.hide();
   }
 
   public _deleteWallet(walletId: string): void {
@@ -96,13 +99,11 @@ export class WalletTableComponent implements OnInit {
   }
 
   private loadWallets(): void {
-    // Get data from WalletService
     this.subscriptions.push(
       this.walletService.getWallets().subscribe(wallets => {
-        // Parse json response into local array
         this.wallets = wallets as Wallet[];
-        // Check data in console
-        console.log(this.wallets); // don't use console.log in angular :)
+        console.log(this.wallets);
+        this.loadUsers();
       })
     );
   }
@@ -112,6 +113,7 @@ export class WalletTableComponent implements OnInit {
       this.userService.getUsers().subscribe(users => {
         this.usersForSelect = users as User[];
         console.log(this.usersForSelect);
+        this.loadingService.hide();
       })
     )
   }

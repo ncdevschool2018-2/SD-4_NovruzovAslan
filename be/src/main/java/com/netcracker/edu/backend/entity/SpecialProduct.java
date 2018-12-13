@@ -1,6 +1,8 @@
 package com.netcracker.edu.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -15,26 +17,38 @@ public class SpecialProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "prodId", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Product product;
-    private Integer cost;
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                CascadeType.PERSIST,
-                CascadeType.MERGE
-            })
-    @JoinTable(name = "product_specialproduct",
-            joinColumns = {@JoinColumn(name = "prod_id")})
-    @JsonIgnore
-    private Set<Product> products = new HashSet<>();
+//    @Column(name = "name")  // todo: fix table in database
+//    private String name;
+//    @Column(name = "description")
+//    private String description;
+//    @Column(name = "img_src")
+//    private String img_src;
+    @Column(name = "cost")
+    private Double cost;
+//    @ManyToOne
+//    @JoinColumn(name = "wallet_id", nullable = false)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private Wallet wallet;
+
+    //    @ManyToOne//(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "prodId", nullable = false)
+//    @JsonIgnore
+//    private Product product;
+//    @ManyToMany(
+//            cascade = {
+//                CascadeType.PERSIST,
+//                CascadeType.MERGE
+//            },
+//            mappedBy = "specialProducts")
+////    @JsonBackReference
+//    @JsonIgnore
+//    private Set<Product> products = new HashSet<>();
 
 
-    public SpecialProduct(Product product, Integer cost) {
-        this.product = product;
+    public SpecialProduct(Product product, Double cost) {
+//        this.product = product;
         this.cost = cost;
+//        this.products = products;
     }
 
     public SpecialProduct() {
@@ -50,27 +64,35 @@ public class SpecialProduct {
     }
 
 
-    public Integer getCost() {
+    public Double getCost() {
         return cost;
     }
 
-    public void setCost(Integer cost) {
+    public void setCost(Double cost) {
         this.cost = cost;
     }
 
-    public Product getProduct() {
-        return product;
-    }
+//    public Product getProduct() {
+//        return product;
+//    }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
+//    public void setProduct(Product product) {
+//        this.product = product;
+//    }
+
+//    public Set<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(Set<Product> products) {
+//        this.products = products;
+//    }
 
     @Override
     public String toString() {
         return "SpecialProduct{" +
                 "id=" + id +
-                ", product=" + product +
+//                ", product=" + product +
                 ", cost=" + cost +
                 '}';
     }
@@ -81,12 +103,12 @@ public class SpecialProduct {
         if (!(o instanceof SpecialProduct)) return false;
         SpecialProduct that = (SpecialProduct) o;
         return id == that.id &&
-                cost == that.cost &&
-                Objects.equals(product, that.product);
+                cost == that.cost;// &&
+//                Objects.equals(product, that.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, product, cost);
+        return Objects.hash(id, cost);
     }
 }

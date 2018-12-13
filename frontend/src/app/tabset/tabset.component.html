@@ -2,19 +2,29 @@
   <tabset>
     <tab heading="Main">
       <!--<carouselOfSpecialProducts></carouselOfSpecialProducts>-->
-      <products [categoryId]="0"></products>
+      <products></products>
     </tab>
-    <tab heading="Sales">
-      <products [categoryId]="1"></products>
-    </tab>
-    <tab heading="Text editors">
-      <products [categoryId]="2"></products>
-    </tab>
-    <tab heading="Graphic editors">
-      <products [categoryId]="3"></products>
-    </tab>
-    <tab heading="Video editors">
-      <products [categoryId]="4"></products>
-    </tab>
+    <!--<tab heading="Sales">-->
+      <!--<products [categoryId]="1"></products>-->
+    <!--</tab>-->
+    <!--<tab heading="Text editors">-->
+      <!--<products [categoryId]="2"></products>-->
+    <!--</tab>-->
+    <!--<tab heading="Graphic editors">-->
+      <!--<products [categoryId]="3"></products>-->
+    <!--</tab>-->
+    <!--<tab heading="Video editors">-->
+      <!--<products [categoryId]="4"></products>-->
+    <!--</tab>-->
+    <!--<tab (select)="openModal(categoryModal)">-->
+      <!--<ng-template tabHeading>-->
+        <!--<i class="fas fa-plus"></i>-->
+        <!--&lt;!&ndash;<span class="fas fa-plus"></span>&ndash;&gt;-->
+      <!--</ng-template>-->
+    <!--</tab>-->
   </tabset>
 </div>
+
+<ng-template #categoryModal>
+
+</ng-template>

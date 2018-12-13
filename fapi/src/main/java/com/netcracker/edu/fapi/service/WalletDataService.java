@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface WalletDataService {
     List<WalletViewModel> getAll();
+    List<WalletViewModel> getWalletsByUserId(Long id);
     WalletViewModel getWalletById(Long id);
     WalletViewModel saveWallet(WalletViewModel wallet);
     void deleteWallet(Long id);

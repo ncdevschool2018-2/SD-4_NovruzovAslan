@@ -11,13 +11,13 @@ public class WalletViewModel {
     private UserViewModel user;
     private String name;
     private String description;
-    private double value;
-    private char valute;
+    private Double value;
+    private Character valute;
 
     public WalletViewModel() {
     }
 
-    public WalletViewModel(Long id, UserViewModel user, String name, String description, double value, char valute) {
+    public WalletViewModel(Long id, UserViewModel user, String name, String description, Double value, Character valute) {
         this.id = id;
         this.user = user;
         this.name = name;
@@ -58,19 +58,19 @@ public class WalletViewModel {
         this.description = description;
     }
 
-    public double getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 
-    public char getValute() {
+    public Character getValute() {
         return valute;
     }
 
-    public void setValute(char valute) {
+    public void setValute(Character valute) {
         this.valute = valute;
     }
 }

@@ -1,11 +1,9 @@
 package com.netcracker.edu.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.Objects;
 
 @Entity
@@ -19,7 +17,7 @@ public class Wallet {
     @OnDelete(action = OnDeleteAction.CASCADE)
 //    @JsonIgnore
     private User user;
-    @Column(name = "wallet_name")
+    @Column(name = "name")
     private String name;
     @Column(name = "description")
     private String description;
@@ -110,7 +108,7 @@ public class Wallet {
     public String toString() {
         return "Wallet{" +
                 "id=" + id +
-                ", user=" + user +
+//                ", user=" + user +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", value=" + value +

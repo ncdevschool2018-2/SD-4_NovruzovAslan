@@ -34,6 +34,21 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    public Iterable<Wallet> getWalletsByUserId(Long id) {
+        return repository.findWalletsByUserId(id);
+    }
+
+    @Override
+    public void increaseWallet(Long id, Double value) {
+        repository.increase(id, value);
+    }
+
+    @Override
+    public void decreaseWallet(Long id, Double value) {
+        repository.decrease(id, value);
+    }
+
+    @Override
     public void deleteWallet(Long id) {
         repository.deleteById(id);
     }

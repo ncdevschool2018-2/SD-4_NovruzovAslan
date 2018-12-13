@@ -12,14 +12,18 @@ export class UserService {
 
   // Ajax request for user data
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>("http://localhost:8081/api/users");
+    return this.http.get<User[]>("/api/users");
   }
 
   saveUser(user: User): Observable<User> {
-    return this.http.post<User>("http://localhost:8081/api/users", user);
+    return this.http.post<User>("/api/users", user);
+  }
+
+  signupUser(user: User): Observable<User> {
+    return this.http.post<User>("/api/users/signup", user);
   }
 
   deleteUser(userId: string): Observable<void> {
-    return this.http.delete<void>("http://localhost:8081/api/users/" + userId);
+    return this.http.delete<void>("/api/users/" + userId);
   }
 }

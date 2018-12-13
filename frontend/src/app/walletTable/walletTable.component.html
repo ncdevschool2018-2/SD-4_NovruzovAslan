@@ -1,3 +1,12 @@
+<!--<app-navbar></app-navbar>-->
+
+<ngx-spinner
+  bdColor = "rgba(51,51,51,0.8)"
+  size = "large"
+  color = "#5bff5b"
+  type = "pacman"
+></ngx-spinner>
+
 <div class="container mt-lg-5">
   <div class="row">
 
@@ -14,8 +23,8 @@
           <th scope="col">Description</th>
           <th scope="col">Value</th>
           <th scope="col">Valute</th>
-          <th scope="col">Delete</th>
-          <th scope="col">Edit</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -119,7 +128,7 @@
 
   </div>
   <div class="modal-footer">
-    <button *ngIf="editMode" type="button" class="btn btn-default" (click)="_addWallet()"
+    <button type="button" class="btn btn-default" (click)="_addWallet()"
             [disabled]="w_name.invalid || description.invalid || value.invalid || user.invalid">
       {{editMode ? "Save": "Create"}}
     </button>

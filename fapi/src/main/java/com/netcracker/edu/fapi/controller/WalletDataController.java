@@ -15,10 +15,18 @@ public class WalletDataController {
     @Autowired
     private WalletDataService walletDataService;
 
+//    @RequestMapping(value = "", method = RequestMethod.GET)
+//    public ResponseEntity<List<WalletViewModel>> getAllWallets() {
+//        return ResponseEntity.ok(walletDataService.getAll());
+//    }
+
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<List<WalletViewModel>> getAllWallets() {
-        return ResponseEntity.ok(walletDataService.getAll());
+    public ResponseEntity<List<WalletViewModel>> getWalletsByUserId(@RequestParam(name = "user_id", required = false) Long id) {
+        if(id == null)
+            return ResponseEntity.ok(walletDataService.getAll());
+        return ResponseEntity.ok(walletDataService.getWalletsByUserId(id));
     }
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<WalletViewModel> getWalletById(@PathVariable(name="id") String id) {

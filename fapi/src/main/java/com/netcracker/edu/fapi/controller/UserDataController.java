@@ -1,5 +1,6 @@
 package com.netcracker.edu.fapi.controller;
 
+import com.netcracker.edu.fapi.models.RoleViewModel;
 import com.netcracker.edu.fapi.models.UserViewModel;
 import com.netcracker.edu.fapi.service.UserDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,25 @@ public class UserDataController {
             return ResponseEntity.ok(userDataService.saveUser(user));
         }
         return null;
+    }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public ResponseEntity<UserViewModel> registerUser(@RequestBody UserViewModel user /*todo server validation*/) {
+        if (user != null) {
+            return ResponseEntity.ok(userDataService.saveUser(user));
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/get-current-user", method = RequestMethod.GET)
+    public ResponseEntity<UserViewModel> getCurrentUser(@RequestHeader(value = "Authorization", required = false) String bearerToken) {
+        if(bearerToken==null){
+            UserViewModel guest = new UserViewModel();
+            guest.setRole(new RoleViewModel(4L));
+            return ResponseEntity.ok(guest);
+        }
+        String login = userDataService.getUsername(bearerToken);
+        return ResponseEntity.ok(userDataService.getUserByUsername(login));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

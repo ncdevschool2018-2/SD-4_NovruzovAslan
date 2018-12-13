@@ -1,4 +1,4 @@
-package com.netcracker.edu.fapi.filter;
+package com.netcracker.edu.fapi.config;
 
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class CorsFilter implements Filter {
+public class CORSFilter implements Filter {
 
 
     @Override
@@ -21,6 +21,7 @@ public class CorsFilter implements Filter {
         HttpServletRequest  req = (HttpServletRequest) request;
 
         res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Credentials", "true");
         res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
         res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Accept-Encoding, Accept-Language, Host, Referer, Connection, User-Agent, authorization, sw-useragent, sw-version");
 

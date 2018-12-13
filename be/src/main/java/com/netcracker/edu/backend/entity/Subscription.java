@@ -10,39 +10,34 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "subscription")
-public class Subscription {
+public class Subscription implements Subscr {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne//(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "prod_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
+//    @JsonIgnore
     private Product product;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne//(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_wallet_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private User user;
-    @Column(name = "duration")
-    private Integer duration;
+//    @JsonIgnore
+    private Wallet userWallet;
     @Column(name = "start")
     private Date start;
-    @Column(name = "active")
-    private boolean active;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "wallet_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Wallet wallet;
+    @Column(name = "end")
+    private Date end;
+    @Column(name = "is_active")
+    private Boolean isActive;
 
-    public Subscription(Product product, User user, Integer duration, Date start, boolean active, Wallet wallet) {
+
+    public Subscription(Product product, Wallet userWallet, Date end, Date start, Boolean isActive) {
         this.product = product;
-        this.user = user;
-        this.duration = duration;
+        this.userWallet = userWallet;
+        this.end = end;
         this.start = start;
-        this.active = active;
-        this.wallet = wallet;
+        this.isActive = isActive;
     }
 
     public Subscription() {
@@ -65,20 +60,20 @@ public class Subscription {
         this.product = product;
     }
 
-    public User getUser() {
-        return user;
+    public Wallet getUserWallet() {
+        return userWallet;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserWallet(Wallet userWallet) {
+        this.userWallet = userWallet;
     }
 
-    public Integer getDuration() {
-        return duration;
+    public Date getEnd() {
+        return end;
     }
 
-    public void setDuration(Integer duration) {
-        this.duration = duration;
+    public void setEnd(Date end) {
+        this.end = end;
     }
 
     public Date getStart() {
@@ -89,20 +84,17 @@ public class Subscription {
         this.start = start;
     }
 
-    public boolean isActive() {
-        return active;
+    public Boolean getActive() {
+        return isActive;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 
+    @Override
     public Wallet getWallet() {
-        return wallet;
-    }
-
-    public void setWallet(Wallet wallet) {
-        this.wallet = wallet;
+        return this.getProduct().getWallet();
     }
 
     @Override
@@ -110,31 +102,28 @@ public class Subscription {
         if (this == o) return true;
         if (!(o instanceof Subscription)) return false;
         Subscription that = (Subscription) o;
-        return id == that.id &&
-                duration == that.duration &&
-                active == that.active &&
+        return Objects.equals(id, that.id) &&
                 Objects.equals(product, that.product) &&
-                Objects.equals(user, that.user) &&
+                Objects.equals(userWallet, that.userWallet) &&
+                Objects.equals(end, that.end) &&
                 Objects.equals(start, that.start) &&
-                Objects.equals(wallet, that.wallet);
+                Objects.equals(isActive, that.isActive);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, product, user, duration, start, active, wallet);
+        return Objects.hash(id, product, userWallet, end, start, isActive);
     }
 
     @Override
     public String toString() {
         return "Subscription{" +
                 "id=" + id +
-                ", product=" + product +
-                ", user=" + user +
-                ", duration=" + duration +
+//                ", product=" + product +
+//                ", userWallet=" + userWallet +
                 ", start=" + start +
-                ", active=" + active +
-                ", wallet=" + wallet +
+                ", end=" + end +
+                ", isActive=" + isActive +
                 '}';
     }
-
 }

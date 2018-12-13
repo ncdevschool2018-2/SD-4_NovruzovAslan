@@ -1,8 +1,10 @@
-import { Component, OnInit, TemplateRef } from "@angular/core";
+import { Component, TemplateRef } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
-import {User} from "../model/user";
-import {AppComponent} from "../app.component";
-import {UserService} from "../service/user/user.service";
+import { UserService } from "../service/user/user.service";
+import { Router } from "@angular/router";
+import { AuthService } from "../service/auth/auth.service";
+import { TokenStorage } from "../service/auth/token.storage";
+import { User } from "../model/user";
 
 @Component({
   selector: "signin-modal",
@@ -12,9 +14,20 @@ import {UserService} from "../service/user/user.service";
 export class SigninModalComponent {
   modalRef: BsModalRef;
   registerModalRef: BsModalRef;
-  // userService: UserService;
 
-  constructor(private userService: UserService,private modalService: BsModalService) {}
+  username: string;
+  password: string;
+  editableUser: User;
+  confPass: string;
+
+  private subscriptions;
+
+  constructor(private userService: UserService,
+              private modalService: BsModalService,
+              private router: Router,
+              private authService: AuthService,
+              private token: TokenStorage)
+  {}
 
   openModal(template: TemplateRef<any>) {
     if (this.registerModalRef) {
@@ -30,25 +43,33 @@ export class SigninModalComponent {
     this.registerModalRef = this.modalService.show(template, { class: "second" });
   }
 
-  setCurrentUser(event: Event) {
-    let _users: User[];
-    console.log("started");
-    this.userService.getUsers().subscribe(users => {
-      _users = users as User[];
-      console.log("middle");
-      let email: string = document.getElementById('emailInput').innerText;
-      let password: string = document.getElementById('passwordInput').innerText;
-      console.log(email+" "+password);
-      for(let user of _users) {
-        // console.log(user);
-        if(user.password == password && user.username == email) {
-          AppComponent.currentUser = user;
-          console.log("This user " + user);
+  login(): void {
+    this.subscriptions.push(
+      this.authService.attemptAuth(this.username, this.password).subscribe(
+        data => {
+          if (this.modalRef) {
+            this.modalRef.hide();
+          }
+          this.token.saveToken(data.token);
+          this.router.navigate(['user']);
         }
-      }
-      this.modalRef.hide();
-    });
-    console.log("ended");
-
+      )
+    );
   }
+
+  register(): void {
+    this.subscriptions.push(
+      this.authService.signUp(this.editableUser).subscribe(
+        () => {
+          if (this.registerModalRef) {
+            this.registerModalRef.hide();
+          }
+          this.username = this.editableUser.username;
+          this.password = this.editableUser.password;
+          this.login();
+        }
+      )
+    );
+  }
+
 }

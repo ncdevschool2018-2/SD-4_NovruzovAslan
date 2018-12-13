@@ -10,7 +10,7 @@ public class RateViewModel {
 
     private Long id;
     private ProductViewModel product;
-    @JsonIgnore
+//    @JsonIgnore
     private UserViewModel user;
     private Integer rate;
     private Date date;

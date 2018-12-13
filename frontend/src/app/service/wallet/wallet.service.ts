@@ -12,14 +12,18 @@ export class WalletService {
 
   // Ajax request for wallet data
   getWallets(): Observable<Wallet[]> {
-    return this.http.get<Wallet[]>("http://localhost:8081/api/wallets");
+    return this.http.get<Wallet[]>("/api/wallets");
+  }
+
+  getWalletsByUserId(userId: string): Observable<Wallet[]> {
+    return this.http.get<Wallet[]>("/api/wallets?user_id=" + userId);
   }
 
   saveWallet(wallet: Wallet): Observable<Wallet> {
-    return this.http.post<Wallet>("http://localhost:8081/api/wallets", wallet);
+    return this.http.post<Wallet>("/api/wallets", wallet);
   }
 
   deleteWallet(walletId: string): Observable<void> {
-    return this.http.delete<void>("http://localhost:8081/api/wallets/" + walletId);
+    return this.http.delete<void>("/api/wallets/" + walletId);
   }
 }

@@ -8,6 +8,8 @@ import java.util.List;
 public interface UserDataService {
     List<UserViewModel> getAll();
     UserViewModel getUserById(Long id);
+    UserViewModel getUserByUsername(String username);
     UserViewModel saveUser(UserViewModel user);
+    String getUsername(String token);
     void deleteUser(Long id);
 }

@@ -1,0 +1,110 @@
+
+<ngx-spinner
+  bdColor = "rgba(51,51,51,0.8)"
+  size = "large"
+  color = "#27e9d2"
+  type = "ball-climbing-dot"
+></ngx-spinner>
+
+<!--<app-navbar></app-navbar>-->
+
+<div class="container" *ngIf="product">
+  <div class="row">
+    <div class="col-4">
+      <!--<img class="card-img-top p-20" src="{{product.img_src}}" alt="Product image">-->
+      <div class="row justify-content-center">
+        <h3>{{product.name}}</h3>
+      </div>
+      <div class="row justify-content-center">
+        <p class="balance col-auto">{{product.cost}}</p>
+      </div>
+      <div class="row justify-content-around">
+        <button *ngIf="!isSubscribed" type="button" class="btn btn-default" (click)="_openModal(subscribeForm)">Subscribe</button>
+        <!--<a *ngIf="!isSubscribed" (click)="subscribe()" class="btn btn-primary">Subscribe</a>-->
+        <button *ngIf="isSubscribed"  type="button" class="btn btn-primary" (click)="unsubscribe()">Unsubscribe</button>
+        <!--<a *ngIf="isAdmin" href="#" class="btn btn-primary">Remove</a>-->
+      </div>
+    </div>
+    <div class="col-8">
+      <p>{{product.description}}</p>
+    </div>
+  </div>
+</div>
+
+<ng-template #subscribeForm>
+  <form>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Subscribe</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Name</label>
+        <input class="form-control" name="Name" [(ngModel)]="subscription.product.name" #name="ngModel" readonly/>
+      </div>
+      <!--<div class="form-group">-->
+        <!--<label>Start date</label>-->
+        <!--<div class="input-group">-->
+          <!--<div class="input-group-prepend">-->
+            <!--<span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>-->
+          <!--</div>-->
+          <!--<input class="form-control" type="date" name="Start date" [(ngModel)]="subscription.start"-->
+               <!--#start_date="ngModel" required />-->
+        <!--</div>-->
+        <!--<div [hidden]="start_date.valid || start_date.untouched" class="alert alert-danger">-->
+          <!--Please set start date-->
+        <!--</div>-->
+      <!--</div>-->
+      <div class="form-group">
+        <label>Start date</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+          </div>
+          <input type="text" name="Start" [(ngModel)]="subscription.start" #start="ngModel"
+               placeholder="Start of using"
+               class="form-control"
+               bsDatepicker>
+        </div>
+        <div [hidden]="start.valid || start.untouched" class="alert alert-danger">
+          Please set start date
+        </div>
+      </div>
+      <div class="form-group">
+        <label>End date</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+          </div>
+          <input type="text" name="End" [(ngModel)]="subscription.end" #end="ngModel"
+               placeholder="Start of using"
+               class="form-control"
+               bsDatepicker>
+        </div>
+        <div [hidden]="end.valid || end.untouched" class="alert alert-danger">
+          Please set end date
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Wallet</label>
+        <select class="select form-control" [(ngModel)]="subscription.userWallet" #wallet="ngModel" required>
+          <option *ngFor="let wall of wallets" value="{{wall}}">{{wall.name}} ({{wall.value}}{{wall.valute}})</option>
+        </select>
+        <div [hidden]="wallet.valid || wallet.untouched" class="alert alert-danger">
+          Please choose wallet
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="subscribe()"
+              [disabled]="name.invalid || start.invalid || end.invalid || wallet.invalid">
+        Subscribe
+      </button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
+    </div>
+  </form>
+</ng-template>

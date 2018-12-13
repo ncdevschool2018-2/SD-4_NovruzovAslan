@@ -1,8 +1,7 @@
 package com.netcracker.edu.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -14,19 +13,20 @@ public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private User user;
+    @Column(name = "name")
     private String name;
     @Basic
     @Column(name = "dateofbirth")
     private Date dateOfBirth;
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    private User user;
 
     public UserInfo(String name, Date dateOfBirth) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
+//        this.user = user;
     }
 
     public UserInfo() {
@@ -57,19 +57,24 @@ public class UserInfo {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserInfo)) return false;
         UserInfo userInfo = (UserInfo) o;
-        return id == userInfo.id &&
+        return Objects.equals(id, userInfo.id) &&
                 Objects.equals(name, userInfo.name) &&
-                Objects.equals(dateOfBirth, userInfo.dateOfBirth);
+                Objects.equals(dateOfBirth, userInfo.dateOfBirth) &&
+                Objects.equals(user, userInfo.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);//, dateOfBirth);
+        return Objects.hash(id, name, dateOfBirth, user);
     }
 
     @Override
@@ -78,6 +83,8 @@ public class UserInfo {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
+                ", user=" + user +
                 '}';
     }
+
 }

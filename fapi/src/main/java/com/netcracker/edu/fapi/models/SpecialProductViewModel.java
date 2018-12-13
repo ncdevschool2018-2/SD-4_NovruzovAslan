@@ -10,20 +10,20 @@ import java.util.Set;
 public class SpecialProductViewModel {
 
     private Long id;
-    @JsonIgnore
-    private ProductViewModel product;
-    private Integer cost;
-    @JsonIgnore
-    private Set<ProductViewModel> products = new HashSet<>();
+//    @JsonIgnore
+//    private ProductViewModel product;
+    private Double cost;
+//    @JsonIgnore
+//    private Set<ProductViewModel> products = new HashSet<>();
 
     public SpecialProductViewModel() {
     }
 
-    public SpecialProductViewModel(Long id, ProductViewModel product, Integer cost, Set<ProductViewModel> products) {
+    public SpecialProductViewModel(Long id, Double cost) {
         this.id = id;
-        this.product = product;
+//        this.product = product;
         this.cost = cost;
-        this.products = products;
+//        this.products = products;
     }
 
     public Long getId() {
@@ -34,28 +34,28 @@ public class SpecialProductViewModel {
         this.id = id;
     }
 
-    public ProductViewModel getProduct() {
-        return product;
-    }
+//    public ProductViewModel getProduct() {
+//        return product;
+//    }
+//
+//    public void setProduct(ProductViewModel product) {
+//        this.product = product;
+//    }
 
-    public void setProduct(ProductViewModel product) {
-        this.product = product;
-    }
-
-    public Integer getCost() {
+    public Double getCost() {
         return cost;
     }
 
-    public void setCost(Integer cost) {
+    public void setCost(Double cost) {
         this.cost = cost;
     }
 
-    public Set<ProductViewModel> getProducts() {
-        return products;
-    }
+//    public Set<ProductViewModel> getProducts() {
+//        return products;
+//    }
 
-    public void setProducts(Set<ProductViewModel> products) {
-        this.products = products;
-    }
+//    public void setProducts(Set<ProductViewModel> products) {
+//        this.products = products;
+//    }
 
 }

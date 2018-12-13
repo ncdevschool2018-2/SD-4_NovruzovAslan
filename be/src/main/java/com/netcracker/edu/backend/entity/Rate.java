@@ -14,12 +14,12 @@ public class Rate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne//(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "prod_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
 //    @JsonIgnore
     private Product product;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne//(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
 //    @JsonIgnore

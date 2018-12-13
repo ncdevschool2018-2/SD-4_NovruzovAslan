@@ -5,9 +5,12 @@ import com.netcracker.edu.backend.entity.Product;
 import com.netcracker.edu.backend.repository.ProductRepository;
 import com.netcracker.edu.backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,6 +25,21 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public Iterable<Product> getPage(
+            @RequestParam(name = "page") Integer pageNumber,
+            @RequestParam(name = "category_id", required = false) Long category_id) {
+        Page page = productService.getPage(pageNumber, category_id);
+        return page.getContent();
+    }
+
+    @RequestMapping(value = "/total-pages", method = RequestMethod.GET)
+    public Integer getTotalPages(
+            @RequestParam(name = "category_id", required = false) Long category_id) {
+        Page page = productService.getPage(1,category_id);
+        return page.getTotalPages();
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Product> getProductById(@PathVariable(name = "id") Long id) {
         Optional<Product> product = productService.getProductById(id);
@@ -32,32 +50,23 @@ public class ProductController {
         }
     }
 
-    @RequestMapping(value = "/{category_id}",method = RequestMethod.POST)
-    public Product saveProduct(@RequestBody Product product, @PathVariable(name = "category_id") Long category_id) {
-        product.setCategory(new Category(category_id, ""));
-        return productService.saveProduct(product);
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public Iterable<Product> getAllProducts() {
-        return productService.getAllProducts();
-    }
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Iterable<Product> getProductsByCategoryId(@RequestParam(name = "category_id") long id) {
-        return productService.getProductsByCategoryId(id);
-    }
+//    @RequestMapping(value = "", method = RequestMethod.GET)
+//    public Iterable<Product> getProductsByCategoryId(@RequestParam(name = "category_id",required = false) Long id) {
+//        if(id == null)
+//            return productService.getAllProducts();
+//        return productService.getProductsByCategoryId(id);
+//    }
 
     @RequestMapping(method = RequestMethod.POST)
     public Product saveProduct(@RequestBody Product product) {
         return productService.saveProduct(product);
     }
 
-
-//    @RequestMapping(method = RequestMethod.POST)
-//    public Product saveProduct(@RequestBody Product product) {
-//        return productService.saveProduct(product);
-//    }
+    @RequestMapping(value = "/{category_id}",method = RequestMethod.POST)
+    public Product saveProduct(@RequestBody Product product, @PathVariable(name = "category_id") Long category_id) {
+        product.setCategory(new Category(category_id, ""));
+        return productService.saveProduct(product);
+    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteProduct(@PathVariable(name = "id") Long id) {

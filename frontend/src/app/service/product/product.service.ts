@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/internal/Observable";
 
 import { Product } from "../../model/product";
+import { Page } from "../../model/page";
 
 @Injectable({
   providedIn: "root"
@@ -10,20 +11,34 @@ import { Product } from "../../model/product";
 export class ProductService {
   constructor(private http: HttpClient) {}
 
+  // getProducts(): Observable<Page<Product>> {
+  //   return this.http.get<Page<Product>>('/api/products?page=0');
+  // }
+
   // Ajax request for user data
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>("http://localhost:8081/api/products");
+  // getProducts(): Observable<Product[]> {
+  //   return this.http.get<Product[]>("/api/products");
+  // }
+
+  getProducts(page: number, categoryId?: string): Observable<Product[]> {
+    if(!categoryId)
+      return this.http.get<Product[]>("/api/products?page="+page);
+    return this.http.get<Product[]>("/api/products?page="+page+"&category_id="+categoryId);
   }
 
-  getProductsByCategoryId(categoryId: number): Observable<Product[]> {
-    let products: Observable<Product[]>;
-    products = this.http.get<Product[]>("http://localhost:8081/api/products/?category_id="+categoryId);
-    return products;
+  getTotalPages(category_id?: string): Observable<number> {
+    if(!category_id)
+      return this.http.get<number>("/api/products/total-pages");
+    return this.http.get<number>("/api/products/total-pages?category_id="+category_id);
+  }
+
+  getProductById(prodId: string): Observable<Product> {
+    return this.http.get<Product>("/api/products/" + prodId);
   }
 
   saveProduct(product: Product): Observable<Product> {
     return this.http.post<Product>(
-      "http://localhost:8081/api/products/" + product.category.id,
+      "/api/products/" + product.category.id,
       product
     );
   }

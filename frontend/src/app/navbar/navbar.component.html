@@ -12,16 +12,33 @@
 
     <div id="navbarSupportedContent" [collapse]="isCollapsed" class="collapse navbar-collapse">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a href="#top" class="nav-link">Home</a>
-        </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">My subscriptions</a>
+          <a routerLink="" class="nav-link">Home</a>
         </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">Wallets</a>
+        <li *ngIf="role=='3'" class="nav-item">
+          <a routerLink="/subscriptions" class="nav-link">Subscriptions</a>
         </li>
-
+        <li *ngIf="role=='3'" class="nav-item">
+          <a routerLink="/special-subscriptions" class="nav-link">Special subscriptions</a>
+        </li>
+        <li *ngIf="role=='2'" class="nav-item">
+          <a routerLink="/my-products" class="nav-link">My products</a>
+        </li>
+        <li *ngIf="role=='3'||role=='2'" class="nav-item">
+          <a routerLink="/wallets" class="nav-link">Wallets</a>
+        </li>
+        <li *ngIf="role=='1'" class="nav-item">
+          <a routerLink="/users" class="nav-link">Users</a>
+        </li>
+        <li *ngIf="role=='1'" class="nav-item">
+          <a routerLink="/all-wallets" class="nav-link">Wallets</a>
+        </li>
+        <li *ngIf="role=='1'" class="nav-item">
+          <a routerLink="/all-subscriptions" class="nav-link">Subscriptions</a>
+        </li>
+        <li *ngIf="role=='1'" class="nav-item">
+          <a routerLink="/all-special-subscriptions" class="nav-link">Special Subscriptions</a>
+        </li>
       </ul>
 
       <form class="form-inline my-2 my-lg-0">
@@ -30,18 +47,20 @@
             Categories <span class="caret"></span>
           </button>
           <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-            <li role="menuitem"><button class="dropdown-item">Sales</button></li>
+            <li role="menuitem"><button class="dropdown-item" routerLink="">Sales</button></li>
             <li class="divider dropdown-divider"></li>
             <li role="menuitem"><button class="dropdown-item">Text editors</button></li>
             <li role="menuitem"><button class="dropdown-item">IDE's</button></li>
             <li role="menuitem"><button class="dropdown-item">Graphic editors</button></li>
             <li role="menuitem"><button class="dropdown-item">Video editors</button></li>
-
           </ul>
         </div>
-        <input type="text" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-light my-2 my-sm-0 mr-sm-2">Search</button>
-        <signin-modal></signin-modal>
+        <!--<input type="text" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">-->
+        <!--<button class="btn btn-outline-light my-2 my-sm-0 mr-sm-2">Search</button>-->
+
+        <button *ngIf="role=='4'" type="button" class="btn btn-primary" routerLink="/login">Sign in</button>
+        <button *ngIf="role!='4'" type="button" class="btn btn-primary" (click)="signOut()">Sign out</button>
+        <!--<signin-modal></signin-modal>-->
       </form>
 
     </div>
