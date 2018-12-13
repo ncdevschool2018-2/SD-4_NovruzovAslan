@@ -1,0 +1,185 @@
+CREATE TABLE `ncproject`.`category` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE `ncproject`.`role` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`));
+
+	
+CREATE TABLE `ncproject`.`user` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `role_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `roleid_fk_idx` (`role_id` ASC) VISIBLE,
+  CONSTRAINT `roleid_fk`
+    FOREIGN KEY (`role_id`)
+    REFERENCES `ncproject`.`role` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `ncproject`.`userinfo` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `dateofbirth` DATE NOT NULL,
+  `user_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `user_userinfo_fk_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `user_userinfo_fk`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `ncproject`.`user` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+	
+CREATE TABLE `ncproject`.`wallet` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `userid` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `description` TEXT NOT NULL,
+  `value` DECIMAL(11,5) NOT NULL,
+  `valute` VARCHAR(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `userid_fk_idx` (`userid` ASC) VISIBLE,
+  CONSTRAINT `userid_wallet_fk`
+    FOREIGN KEY (`userid`)
+    REFERENCES `ncproject`.`user` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `ncproject`.`product` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `category_id` INT(11) NOT NULL,
+  `wallet_id` INT(11) NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `description` TEXT NOT NULL,
+  `img_src` VARCHAR(45) NOT NULL,
+  `cost` DECIMAL(11,5) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `category_id_product_fk_idx` (`category_id` ASC) VISIBLE,
+  INDEX `wallet_id_product_fk_idx` (`wallet_id` ASC) VISIBLE
+  CONSTRAINT `category_id_product_fk`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `ncproject`.`category` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `wallet_id_product_fk`
+	FOREIGN KEY (`wallet_id`)
+	REFERENCES `ncproject`.`wallet` (`id`)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE;);
+	
+CREATE TABLE `ncproject`.`specialproduct` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `prod_id` INT(11) NOT NULL,
+  `cost` DECIMAL(11,5) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `prod_id_spec_fk_idx` (`prod_id` ASC) VISIBLE,
+  CONSTRAINT `prod_id_spec_fk`
+    FOREIGN KEY (`prod_id`)
+    REFERENCES `ncproject`.`product` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+	
+CREATE TABLE `ncproject`.`product_specialproduct` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `prod_id` INT(11) NOT NULL,
+  `specprod_id` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `prod_id_fk_idx` (`prod_id` ASC) VISIBLE,
+  INDEX `specprod_id_fk_idx` (`specprod_id` ASC) VISIBLE,
+  CONSTRAINT `prod_id_fk`
+    FOREIGN KEY (`prod_id`)
+    REFERENCES `ncproject`.`product` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `specprod_id_fk`
+    FOREIGN KEY (`specprod_id`)
+    REFERENCES `ncproject`.`specialproduct` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
+	
+CREATE TABLE `ncproject`.`subscription` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `prod_id` INT(11) NOT NULL,
+  `user_wallet_id` INT(11) NOT NULL,
+  `start` DATE NOT NULL,
+  `end` DATE NOT NULL,
+  `is_active` TINYINT(4) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `prod_id_sub_fk_idx` (`prod_id` ASC) VISIBLE,
+  INDEX `user_wallet_id_sub_fk_idx` (`user_wallet_id` ASC) VISIBLE,
+  CONSTRAINT `prod_id_sub_fk`
+    FOREIGN KEY (`prod_id`)
+    REFERENCES `ncproject`.`product` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `user_wallet_id_sub_fk`
+    FOREIGN KEY (`user_wallet_id`)
+    REFERENCES `ncproject`.`wallet` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `ncproject`.`specialsubscription` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `specprod_id` INT(11) NOT NULL,
+  `user_wallet_id` INT(11) NOT NULL,
+  `start` DATE NOT NULL,
+  `end` DATE NOT NULL,
+  `is_active` TINYINT(4) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `specprod_id_sub_fk_idx` (`specprod_id` ASC) VISIBLE,
+  INDEX `wallet_id_sub_fk_idx` (`user_wallet_id` ASC) VISIBLE,
+  CONSTRAINT `specprod_id_sub_fk`
+    FOREIGN KEY (`specprod_id`)
+    REFERENCES `ncproject`.`specialproduct` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `wallet_id_sub_fk`
+    FOREIGN KEY (`user_wallet_id`)
+    REFERENCES `ncproject`.`wallet` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `ncproject`.`rate` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `prod_id` INT(11) NOT NULL,
+  `user_id` INT(11) NOT NULL,
+  `rate` INT(2) NOT NULL,
+  `date` DATE NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `prod_id_rate_fk_idx` (`prod_id` ASC) VISIBLE,
+  INDEX `user_id_rate_fk_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `prod_id_rate_fk`
+    FOREIGN KEY (`prod_id`)
+    REFERENCES `ncproject`.`product` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `user_id_rate_fk`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `ncproject`.`user` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
+
+CREATE TABLE `ncproject`.`comment` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `prod_id` INT(11) NOT NULL,
+  `user_id` INT(11) NOT NULL,
+  `comment` TEXT NOT NULL,
+  `date` DATE NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `user_id_comment_fk_idx` (`user_id` ASC) VISIBLE,
+  INDEX `prod_id_comment_fk_idx` (`prod_id` ASC) VISIBLE,
+  CONSTRAINT `user_id_comment_fk`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `ncproject`.`user` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `prod_id_comment_fk`
+    FOREIGN KEY (`prod_id`)
+    REFERENCES `ncproject`.`product` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
