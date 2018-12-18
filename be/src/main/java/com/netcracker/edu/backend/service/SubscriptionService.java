@@ -9,7 +9,7 @@ public interface SubscriptionService {
     Subscription saveSubscription(Subscription category);
     Optional<Subscription> getSubscriptionById(Long id);
     Iterable<Subscription> getSubscriptionsByUserId(Long id);
-    Page<Subscription> getProductsByUserId(Integer page, Long userId);
+    Page<Subscription> getSubscriptionsPageByUserId(Integer page, Integer size, Long userId);
     Iterable<Subscription> getAllSubscriptions();
     Double calculatePrice(Subscription subscription);
     void unsubscribe(Long prodId, Long userId);

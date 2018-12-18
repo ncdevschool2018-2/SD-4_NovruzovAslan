@@ -3,17 +3,27 @@ package com.netcracker.edu.fapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.sql.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentViewModel {
 
     private Long id;
-    @JsonIgnore
+    @NotNull
+    @Valid
+//    @JsonIgnore
     private ProductViewModel product;
-    @JsonIgnore
+    @NotNull
+    @Valid
+//    @JsonIgnore
     private UserViewModel user;
+    @NotBlank
     private String comment;
+    @PastOrPresent
     private Date date;
 
     public CommentViewModel() {

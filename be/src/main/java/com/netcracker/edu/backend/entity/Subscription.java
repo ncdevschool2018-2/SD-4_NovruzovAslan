@@ -14,15 +14,13 @@ public class Subscription implements Subscr {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne//(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "prod_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JsonIgnore
     private Product product;
-    @ManyToOne//(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "user_wallet_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JsonIgnore
     private Wallet userWallet;
     @Column(name = "start")
     private Date start;

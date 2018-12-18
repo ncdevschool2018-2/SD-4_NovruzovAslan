@@ -4,6 +4,7 @@ import com.netcracker.edu.fapi.config.JwtTokenUtil;
 import com.netcracker.edu.fapi.models.AuthToken;
 import com.netcracker.edu.fapi.config.Constants;
 import com.netcracker.edu.fapi.models.LoginUser;
+import com.netcracker.edu.fapi.models.UserViewModel;
 import com.netcracker.edu.fapi.service.UserDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,9 @@ public class AuthenticationController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserDataService userDataService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;

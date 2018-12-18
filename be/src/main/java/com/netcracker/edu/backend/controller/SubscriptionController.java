@@ -49,19 +49,21 @@ public class SubscriptionController {
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public Iterable<Subscription> getProductsByUserId(
             @RequestParam(name = "page") Integer pageNumber,
+            @RequestParam(name = "size") Integer size,
             @RequestParam(name = "user_id") Long userId) {
-        Page page = subscriptionService.getProductsByUserId(pageNumber, userId);
+        Page page = subscriptionService.getSubscriptionsPageByUserId(pageNumber, size, userId);
         return page.getContent();
     }
 
     @RequestMapping(value = "/total-pages", method = RequestMethod.GET)
     public Integer getTotalPages(
+            @RequestParam(name = "size") Integer size,
             @RequestParam(name = "user_id") Long user_id) {
-        Page page = subscriptionService.getProductsByUserId(1,user_id);
+        Page page = subscriptionService.getSubscriptionsPageByUserId(1, size,user_id);
         return page.getTotalPages();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public Subscription saveSubscription(@RequestBody Subscription account) {
         return subscriptionService.saveSubscription(account);
     }

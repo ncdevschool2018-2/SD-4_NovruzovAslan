@@ -3,14 +3,27 @@ package com.netcracker.edu.fapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserViewModel {
 
     private Long id;
+    @NotBlank
+    @Size(min=4)
     private String username;
+    @NotBlank
+    @Size(min=6, max = 20)
     private String password;
+    @NotNull
+    @Valid
     @JsonManagedReference
     private UserInfoViewModel userInfo;
+    @NotNull
+    @Valid
     private RoleViewModel role;
 
     public UserViewModel() {

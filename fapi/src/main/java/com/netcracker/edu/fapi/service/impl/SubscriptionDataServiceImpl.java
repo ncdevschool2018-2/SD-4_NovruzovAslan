@@ -32,25 +32,25 @@ public class SubscriptionDataServiceImpl implements SubscriptionDataService {
     }
 
     @Override
-    public List<SubscriptionViewModel> getProductsByUserId(Long page, Long userId) {
+    public List<SubscriptionViewModel> getSubscriptionsPageByUserId(Integer page, Integer size, Long userId) {
         RestTemplate restTemplate = new RestTemplate();
-        String url = backendServerUrl + "/api/subscriptions/products?page=" + page + "&user_id="+ userId;
+        String url = backendServerUrl + "/api/subscriptions/products?page=" + page + "&size=" + size + "&user_id=" + userId;
         SubscriptionViewModel[] productViewModelResponse = restTemplate.getForObject(url, SubscriptionViewModel[].class);
         return productViewModelResponse == null ? Collections.emptyList() : Arrays.asList(productViewModelResponse);
 
     }
 
     @Override
-    public SubscriptionViewModel saveSubscription(SubscriptionViewModel subscription) {
+    public Integer getTotalPages(Integer size, Long user_id) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForEntity(backendServerUrl + "/api/subscriptions", subscription, SubscriptionViewModel.class).getBody();
+        String url = backendServerUrl+"/api/subscriptions/total-pages?size=" + size + "&user_id=" + user_id;
+        return restTemplate.getForObject(url, Integer.class);
     }
 
     @Override
-    public Integer getTotalPages(Long user_id) {
+    public SubscriptionViewModel saveSubscription(SubscriptionViewModel subscription) {
         RestTemplate restTemplate = new RestTemplate();
-        String url = backendServerUrl+"/api/subscriptions/total-pages?user_id="+user_id;
-        return restTemplate.getForObject(url, Integer.class);
+        return restTemplate.postForEntity(backendServerUrl + "/api/subscriptions", subscription, SubscriptionViewModel.class).getBody();
     }
 
     @Override

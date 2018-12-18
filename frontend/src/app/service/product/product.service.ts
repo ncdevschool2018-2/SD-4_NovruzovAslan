@@ -20,16 +20,16 @@ export class ProductService {
   //   return this.http.get<Product[]>("/api/products");
   // }
 
-  getProducts(page: number, categoryId?: string): Observable<Product[]> {
+  getProducts(page: number, size: string, categoryId?: string): Observable<Product[]> {
     if(!categoryId)
-      return this.http.get<Product[]>("/api/products?page="+page);
-    return this.http.get<Product[]>("/api/products?page="+page+"&category_id="+categoryId);
+      return this.http.get<Product[]>("/api/products?page="+page+"&size="+size);
+    return this.http.get<Product[]>("/api/products?page="+page+"&size="+size+"&category_id="+categoryId);
   }
 
-  getTotalPages(category_id?: string): Observable<number> {
+  getTotalPages(size: string, category_id?: string): Observable<number> {
     if(!category_id)
-      return this.http.get<number>("/api/products/total-pages");
-    return this.http.get<number>("/api/products/total-pages?category_id="+category_id);
+      return this.http.get<number>("/api/products/total-pages?size="+size);
+    return this.http.get<number>("/api/products/total-pages?size="+size+"&category_id="+category_id);
   }
 
   getProductById(prodId: string): Observable<Product> {

@@ -1,7 +1,7 @@
 package com.netcracker.edu.fapi.service.impl;
 
 import com.netcracker.edu.fapi.models.ProductViewModel;
-import com.netcracker.edu.fapi.models.RestPageImpl;
+//import com.netcracker.edu.fapi.models.RestPageImpl;
 import com.netcracker.edu.fapi.service.ProductDataService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -56,9 +56,9 @@ public class ProductDataServiceImpl implements ProductDataService {
     }
 
     @Override
-    public List<ProductViewModel> getPage(Integer page, Long category_id) {
+    public List<ProductViewModel> getPage(Integer page, Integer size, Long category_id) {
         RestTemplate restTemplate = new RestTemplate();
-        String url = backendServerUrl + "/api/products?page=" + page;
+        String url = backendServerUrl + "/api/products?page=" + page + "&size=" + size;
         if(category_id!=null)
             url+="&category_id="+category_id;
         ProductViewModel[] productViewModelResponse = restTemplate.getForObject(url, ProductViewModel[].class);
@@ -66,11 +66,11 @@ public class ProductDataServiceImpl implements ProductDataService {
     }
 
     @Override
-    public Integer getTotalPages(Long category_id) {
+    public Integer getTotalPages(Integer size, Long category_id) {
         RestTemplate restTemplate = new RestTemplate();
-        String url = backendServerUrl+"/api/products/total-pages";
+        String url = backendServerUrl+"/api/products/total-pages?size=" + size;
         if(category_id!=null)
-            url+="?category_id="+category_id;
+            url+="&category_id="+category_id;
         return restTemplate.getForObject(url, Integer.class);
     }
 

@@ -3,6 +3,9 @@ package com.netcracker.edu.fapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.Valid;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -10,10 +13,16 @@ public class SubscriptionViewModel {
 
     private Long id;
 //    @JsonIgnore
+    @NotNull
+    @Valid
     private ProductViewModel product;
 //    @JsonIgnore
+    @NotNull
+    @Valid
     private WalletViewModel userWallet;
+    @FutureOrPresent
     private Date start;
+    @FutureOrPresent
     private Date end;
     private Boolean active;
 

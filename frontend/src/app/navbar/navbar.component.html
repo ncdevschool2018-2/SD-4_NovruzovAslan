@@ -47,12 +47,15 @@
             Categories <span class="caret"></span>
           </button>
           <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-            <li role="menuitem"><button class="dropdown-item" routerLink="">Sales</button></li>
+            <li role="menuitem"><button class="dropdown-item" routerLink="/special-products">Sales</button></li>
             <li class="divider dropdown-divider"></li>
-            <li role="menuitem"><button class="dropdown-item">Text editors</button></li>
-            <li role="menuitem"><button class="dropdown-item">IDE's</button></li>
-            <li role="menuitem"><button class="dropdown-item">Graphic editors</button></li>
-            <li role="menuitem"><button class="dropdown-item">Video editors</button></li>
+            <li role="menuitem" *ngFor="let category of categories" routerLink="/products/category_id/{{category.id}}">
+              <button class="dropdown-item">{{category.name}}</button>
+            </li>
+            <!--<li role="menuitem"><button class="dropdown-item">Text editors</button></li>-->
+            <!--<li role="menuitem"><button class="dropdown-item">IDE's</button></li>-->
+            <!--<li role="menuitem"><button class="dropdown-item">Graphic editors</button></li>-->
+            <!--<li role="menuitem"><button class="dropdown-item">Video editors</button></li>-->
           </ul>
         </div>
         <!--<input type="text" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">-->

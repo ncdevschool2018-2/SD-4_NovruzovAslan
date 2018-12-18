@@ -1,6 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { NgxSpinnerModule } from 'ngx-spinner';
 
@@ -30,6 +30,10 @@ import { RegisterComponent } from './register/register.component';
 import { HttpModule } from "@angular/http";
 import { ProductComponent } from './product/product.component';
 import { MySubscriptionsComponent } from './my-subscriptions/my-subscriptions.component';
+import { ButtonsModule } from "ngx-bootstrap";
+
+import {CUSTOM_ERROR_MESSAGES, NgBootstrapFormValidationModule} from 'ng-bootstrap-form-validation';
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
@@ -70,8 +74,13 @@ const appRoutes: Routes = [
     HttpModule,
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     NgxSpinnerModule,
+    NgBootstrapFormValidationModule,
+    NgBootstrapFormValidationModule.forRoot(),
+    AlertModule.forRoot(),
+    ButtonsModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
@@ -89,7 +98,12 @@ const appRoutes: Routes = [
       provide: HTTP_INTERCEPTORS,
       useClass: Interceptor,
       multi: true
-    }
+    },
+    // [{
+    //   provide: CUSTOM_ERROR_MESSAGES,
+    //   useValue: CUSTOM_ERRORS,
+    //   multi: true
+    // }],
   ],
   bootstrap: [AppComponent]
 })

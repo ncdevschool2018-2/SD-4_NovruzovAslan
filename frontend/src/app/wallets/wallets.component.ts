@@ -1,12 +1,12 @@
-import {Component, OnDestroy, OnInit, TemplateRef} from "@angular/core";
+import { Component, OnDestroy, OnInit, TemplateRef } from "@angular/core";
 import { Wallet } from "../model/wallet";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { Subscription } from "rxjs/internal/Subscription";
 import { WalletService } from "../service/wallet/wallet.service";
 import { UserService } from "../service/user/user.service";
 import { User } from "../model/user";
-import {NgxSpinnerService} from "ngx-spinner";
-import {AuthService} from "../service/auth/auth.service";
+import { NgxSpinnerService } from "ngx-spinner";
+import { AuthService } from "../service/auth/auth.service";
 
 @Component({
   selector: 'wallets',
@@ -15,12 +15,20 @@ import {AuthService} from "../service/auth/auth.service";
 })
 export class WalletsComponent implements OnInit, OnDestroy {
 
+  public currentPage: number = 1;
+  public size: string = '5';
+  public totalPages: number;
+  public pages: number[] = [];
+
   public wallets: Wallet[];
+  public walletsForTransfer: Wallet[] = [];
   public total: Wallet;
   private currentUser: User;
 
   public editMode: boolean = false;
   public editableWallet: Wallet;
+  public transferWalletId: number;
+  public amountForTransfer: number;
 
   public modalRef: BsModalRef;
   private subscriptions: Subscription[] = [];
@@ -39,14 +47,16 @@ export class WalletsComponent implements OnInit, OnDestroy {
 
   public _updateWallets() {
     this.loadingService.show();
-    this.loadWallets();
-    this.refreshWallet();
     this.total = new Wallet();
     this.total.value = 0;
     this.total.valute = '$';
     this.total.description = "Your total money from all your wallets";
     this.total.name = "Total";
-    this.loadingService.hide();
+    this.amountForTransfer = null;
+    this.transferWalletId = null;
+    this.walletsForTransfer = [];
+    this.loadWallets();
+    this.refreshWallet();
   }
 
   public loadWallets() {
@@ -54,35 +64,43 @@ export class WalletsComponent implements OnInit, OnDestroy {
       this.authService.getUser().subscribe(user => {
         this.currentUser = user;
         this.subscriptions.push(
-          this.walletService.getWalletsByUserId(user.id).subscribe(wallets => {
+          this.walletService.getWalletsPageByUserId(this.currentPage, this.size, user.id).subscribe(wallets => {
             this.wallets = wallets as Wallet[];
             this.total.value = 0;
             // todo: replace this forEach by normal forEach with valute conversion
             this.wallets.forEach(wallet => {
               this.total.value += wallet.value;
-            })
+            });
+            this.getTotalPagesNumber(this.currentUser.id);
+            // this.loadingService.hide();
           })
         )
       })
     )
   }
 
-  public refreshWallet() {
-    this.editableWallet = new Wallet();
+  private getTotalPagesNumber(userId?: string): void {
     this.subscriptions.push(
-      this.authService.getUser().subscribe( user => {
-        this.editableWallet.user = user;
+      this.walletService.getTotalPages(this.size, userId).subscribe(num => {
+        this.totalPages = num;
+        this.pages = [];
+        for(let i=1; i<=this.totalPages; i++) {
+          this.pages.push(i);
+        }
+        this.loadingService.hide();
       })
     );
-    // this.editableWallet.user = new User(); // todo: need to replace by current user
+  }
+
+  public refreshWallet() {
+    this.editableWallet = new Wallet();
     this.editableWallet.value = 0;
-    this.editableWallet.valute = '$';
-    // this.subscriptions.push(
-    //   this.userService.getUsers().subscribe(users => {
-    //     let _users = users as User[];
-    //     this.editableWallet.user = _users[0];
-    //   })
-    // )
+    this.editableWallet.valute = '$';this.subscriptions.push(
+      this.authService.getUser().subscribe( user => {
+        if(this.editableWallet)
+          this.editableWallet.user = user;
+      })
+    );
   }
 
   public _openModal(template: TemplateRef<any>, wallet?: Wallet): void {
@@ -94,6 +112,12 @@ export class WalletsComponent implements OnInit, OnDestroy {
       this.editMode = false;
     }
     this.modalRef = this.modalService.show(template);
+  }
+
+  public _closeDeleteModal(): void {
+    if(this.editableWallet)
+      this.wallets.push(this.editableWallet);
+    this.modalRef.hide();
   }
 
   public _closeModal(): void {
@@ -109,20 +133,64 @@ export class WalletsComponent implements OnInit, OnDestroy {
     )
   }
 
-  /*
-   todo: this method will open modal window were will be next fields:
-          - name of the wallet you want to delete (this will be select)
-          - another wallet name (were you want to push money from the first wallet) (this will be also a select)
-          - (+/-) also there will be a select menu near the second wallet name where you select valute of the second wallet (you can change it)
-    */
-  public _deleteWallet(template: TemplateRef<any>): void {
+  public _openDeleteModal(template: TemplateRef<any>, wallet: Wallet): void {
+    this.loadingService.show();
+    this.editableWallet = Wallet.cloneBase(wallet);
+    this.wallets.splice(this.wallets.indexOf(wallet),1);
+    this.loadingService.hide();
     this.modalRef = this.modalService.show(template);
-    // this.editableWallet = wallet that we want to delete
+  }
+
+  public _deleteWallet(): void {
+    this.loadingService.show();
     this.subscriptions.push(
-      this.walletService.deleteWallet(this.editableWallet.id).subscribe(() => {
+      this.walletService.transaction(this.editableWallet.id, this.transferWalletId.toString(), this.editableWallet.value).subscribe(() => {
+        this._closeModal();
+        this.subscriptions.push(
+          this.walletService.deleteWallet(this.editableWallet.id).subscribe(() => {
+            this._updateWallets();
+            this.editableWallet = null;
+            // this.loadingService.hide();
+          }))
+      }))
+  }
+
+  public _openTransferModal(template: TemplateRef<any>, wallet: Wallet): void {
+    this.loadingService.show();
+    this.editableWallet = Wallet.cloneBase(wallet);
+    this.wallets.forEach(wal=> {
+      if(wal != wallet)
+        this.walletsForTransfer.push(wal);
+    });
+    this.loadingService.hide();
+    this.modalRef = this.modalService.show(template);
+  }
+
+  public _transaction(): void {
+    this.subscriptions.push(
+      this.walletService.transaction(this.editableWallet.id, this.transferWalletId.toString(), this.amountForTransfer).subscribe(() => {
+        this._closeModal();
         this._updateWallets();
       })
     )
+  }
+
+  public _topUp(): void {
+    this.subscriptions.push(
+      this.walletService.transaction(null, this.editableWallet.id, this.amountForTransfer).subscribe(() => {
+        this._closeModal();
+        this._updateWallets();
+      }))
+  }
+
+  public loadNext(): void {
+    this.currentPage++;
+    this.loadWallets();
+  }
+
+  public loadPrev(): void {
+    this.currentPage--;
+    this.loadWallets();
   }
 
   ngOnDestroy(): void{

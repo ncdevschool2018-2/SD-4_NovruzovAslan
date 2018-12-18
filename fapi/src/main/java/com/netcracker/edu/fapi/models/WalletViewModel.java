@@ -3,15 +3,28 @@ package com.netcracker.edu.fapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WalletViewModel {
 
     private Long id;
 //    @JsonIgnore
+    @NotNull
+    @Valid
     private UserViewModel user;
+    @NotBlank
+    @Size(max = 35)
     private String name;
+    @NotBlank
+    @Size(max = 255)
     private String description;
+    @NotBlank
     private Double value;
+    @NotBlank
     private Character valute;
 
     public WalletViewModel() {

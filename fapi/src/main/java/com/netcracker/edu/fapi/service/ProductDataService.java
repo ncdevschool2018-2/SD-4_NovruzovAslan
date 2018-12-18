@@ -1,7 +1,7 @@
 package com.netcracker.edu.fapi.service;
 
 import com.netcracker.edu.fapi.models.ProductViewModel;
-import com.netcracker.edu.fapi.models.RestPageImpl;
+//import com.netcracker.edu.fapi.models.RestPageImpl;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +13,6 @@ public interface ProductDataService {
     ProductViewModel getProductById(Long id);
     ProductViewModel saveProduct(ProductViewModel product);
     void deleteProduct(Long id);
-    List<ProductViewModel> getPage(Integer page, Long category_id);
-    Integer getTotalPages(Long category_id);
+    List<ProductViewModel> getPage(Integer page, Integer size, Long category_id);
+    Integer getTotalPages(Integer size, Long category_id);
 }

@@ -5,6 +5,7 @@ import com.netcracker.edu.fapi.models.UserViewModel;
 import com.netcracker.edu.fapi.service.UserDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class UserDataController {
     private UserDataService userDataService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<List<UserViewModel>> getAllUsers() {
         return ResponseEntity.ok(userDataService.getAll());
     }

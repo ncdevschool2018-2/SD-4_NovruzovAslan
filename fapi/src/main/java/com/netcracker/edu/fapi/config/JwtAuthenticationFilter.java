@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.management.relation.Role;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -52,11 +53,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         if(login != null && SecurityContextHolder.getContext().getAuthentication()
                 == null) {
+
             UserDetails userDetails = userDataService.loadUserByUsername(login);
             if(jwtTokenUtil.validateToken(authToken, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new
                         UsernamePasswordAuthenticationToken(userDetails, null,
-                        Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+                        userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource()
                         .buildDetails(request));
                 logger.info("authenticated user " + login + ",setting security context");

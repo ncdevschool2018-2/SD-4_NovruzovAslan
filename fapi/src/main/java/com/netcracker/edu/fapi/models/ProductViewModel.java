@@ -1,8 +1,11 @@
 package com.netcracker.edu.fapi.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,24 +13,35 @@ import java.util.Set;
 public class ProductViewModel {
 
     private Long id;
+    @NotBlank
+    @Size(max = 35)
     private String name;
+    @NotBlank
+    @Size(max = 255)
     private String description;
-    private String img_src;
+//    private String img_src;
+    @NotBlank
     private Double cost;
 //    @JsonIgnore
+    @NotNull
+    @Valid
     private CategoryViewModel category;
 //    @JsonIgnore
+    @NotNull
+    @Valid
     private WalletViewModel wallet;
+    @NotNull
+    @Valid
     private Set<SpecialProductViewModel> specialProducts = new HashSet<>();
 
     public ProductViewModel() {
     }
 
-    public ProductViewModel(Long id, String name, String description, String img_src, Double cost, CategoryViewModel category, WalletViewModel wallet, Set<SpecialProductViewModel> specialProducts) {
+    public ProductViewModel(Long id, String name, String description, Double cost, CategoryViewModel category, WalletViewModel wallet, Set<SpecialProductViewModel> specialProducts) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.img_src = img_src;
+//        this.img_src = img_src;
         this.cost = cost;
         this.category = category;
         this.wallet = wallet;
@@ -74,13 +88,13 @@ public class ProductViewModel {
         this.wallet = wallet;
     }
 
-    public String getImg_src() {
-        return img_src;
-    }
+//    public String getImg_src() {
+//        return img_src;
+//    }
 
-    public void setImg_src(String img_src) {
-        this.img_src = img_src;
-    }
+//    public void setImg_src(String img_src) {
+//        this.img_src = img_src;
+//    }
 
     public CategoryViewModel getCategory() {
         return category;

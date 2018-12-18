@@ -31,10 +31,4 @@ export class Product {
     return clonedProduct;
   }
 
-  subscribe(subscriptionService: SubscriptionService): void {
-    let subscription: Subscription;
-    // subscription.
-    subscriptionService.saveSubscription(subscription);
-  }
-
 }

@@ -4,6 +4,7 @@ import com.netcracker.edu.fapi.models.CategoryViewModel;
 import com.netcracker.edu.fapi.service.CategoryDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class CategoryDataController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<CategoryViewModel> saveCategory(@RequestBody CategoryViewModel category /*todo server validation*/) {
         if (category != null) {
             return ResponseEntity.ok(categoryDataService.saveCategory(category));
@@ -34,6 +36,7 @@ public class CategoryDataController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('admin')")
     public void deleteCategory(@PathVariable String id) {
         categoryDataService.deleteCategory(Long.valueOf(id));
     }

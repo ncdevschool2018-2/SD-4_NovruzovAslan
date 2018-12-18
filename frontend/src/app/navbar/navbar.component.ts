@@ -4,6 +4,8 @@ import {User} from "../model/user";
 import {Subscription} from "rxjs";
 import {TokenStorage} from "../service/auth/token.storage";
 import {Router} from "@angular/router";
+import {Category} from "../model/category";
+import {CategoryService} from "../service/category/category.service";
 
 @Component({
   selector: "app-navbar",
@@ -12,18 +14,17 @@ import {Router} from "@angular/router";
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 
-  // public isAdmin: boolean = false;
-  // public isManager: boolean = false;
-  // public isUser: boolean = false;
-  // public isGuest: boolean = true;
-
   public role: string = '4';
+
+  public categories: Category[] = [];
 
   private subscriptions: Subscription[] = [];
 
   constructor(private authService: AuthService,
+              private categoryService: CategoryService,
               private storage: TokenStorage,
-              private router: Router) {}
+              private router: Router
+  ) {}
 
   ngOnInit() {
     this.setRole();
@@ -35,15 +36,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
         if(_user)
           this.role = _user.role.id;
         console.log(_user.role.name);
+        this.loadCategories();
       })
     )
-
   }
 
-  // signIn(): void {
-  //   this.router.navigate(['login']);
-  //   this.setRole();
-  // }
+  loadCategories(): void {
+    this.subscriptions.push(
+      this.categoryService.getCategorys().subscribe(categories => {
+        this.categories = categories;
+      })
+    )
+  }
 
   signOut(): void {
     this.storage.signOut();

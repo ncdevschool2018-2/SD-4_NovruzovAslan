@@ -6,8 +6,6 @@
   type = "ball-climbing-dot"
 ></ngx-spinner>
 
-<!--<app-navbar></app-navbar>-->
-
 <div class="container" *ngIf="product">
   <div class="row">
     <div class="col-4">
@@ -19,10 +17,8 @@
         <p class="balance col-auto">{{product.cost}}</p>
       </div>
       <div class="row justify-content-around">
-        <button *ngIf="!isSubscribed" type="button" class="btn btn-default" (click)="_openModal(subscribeForm)">Subscribe</button>
-        <!--<a *ngIf="!isSubscribed" (click)="subscribe()" class="btn btn-primary">Subscribe</a>-->
-        <button *ngIf="isSubscribed"  type="button" class="btn btn-primary" (click)="unsubscribe()">Unsubscribe</button>
-        <!--<a *ngIf="isAdmin" href="#" class="btn btn-primary">Remove</a>-->
+        <button *ngIf="!isSubscribed" type="button" class="btn btn-primary" (click)="_openModal(subscribeForm)">Subscribe</button>
+        <button *ngIf="isSubscribed"  type="button" class="btn btn-danger" (click)="unsubscribe()">Unsubscribe</button>
       </div>
     </div>
     <div class="col-8">
@@ -44,19 +40,6 @@
         <label>Name</label>
         <input class="form-control" name="Name" [(ngModel)]="subscription.product.name" #name="ngModel" readonly/>
       </div>
-      <!--<div class="form-group">-->
-        <!--<label>Start date</label>-->
-        <!--<div class="input-group">-->
-          <!--<div class="input-group-prepend">-->
-            <!--<span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>-->
-          <!--</div>-->
-          <!--<input class="form-control" type="date" name="Start date" [(ngModel)]="subscription.start"-->
-               <!--#start_date="ngModel" required />-->
-        <!--</div>-->
-        <!--<div [hidden]="start_date.valid || start_date.untouched" class="alert alert-danger">-->
-          <!--Please set start date-->
-        <!--</div>-->
-      <!--</div>-->
       <div class="form-group">
         <label>Start date</label>
         <div class="input-group">
@@ -90,8 +73,8 @@
 
       <div class="form-group">
         <label>Wallet</label>
-        <select class="select form-control" [(ngModel)]="subscription.userWallet" #wallet="ngModel" required>
-          <option *ngFor="let wall of wallets" value="{{wall}}">{{wall.name}} ({{wall.value}}{{wall.valute}})</option>
+        <select class="select form-control" name="Wallet" [(ngModel)]="userWalletId" #wallet="ngModel" required>
+          <option *ngFor="let wall of wallets" value="{{wall.id}}">{{wall.name}} ({{wall.value}}{{wall.valute}})</option>
         </select>
         <div [hidden]="wallet.valid || wallet.untouched" class="alert alert-danger">
           Please choose wallet

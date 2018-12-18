@@ -5,6 +5,8 @@ import { ProductService } from "../service/product/product.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { NgxSpinnerService } from 'ngx-spinner';
 import {ActivatedRoute} from "@angular/router";
+import {CategoryService} from "../service/category/category.service";
+import {camelCaseToDashCase} from "@angular/platform-browser/src/dom/util";
 
 @Component({
   selector: "products",
@@ -17,6 +19,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
   public categoryId: string;
   public currentPage: number = 1;
 
+  public titleOfPage: string;
+  public numberOfProductsPerPage: string = '6';
   public totalPages: number;
   public pages: number[] = [];
   public products: Product[];
@@ -27,6 +31,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductService,
+    private categoryService: CategoryService,
     private modalService: BsModalService,
     private loadingService: NgxSpinnerService,
     private route: ActivatedRoute
@@ -39,14 +44,22 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   private getId(): void {
     this.loadingService.show();
+    this.subscriptions.push(
     this.route.paramMap.subscribe(params => {
-      if(!params.has('id'))
+      if(!params.has('id')) {
         this.categoryId = '0';
-      else this.categoryId = params.get('id');
+        this.titleOfPage = 'All products';
+      }
+      else {
+        this.categoryId = params.get('id');
+        this.subscriptions.push(
+          this.categoryService.getCategoryById(this.categoryId).subscribe(category => {
+            this.titleOfPage = category.name;
+          })
+        );
+      }
       this.loadProducts();
-      // this.setUser();
-      // this.loadingService.hide();
-    });
+    }))
   }
 
   public _closeModal(): void {
@@ -96,23 +109,20 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   public loadProducts(): void {
-    // this.loadingService.show();
     if (this.categoryId == '0') {
       this.subscriptions.push(
-        this.productService.getProducts(this.currentPage).subscribe(products => {
+        this.productService.getProducts(this.currentPage, this.numberOfProductsPerPage).subscribe(products => {
           this.products = products as Product[];
           this.getTotalPagesNumber();
           console.log(this.products);
-          // this.loadingService.hide();
         })
       );
     } else {
       this.subscriptions.push(
-        this.productService.getProducts(this.currentPage, this.categoryId).subscribe(products => {
+        this.productService.getProducts(this.currentPage, this.numberOfProductsPerPage, this.categoryId).subscribe(products => {
           this.products = products as Product[];
           this.getTotalPagesNumber(this.categoryId);
           console.log(this.products);
-          // this.loadingService.hide();
         })
       );
     }
@@ -120,9 +130,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   private getTotalPagesNumber(categoryId?: string): void {
     this.subscriptions.push(
-      this.productService.getTotalPages(categoryId).subscribe(num => {
+      this.productService.getTotalPages(this.numberOfProductsPerPage, categoryId).subscribe(num => {
         this.totalPages = num;
-        console.log(categoryId + " " + num + " " + this.totalPages);
         this.pages = [];
         for(let i=1; i<=this.totalPages; i++) {
           this.pages.push(i);
@@ -130,7 +139,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
         this.loadingService.hide();
       })
     );
-
   }
 
   public loadNext(): void {

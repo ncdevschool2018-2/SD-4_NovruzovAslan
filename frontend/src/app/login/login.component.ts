@@ -1,8 +1,8 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { AuthService } from "../service/auth/auth.service";
 import { TokenStorage } from "../service/auth/token.storage";
-import {NavbarComponent} from "../navbar/navbar.component";
+import {FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 
 @Component({
   selector: 'login',
@@ -11,10 +11,11 @@ import {NavbarComponent} from "../navbar/navbar.component";
 })
 export class LoginComponent implements OnInit {
 
-  public username: string;
-  public password: string;
-  // private navbar: NavbarComponent;
+  // public username: string;
+  // public password: string;
+  public incorrect: boolean = false;
 
+  formGroup: FormGroup;
 
   constructor(private router: Router,
               private authService: AuthService,
@@ -23,17 +24,42 @@ export class LoginComponent implements OnInit {
   {}
 
   ngOnInit() {
+    this.formGroup = new FormGroup({
+      Username: new FormControl('', [
+        Validators.required//,
+        // Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]/),
+        // Validators.maxLength(35)
+      ]),
+      Password: new FormControl('', [
+        Validators.required,
+        // this.passwordValidator,
+        // Validators.minLength(6),
+        // Validators.maxLength(20)
+      ])
+    });
   }
 
+  onSubmit() {
+    this.login();
+  }
+
+
   login(): void {
-    this.authService.attemptAuth(this.username, this.password).subscribe(
+    this.authService.attemptAuth(this.formGroup.value.Username, this.formGroup.value.Password).subscribe(
       data => {
         this.token.saveToken(data.token);
         this.reloadPage();
         this.router.navigate(['']);
         // this.navbar.setRole();
+      }, () => {
+        this.incorrect = true;
+        // console.log("Thaat is a n error");
       }
     );
+  }
+
+  closeAlert(): void {
+    this.incorrect = false;
   }
 
   reloadPage() {

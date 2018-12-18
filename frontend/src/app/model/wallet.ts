@@ -8,6 +8,7 @@ export class Wallet {
   value: number;
   valute: string; // need char
 
+
   static cloneBase(wallet: Wallet): Wallet {
     let clonedWallet: Wallet = new Wallet();
     clonedWallet.id = wallet.id;

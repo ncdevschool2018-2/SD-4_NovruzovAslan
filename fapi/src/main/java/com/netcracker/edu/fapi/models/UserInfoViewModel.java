@@ -3,15 +3,23 @@ package com.netcracker.edu.fapi.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.sql.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserInfoViewModel {
 
     private Long id;
+    @NotNull
+    @Valid
     @JsonBackReference
     private UserViewModel user;
+    @NotBlank
     private String name;
+    @Past
     private Date dateOfBirth;
 
     public UserInfoViewModel() {

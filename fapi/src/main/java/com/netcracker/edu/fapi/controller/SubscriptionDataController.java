@@ -22,15 +22,17 @@ public class SubscriptionDataController {
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public ResponseEntity<List<SubscriptionViewModel>> getProductsByUserId(
-            @RequestParam(name = "page") Long page,
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size") Integer size,
             @RequestParam(name = "user_id") Long userId) {
-        return ResponseEntity.ok(subscriptionDataService.getProductsByUserId(page,userId));
+        return ResponseEntity.ok(subscriptionDataService.getSubscriptionsPageByUserId(page, size,userId));
     }
 
     @RequestMapping(value = "/total-pages", method = RequestMethod.GET)
     public ResponseEntity<Integer> getTotalPages(
+            @RequestParam(name = "size") Integer size,
             @RequestParam(name = "user_id") Long user_id) {
-        return ResponseEntity.ok(subscriptionDataService.getTotalPages(user_id));
+        return ResponseEntity.ok(subscriptionDataService.getTotalPages(size, user_id));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

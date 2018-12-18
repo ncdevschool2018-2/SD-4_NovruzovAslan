@@ -1,44 +1,189 @@
-<div class="row">
-  <div class="col">
-    <button type="button" class="btn btn-primary" (click)="_openModal(template)">
-      Create new wallet
-    </button>
+<!--<div class="row">-->
+  <!--<div class="col">-->
+    <!--<button type="button" class="btn btn-primary" (click)="_openModal(template)">-->
+      <!--Create new wallet-->
+    <!--</button>-->
+  <!--</div>-->
+<!--</div>-->
+
+<ngx-spinner
+  bdColor = "rgba(51,51,51,0.8)"
+  size = "large"
+  color = "#27e9d2"
+  type = "ball-climbing-dot"
+></ngx-spinner>
+
+<div class="row justify-content-between mt-4">
+  <h3>Your wallets</h3>
+  <div>
+    <label class="mr-2">Number of wallets per page:</label>
+    <div class="btn-group">
+      <label (click)="loadWallets()" class="btn btn-primary" [(ngModel)]="size"
+             btnRadio="5" tabindex="0" role="button">5</label>
+      <label (click)="loadWallets()" class="btn btn-primary" [(ngModel)]="size"
+             btnRadio="8" tabindex="0" role="button">8</label>
+      <label (click)="loadWallets()" class="btn btn-primary" [(ngModel)]="size"
+             btnRadio="11" tabindex="0" role="button">11</label>
+    </div>
   </div>
 </div>
-
-<!--<app-navbar></app-navbar>-->
 
 <div class="row justify-content-between">
-  <div class="card mp-cards col-sm-12 col-me-5 col-lg-3">
-    <div class="card-body">
-      <h5 class="card-title">{{ total.name }}</h5>
-      <p class="card-text">{{ total.description }}</p>
-    </div>
-    <div class="row justify-content-around">
-      <button href="#" class="btn btn-primary col-auto">Remove</button>
-      <button class="btn btn-primary col-auto">
-        {{ total.value + total.valute }}
-      </button>
+  <div (click)="_openModal(createTempl)" class="card mp-cards col-sm-12 col-md-5 col-lg-3">
+    <div class="btn row justify-content-center ">
+      <span style="font-size: 72px; color: Dodgerblue;">
+        <span class="fas fa-plus"></span>
+      </span>
     </div>
   </div>
+  <!--<div class="card mp-cards col-sm-12 col-md-5 col-lg-3">-->
+    <!--<div class="card-body">-->
+      <!--<div class="row justify-content-between">-->
+        <!--<h5 class="card-title">{{ total.name }}</h5>-->
+      <!--</div>-->
+      <!--<p class="card-text">{{ total.description }}</p>-->
+    <!--</div>-->
+    <!--<div class="row justify-content-end">-->
+      <!--<button class="btn btn-primary col-auto mr-4">-->
+        <!--{{ total.value + total.valute }}-->
+      <!--</button>-->
+    <!--</div>-->
+  <!--</div>-->
 
-  <div class="card mp-cards col-sm-12 col-me-5 col-lg-3" *ngFor="let wallet of wallets">
+  <div class="card mp-cards col-sm-12 col-md-5 col-lg-3" *ngFor="let wallet of wallets">
     <div class="card-body">
-      <h5 class="card-title">{{ wallet.name }}</h5>
-      <p class="card-text">{{ wallet.description }}</p>
+      <div class="row">
+        <div class="col">
+          <div class="row justify-content-between">
+          <h5 class="card-title">{{ wallet.name }}</h5>
+            <h6>{{ wallet.value + wallet.valute }}</h6>
+          </div>
+          <p class="card-text">{{ wallet.description }}</p>
+        </div>
+      </div>
     </div>
     <div class="row justify-content-around">
-      <button class="btn btn-primary col-auto">Remove</button>
-      <button class="btn btn-primary col-auto">
-        {{ wallet.value + wallet.valute }}
-      </button>
+      <div class="btn-group">
+        <button (click)="_openDeleteModal(deleteTempl, wallet)" class="btn btn-danger col-auto"><i class="fas fa-trash-alt"></i></button>
+        <button class="btn btn-warning" (click)="_openModal(createTempl, wallet)">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button (click)="_openTransferModal(transactionTempl, wallet)" class="btn btn-info">
+          <i class="fas fa-exchange-alt"></i>
+        </button>
+        <button (click)="_openModal(topUpTempl, wallet)" class="btn btn-success">
+          <i class="fas fa-arrow-up"></i>
+        </button>
+      </div>
+      <!--<button (click)="_topUp(wallet)" class="btn btn-primary col-auto">-->
+        <!--{{ wallet.value + wallet.valute }}-->
+      <!--</button>-->
     </div>
   </div>
 </div>
 
+<div class="pagination d-flex justify-content-center" *ngIf="totalPages">
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="currentPage <= 1">
+      <a class="page-link" (click)="loadPrev()">Previous</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage == page" *ngFor="let page of pages">
+      <a class="page-link" (click)="currentPage = page; loadWallets(); ">{{ page }}</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage >= totalPages">
+      <a class="page-link" (click)="loadNext()">Next</a>
+    </li>
+  </ul>
+</div>
+
+<ng-template #transactionTempl>
+  <form>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Transfer of money</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container-fluid">
+        <form>
+          <div class="form-group">
+            <label>Name</label>
+            <div class="row">
+              <div class="col-9 input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-wallet"></i></span>
+                </div>
+                <input class="form-control" name="Wallet name" [(ngModel)]="editableWallet.name" #wallet_name="ngModel" readonly/>
+              </div>
+              <div class="col-3">
+                <label>{{editableWallet.value}}{{editableWallet.valute}}</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Choose a wallet for transfer</label>
+            <select class="select form-control" name="Wallet" [(ngModel)]="transferWalletId" #wallet="ngModel" required>
+              <option *ngFor="let wallet of walletsForTransfer" value="{{wallet.id}}">{{wallet.name}} ({{wallet.valute}})</option>
+            </select>
+          </div>
+            <label>Amount of money</label>
+            <input class="form-control" name="Amount" [(ngModel)]="amountForTransfer" #amount="ngModel" required />
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="_transaction()"
+                    [disabled]="wallet.invalid || amount.invalid">
+              Transfer
+            </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #topUpTempl>
+  <form>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Pop up of wallet</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container-fluid">
+        <form>
+          <div class="form-group">
+            <label>Name</label>
+            <div class="row">
+              <div class="col-9 input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-wallet"></i></span>
+                </div>
+                <input class="form-control" name="Wallet name" [(ngModel)]="editableWallet.name" #wallet_name="ngModel" readonly/>
+              </div>
+              <div class="col-3">
+                <label>{{editableWallet.value}}{{editableWallet.valute}}</label>
+              </div>
+            </div>
+          </div>
+          <label>Amount of money</label>
+          <input class="form-control" name="Amount" [(ngModel)]="amountForTransfer" #amount="ngModel" required />
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="_topUp()"
+                    [disabled]="amount.invalid">
+              Top up
+            </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </form>
+</ng-template>
 
 <!-- Modals -->
-<ng-template #template>
+<ng-template #createTempl>
   <form>
     <div class="modal-header">
       <h4 class="modal-title pull-left">{{editMode ? "Edit": "Create"}} new Product</h4>
@@ -77,12 +222,12 @@
               Please set description
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" (click)="_addWallet()"
+          <div class="row justify-content-end">
+            <button type="button" class="btn btn-primary mr-2" (click)="_addWallet()"
                     [disabled]="name.invalid || description.invalid">
               {{editMode ? "Save": "Create"}}
             </button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
+            <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal" (click)="_closeModal()">Close</button>
           </div>
         </form>
       </div>
@@ -90,41 +235,47 @@
   </form>
 </ng-template>
 
-<!--<div class="modal fade" id="topUpModal" tabindex="-1" role="dialog" aria-labelledby="topUpModal" aria-hidden="true">-->
-  <!--<div class="modal-dialog" role="document">-->
-    <!--<div class="modal-content">-->
-      <!--<div class="modal-header">-->
-        <!--<h5 class="modal-title" id="addWaletModalLabel">Top up account</h5>-->
-        <!--<button class="close" type="button" data-dismiss="modal" aria-label="Close">-->
-          <!--<span aria-hidden="true">&times;</span>-->
-        <!--</button>-->
-      <!--</div>-->
-
-      <!--<div class="modal-body">-->
-        <!--<div class="container-fluid">-->
-          <!--<form>-->
-            <!--<div class="form-group">-->
-              <!--<div class="input-group">-->
-                <!--<div class="input-group-prepend">-->
-                  <!--<span class="input-group-text"><i class="fas fa-wallet"></i></span>-->
-                <!--</div>-->
-                <!--<input type="text" class="form-control" placeholder="Name" required>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-              <!--<div class="input-group">-->
-                <!--<textarea class="form-control" aria-label="Textarea" placeholder="Description"></textarea>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class="container">-->
-              <!--<div class="row justify-content-end">-->
-                <!--<button type="submit" class="btn btn-primary col-auto">Add a wallet</button>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</form>-->
-        <!--</div>-->
-      <!--</div>-->
-
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
+<ng-template #deleteTempl>
+  <form *ngIf="this.editableWallet">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Remove wallet</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="_closeDeleteModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container-fluid">
+        <form>
+          <div class="form-group">
+            <label>Name</label>
+            <div class="row">
+              <div class="col-9 input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-wallet"></i></span>
+                </div>
+                <input class="form-control" name="Wallet name" [(ngModel)]="editableWallet.name" #wallet_name="ngModel" readonly/>
+              </div>
+              <div class="col-3">
+                <label>{{editableWallet.value}}{{editableWallet.valute}}</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Choose a wallet for transfer</label>
+            <select class="select form-control" name="Wallet" [(ngModel)]="transferWalletId" #wallet="ngModel" required>
+              <!--<option selected>Choose...</option>-->
+              <option *ngFor="let wallet of wallets" value="{{wallet.id}}">{{wallet.name}} ({{wallet.valute}})</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="_deleteWallet()"
+                    [disabled]="wallet.invalid">
+              Remove
+            </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeDeleteModal()">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </form>
+</ng-template>

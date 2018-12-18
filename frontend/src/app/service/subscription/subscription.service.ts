@@ -3,8 +3,6 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 
 import { Subscription } from "../../model/subscription";
-import {Page} from "../../model/page";
-import {Product} from "../../model/product";
 
 @Injectable({
   providedIn: "root"
@@ -21,9 +19,9 @@ export class SubscriptionService {
     return this.http.post<Subscription>("/api/subscriptions", subscription);
   }
 
-  getProductsByUserId(page: number, userId: string): Observable<Product[]> {
-    return this.http.get<Product[]>(
-      "/api/subscriptions/products?page="+page+"&user_id="+userId
+  getSubscriptionsPageByUserId(page: number, size: string, userId: string): Observable<Subscription[]> {
+    return this.http.get<Subscription[]>(
+      "/api/subscriptions/products?page="+page+"&size="+size+"&user_id="+userId
     );
   }
 
@@ -31,8 +29,8 @@ export class SubscriptionService {
     return this.http.get<Subscription[]>("/api/subscriptions?user_id="+userId);
   }
 
-  getTotalPages(userId: string): Observable<number> {
-    return this.http.get<number>("/api/subscriptions/total-pages?user_id="+userId);
+  getTotalPages(size: string, userId: string): Observable<number> {
+    return this.http.get<number>("/api/subscriptions/total-pages?size="+size+"&user_id="+userId);
   }
 
   unsubscribe(productId: string, userId: string): Observable<void> {

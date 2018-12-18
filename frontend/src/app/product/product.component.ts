@@ -26,7 +26,9 @@ export class ProductComponent implements OnInit, OnDestroy {
   // public _wallet: Wallet;
   public wallets: Wallet[];
 
+  private subscOfCurrentUserId: string;
   private currentUser: User;
+  public userWalletId: string;
 
   private subscriptions = [];
 
@@ -75,18 +77,21 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.authService.getUser().subscribe(user => {
           this.currentUser = user;
-          this.subscriptions.push(
-            this.subscriptionService.getAllSubscriptionsByUserId(user.username).subscribe(
-              subs => {
-                subs.forEach(sub => {
-                  if(sub.product.id.toString() == this.prodId) {
-                    this.isSubscribed = true;
-                  }
-                });
-                this.loadProduct();
-              }
-            )
-          )
+          if(this.currentUser.role.id != '4')
+            this.subscriptions.push(
+              this.subscriptionService.getAllSubscriptionsByUserId(user.username).subscribe(
+                subs => {
+                  subs.forEach(sub => {
+                    if(sub.product.id.toString() == this.prodId) {
+                      this.isSubscribed = true;
+                      this.subscOfCurrentUserId = sub.id;
+                    }
+                  });
+                  this.loadProduct();
+                }
+              )
+            );
+        else this.loadProduct();
         }
       )
     );
@@ -95,14 +100,31 @@ export class ProductComponent implements OnInit, OnDestroy {
   subscribe(): void {
     this.subscription.active = true;
     // this.subscription.userWallet = this._wallet;
-    this.subscription.product = this.product;
+    this.subscription.product.id = this.product.id;
     console.log(this.subscription);
-    this.subscriptionService.saveSubscription(this.subscription);
-    this.router.navigate(['/my-subscriptions']);
+    this.subscription.userWallet = new Wallet();
+    this.subscription.userWallet.id = this.userWalletId;
+    console.log(this.subscription);
+    this.subscriptions.push(
+      this.subscriptionService.saveSubscription(this.subscription).subscribe(() => {
+        this.modalRef.hide();
+        this.isSubscribed = true;
+        // this.router.navigate(['/subscriptions']);
+      })
+    )
   }
 
   unsubscribe(): void {
-    this.subscriptionService.unsubscribe(this.prodId, this.currentUser.id);
+    console.log(this.subscOfCurrentUserId);
+    this.loadingService.show();
+    this.subscriptions.push(
+     // this.subscriptionService.unsubscribe(this.prodId, this.currentUser.id).subscribe(() => {
+      this.subscriptionService.deleteSubscription(this.subscOfCurrentUserId).subscribe(() => {
+        this.loadingService.hide();
+        this.isSubscribed = false;
+        // this.router.navigate(['']);
+      })
+    )
   }
 
   public _openModal(template: TemplateRef<any>): void {

@@ -28,15 +28,17 @@ public class ProductController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public Iterable<Product> getPage(
             @RequestParam(name = "page") Integer pageNumber,
+            @RequestParam(name = "size") Integer size,
             @RequestParam(name = "category_id", required = false) Long category_id) {
-        Page page = productService.getPage(pageNumber, category_id);
+        Page page = productService.getPage(pageNumber, size, category_id);
         return page.getContent();
     }
 
     @RequestMapping(value = "/total-pages", method = RequestMethod.GET)
     public Integer getTotalPages(
+            @RequestParam(name = "size") Integer size,
             @RequestParam(name = "category_id", required = false) Long category_id) {
-        Page page = productService.getPage(1,category_id);
+        Page page = productService.getPage(1, size,category_id);
         return page.getTotalPages();
     }
 

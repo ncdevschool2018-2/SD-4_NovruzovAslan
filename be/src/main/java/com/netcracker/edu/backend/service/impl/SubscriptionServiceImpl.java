@@ -45,8 +45,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Page<Subscription> getProductsByUserId(Integer page, Long userId) {
-        Pageable pageable = new PageRequest(page-1, 6, new Sort(Sort.Direction.ASC, "id"));
+    public Page<Subscription> getSubscriptionsPageByUserId(Integer page, Integer size, Long userId) {
+        Pageable pageable = new PageRequest(page-1, size, new Sort(Sort.Direction.ASC, "id"));
         User user = userService.getUserById(userId).get();
         return repository.findSubscriptionsByUserWalletUserId(pageable, userId);
     }

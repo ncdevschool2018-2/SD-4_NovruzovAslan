@@ -48,9 +48,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getPage(Integer page, Long category_id) {
+    public Page<Product> getPage(Integer page, Integer size, Long category_id) {
 //        Sort sort = new Sort(new Sort.Order(Sort.Direction.ASC, "id"));
-        Pageable pageable = new PageRequest(page-1, 6, new Sort(Sort.Direction.ASC, "id"));
+        Pageable pageable = new PageRequest(page-1, size, new Sort(Sort.Direction.ASC, "id"));
         if(category_id==null)
             return repository.findAll(pageable);
         return repository.findProductsByCategoryId(pageable, category_id);

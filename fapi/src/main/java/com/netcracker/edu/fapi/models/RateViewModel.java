@@ -3,16 +3,28 @@ package com.netcracker.edu.fapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RateViewModel {
 
     private Long id;
+    @NotNull
+    @Valid
     private ProductViewModel product;
 //    @JsonIgnore
+    @NotNull
+    @Valid
     private UserViewModel user;
+    @NotBlank
+    @Size(max = 2)
     private Integer rate;
+    @PastOrPresent
     private Date date;
 
     public RateViewModel() {
