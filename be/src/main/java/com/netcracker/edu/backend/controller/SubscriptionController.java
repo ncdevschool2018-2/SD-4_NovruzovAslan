@@ -1,5 +1,6 @@
 package com.netcracker.edu.backend.controller;
 
+import com.netcracker.edu.backend.entity.Subscr;
 import com.netcracker.edu.backend.entity.Subscription;
 //import com.netcracker.edu.backend.scheduler.ScheduleTask;
 //import com.netcracker.edu.backend.scheduler.QrtzScheduler;
@@ -42,24 +43,38 @@ public class SubscriptionController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Iterable<Subscription> getAllSubscriptions() {
-        return subscriptionService.getAllSubscriptions();
+    public Iterable<Subscription> getAllSubscriptions(
+            @RequestParam(name = "user_id") Long userId
+    ) {
+        return subscriptionService.getAllSubscriptions(userId);
     }
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public Iterable<Subscription> getProductsByUserId(
             @RequestParam(name = "page") Integer pageNumber,
             @RequestParam(name = "size") Integer size,
-            @RequestParam(name = "user_id") Long userId) {
+            @RequestParam(name = "user_id", required = false) Long userId) {
         Page page = subscriptionService.getSubscriptionsPageByUserId(pageNumber, size, userId);
         return page.getContent();
+    }
+
+    @RequestMapping(value = "/product", method = RequestMethod.GET)
+    public ResponseEntity<Subscription> getSubscriptionByUserAndProductId(
+            @RequestParam(name = "user_id") Long userId,
+            @RequestParam(name = "product_id") Long productId) {
+        Optional<Subscription> subscription = subscriptionService.getSubscriptionByUserAndProductId(userId, productId);
+        if (subscription.isPresent()) {
+            return ResponseEntity.ok(subscription.get());
+        } else {
+            return null;
+        }
     }
 
     @RequestMapping(value = "/total-pages", method = RequestMethod.GET)
     public Integer getTotalPages(
             @RequestParam(name = "size") Integer size,
-            @RequestParam(name = "user_id") Long user_id) {
-        Page page = subscriptionService.getSubscriptionsPageByUserId(1, size,user_id);
+            @RequestParam(name = "user_id", required = false) Long user_id) {
+        Page page = subscriptionService.getSubscriptionsPageByUserId(1, size, user_id);
         return page.getTotalPages();
     }
 
@@ -69,7 +84,9 @@ public class SubscriptionController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.DELETE)
-    public ResponseEntity unsubscribe(@RequestParam(name = "product_id") Long prodId, @RequestParam(name = "user_id") Long userId) {
+    public ResponseEntity unsubscribe(
+            @RequestParam(name = "product_id") Long prodId,
+            @RequestParam(name = "user_id") Long userId) {
         subscriptionService.unsubscribe(prodId, userId);
         return ResponseEntity.noContent().build();
     }

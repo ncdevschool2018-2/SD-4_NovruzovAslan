@@ -16,22 +16,30 @@ public class SubscriptionDataController {
     private SubscriptionDataService subscriptionDataService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<List<SubscriptionViewModel>> getAllSubscriptions() {
-        return ResponseEntity.ok(subscriptionDataService.getAll());
+    public ResponseEntity<List<SubscriptionViewModel>> getAllSubscriptions(
+            @RequestParam(name = "user_id") Long userId) {
+        return ResponseEntity.ok(subscriptionDataService.getAll(userId));
     }
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public ResponseEntity<List<SubscriptionViewModel>> getProductsByUserId(
             @RequestParam(name = "page") Integer page,
             @RequestParam(name = "size") Integer size,
-            @RequestParam(name = "user_id") Long userId) {
+            @RequestParam(name = "user_id", required = false) Long userId) {
         return ResponseEntity.ok(subscriptionDataService.getSubscriptionsPageByUserId(page, size,userId));
+    }
+
+    @RequestMapping(value = "/product", method = RequestMethod.GET)
+    public ResponseEntity<SubscriptionViewModel> getProductByUserId(
+            @RequestParam(name = "user_id") Long userId,
+            @RequestParam(name = "product_id") Long productId) {
+        return ResponseEntity.ok(subscriptionDataService.getSubscriptionByUserAndProductId(userId, productId));
     }
 
     @RequestMapping(value = "/total-pages", method = RequestMethod.GET)
     public ResponseEntity<Integer> getTotalPages(
             @RequestParam(name = "size") Integer size,
-            @RequestParam(name = "user_id") Long user_id) {
+            @RequestParam(name = "user_id", required = false) Long user_id) {
         return ResponseEntity.ok(subscriptionDataService.getTotalPages(size, user_id));
     }
 

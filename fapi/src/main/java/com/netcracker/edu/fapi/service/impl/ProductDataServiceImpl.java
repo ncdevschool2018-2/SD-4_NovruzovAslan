@@ -44,9 +44,8 @@ public class ProductDataServiceImpl implements ProductDataService {
 
     @Override
     public ProductViewModel saveProduct(ProductViewModel product) {
-        String category_id = String.valueOf(product.getCategory().getId());
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForEntity(backendServerUrl + "/api/products/" + category_id, product, ProductViewModel.class).getBody();
+        return restTemplate.postForEntity(backendServerUrl + "/api/products", product, ProductViewModel.class).getBody();
     }
 
     @Override
@@ -66,11 +65,21 @@ public class ProductDataServiceImpl implements ProductDataService {
     }
 
     @Override
-    public Integer getTotalPages(Integer size, Long category_id) {
+    public List<ProductViewModel> getOwnPage(Integer page, Integer size, Long manager_id) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = backendServerUrl + "/api/products/own?page=" + page + "&size=" + size + "&manager_id="+manager_id;
+        ProductViewModel[] productViewModelResponse = restTemplate.getForObject(url, ProductViewModel[].class);
+        return productViewModelResponse == null ? Collections.emptyList() : Arrays.asList(productViewModelResponse);
+    }
+
+    @Override
+    public Integer getTotalPages(Integer size, Long category_id, Long manager_id ) {
         RestTemplate restTemplate = new RestTemplate();
         String url = backendServerUrl+"/api/products/total-pages?size=" + size;
         if(category_id!=null)
             url+="&category_id="+category_id;
+        else if(manager_id!=null)
+            url+="&manager_id="+manager_id;
         return restTemplate.getForObject(url, Integer.class);
     }
 

@@ -19,17 +19,40 @@ public class UserDataController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<List<UserViewModel>> getAllUsers() {
-        return ResponseEntity.ok(userDataService.getAll());
+    public ResponseEntity<List<UserViewModel>> getAllUsers(
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size") Integer size
+    ) {
+        return ResponseEntity.ok(userDataService.getAll(page, size));
+    }
+
+    @RequestMapping(value = "/total-pages", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<Integer> getTotalPages(
+            @RequestParam(name = "size") Integer size) {
+        return ResponseEntity.ok(userDataService.getTotalPages(size));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<UserViewModel> getUserById(@PathVariable(name="id") String id) {
         return ResponseEntity.ok(userDataService.getUserById(Long.valueOf(id)));
     }
 
+    @RequestMapping(value = "/change-role", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<UserViewModel> changeRole(
+            @RequestBody UserViewModel user,
+            @RequestParam(name = "new") Integer newRole
+    ) {
+        if (user != null) {
+            return ResponseEntity.ok(userDataService.changeRole(user, newRole));
+        }
+        return null;
+    }
+
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<UserViewModel> saveUser(@RequestBody UserViewModel user /*todo server validation*/) {
+    public ResponseEntity<UserViewModel> saveUser(@RequestBody UserViewModel user) {
         if (user != null) {
             return ResponseEntity.ok(userDataService.saveUser(user));
         }
@@ -56,6 +79,7 @@ public class UserDataController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('admin')")
     public void deleteUser(@PathVariable String id) {
         userDataService.deleteUser(Long.valueOf(id));
     }

@@ -3,7 +3,7 @@ import {SpecialProduct} from "./specialProduct";
 
 export class SpecialSubscription {
   id: string;
-  product: SpecialProduct;
+  specialProduct: SpecialProduct;
   userWallet: Wallet;
   start: Date;
   end: Date;
@@ -12,7 +12,7 @@ export class SpecialSubscription {
   static cloneBase(subscription: SpecialSubscription): SpecialSubscription {
     let clonedSubscription: SpecialSubscription = new SpecialSubscription();
     clonedSubscription.id = subscription.id;
-    clonedSubscription.product = subscription.product;
+    clonedSubscription.specialProduct = subscription.specialProduct;
     clonedSubscription.userWallet = subscription.userWallet;
     clonedSubscription.start = subscription.start;
     clonedSubscription.end = subscription.end;

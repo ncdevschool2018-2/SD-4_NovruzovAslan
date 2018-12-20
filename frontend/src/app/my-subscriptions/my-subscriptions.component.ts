@@ -21,6 +21,9 @@ export class MySubscriptionsComponent implements OnInit, OnDestroy {
   public totalPages;
   public pages: number[] = [];
 
+  minDate: Date;
+  maxDate: Date;
+
   private currentUser: User;
   public wallets: Wallet[] = [];
 
@@ -39,6 +42,7 @@ export class MySubscriptionsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadUser();
+    this.setDates();
   }
 
   private loadUser(): void {
@@ -125,6 +129,14 @@ export class MySubscriptionsComponent implements OnInit, OnDestroy {
   public _closeModal(): void {
     this.modalRef.hide();
   }
+
+  private setDates(): void {
+    this.minDate = new Date();
+    this.maxDate = new Date();
+    this.maxDate.setFullYear(this.maxDate.getFullYear()+2);
+    console.log(this.minDate + " " + this.maxDate);
+  }
+
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());

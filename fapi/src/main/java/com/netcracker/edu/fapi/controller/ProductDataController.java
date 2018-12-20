@@ -26,11 +26,20 @@ public class ProductDataController {
         return ResponseEntity.ok(productDataService.getPage(page, size, category_id));
     }
 
+    @RequestMapping(value = "/own", method = RequestMethod.GET)
+    public ResponseEntity<List<ProductViewModel>> getOwnProducts(
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size") Integer size,
+            @RequestParam(name = "manager_id") Long manager_id) {
+        return ResponseEntity.ok(productDataService.getOwnPage(page, size, manager_id));
+    }
+
     @RequestMapping(value = "/total-pages", method = RequestMethod.GET)
     public ResponseEntity<Integer> getTotalPages(
             @RequestParam(name = "size") Integer size,
-            @RequestParam(name = "category_id", required = false) Long category_id) {
-        return ResponseEntity.ok(productDataService.getTotalPages(size, category_id));
+            @RequestParam(name = "category_id", required = false) Long category_id,
+            @RequestParam(name = "manager_id", required = false) Long manager_id) {
+        return ResponseEntity.ok(productDataService.getTotalPages(size, category_id, manager_id));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -38,15 +47,24 @@ public class ProductDataController {
         return ResponseEntity.ok(productDataService.getProductById(Long.valueOf(id)));
     }
 
-    @RequestMapping(value = "/{category_id}",method = RequestMethod.POST)
+    @RequestMapping(value = "",method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('admin') or hasAuthority('content_manager')")
-    public ResponseEntity<ProductViewModel> saveProduct(@RequestBody ProductViewModel product, @PathVariable(name = "category_id") long category_id /*todo server validation*/) {
+    public ResponseEntity<ProductViewModel> saveProduct(@RequestBody ProductViewModel product) {
         if (product != null) {
-            product.setCategory(new CategoryViewModel(category_id, ""));
             return ResponseEntity.ok(productDataService.saveProduct(product));
         }
         return null;
     }
+
+//    @RequestMapping(value = "/{category_id}",method = RequestMethod.POST)
+//    @PreAuthorize("hasAuthority('admin') or hasAuthority('content_manager')")
+//    public ResponseEntity<ProductViewModel> saveProduct(@RequestBody ProductViewModel product, @PathVariable(name = "category_id") long category_id /*todo server validation*/) {
+//        if (product != null) {
+//            product.setCategory(new CategoryViewModel(category_id, ""));
+//            return ResponseEntity.ok(productDataService.saveProduct(product));
+//        }
+//        return null;
+//    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('admin')")

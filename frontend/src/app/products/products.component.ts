@@ -6,7 +6,8 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { NgxSpinnerService } from 'ngx-spinner';
 import {ActivatedRoute} from "@angular/router";
 import {CategoryService} from "../service/category/category.service";
-import {camelCaseToDashCase} from "@angular/platform-browser/src/dom/util";
+import {toNumber} from "ngx-bootstrap/timepicker/timepicker.utils";
+import {Category} from "../model/category";
 
 @Component({
   selector: "products",
@@ -17,6 +18,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   public editMode = false;
   // @Input()
   public categoryId: string;
+  public editCategoryId: number;
   public currentPage: number = 1;
 
   public titleOfPage: string;
@@ -24,6 +26,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   public totalPages: number;
   public pages: number[] = [];
   public products: Product[];
+  public categories: Category[];
   public editableProduct: Product = new Product();
   public modalRef: BsModalRef;
 
@@ -39,6 +42,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getId();
+    this.loadCategories();
     // this.loadProducts();
   }
 
@@ -67,19 +71,15 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   public _openModal(template: TemplateRef<any>, product: Product): void {
-    if (product) {
-      this.editMode = true;
-      this.editableProduct = Product.cloneBase(product);
-    } else {
-      this.refreshProduct();
-      this.editMode = false;
-    }
+    this.editMode = true;
+    this.editableProduct = Product.cloneBase(product);
+    this.editCategoryId = toNumber(this.editableProduct.category.id);
 
-    this.modalRef = this.modalService.show(template); // and when the user clicks on the button to open the popup
-    // we keep the modal reference and pass the template local name to the modalService.
+    this.modalRef = this.modalService.show(template);
   }
 
   public _addProduct(): void {
+    this.editableProduct.category.id = this.editCategoryId.toString();
     this.subscriptions.push(
       this.productService.saveProduct(this.editableProduct).subscribe(() => {
         this._updateProducts();
@@ -103,9 +103,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   private refreshProduct(): void {
     this.editableProduct = new Product();
-    if(this.categoryId !== '0') {
-      this.editableProduct.category.id = this.categoryId;
-    }
+    // if(this.categoryId !== '0') {
+    //   this.editableProduct.category.id = this.categoryId;
+    // }
   }
 
   public loadProducts(): void {
@@ -114,7 +114,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
         this.productService.getProducts(this.currentPage, this.numberOfProductsPerPage).subscribe(products => {
           this.products = products as Product[];
           this.getTotalPagesNumber();
-          console.log(this.products);
+          // console.log(this.products);
         })
       );
     } else {
@@ -141,6 +141,14 @@ export class ProductsComponent implements OnInit, OnDestroy {
     );
   }
 
+  private loadCategories(): void {
+    this.subscriptions.push(
+      this.categoryService.getCategorys().subscribe(categories => {
+        this.categories = categories;
+      })
+    )
+  }
+
   public loadNext(): void {
     this.currentPage++;
     this.loadProducts();
@@ -159,7 +167,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    let shortDesc = description.slice(0,end)
+    let shortDesc = description.slice(0,end);
     shortDesc+='...';
     return shortDesc;
   }

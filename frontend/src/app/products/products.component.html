@@ -34,11 +34,20 @@
   <div class="card col-sm-12 col-me-5 col-lg-3 mp-cards" *ngFor="let product of products">
     <!--<img class="card-img-top" src="{{product.img_src}}" alt="Card image">-->
     <div class="card-body">
-      <h5 class="card-title">{{product.name}}</h5>
+      <div class="card-title">
+        <h5>{{product.name}}</h5>
+        <div class="btn-group">
+          <button type="button" class="btn btn-warning mt-1" (click)="_openModal(template, product)"><i class="fas fa-edit"></i></button>
+          <button type="button" class="btn btn-danger mt-1" (click)="_deleteProduct(product.id)"><i class="fas fa-trash-alt"></i></button>
+        </div>
+      </div>
       <p class="card-text">{{_shortDescription(product.description)}}</p>
       <div class="row justify-content-around">
         <a routerLink="/products/id/{{product.id}}" class="btn btn-primary col-5">More</a>
         <label class="col-5 p-0">{{product.cost+"$"}}</label>
+      </div>
+      <div class="row justify-content-center">
+
       </div>
     </div>
   </div>
@@ -63,7 +72,7 @@
 <ng-template #template>
   <form>
     <div class="modal-header">
-      <h4 class="modal-title pull-left">{{editMode ? "Edit": "Create"}} new Product</h4>
+      <h4 class="modal-title pull-left">Edit product</h4>
       <button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -77,14 +86,7 @@
           <!--Easy way to create client validation-->
         </div>
       </div>
-      <div class="form-group">
-        <label>Short description</label>
-        <input class="form-control" name="Short description" [(ngModel)]="editableProduct.short_description"
-          #short_description="ngModel" required />
-        <div [hidden]="short_description.valid || short_description.untouched" class="alert alert-danger">
-          Please set Short description
-        </div>
-      </div>
+
       <div class="form-group">
         <label>Full description</label>
         <input class="form-control" name="Description" [(ngModel)]="editableProduct.description"
@@ -94,23 +96,17 @@
         </div>
       </div>
       <div class="form-group">
-        <label>Image source</label>
-        <input class="form-control" name="Image source" [(ngModel)]="editableProduct.img_src" #img_src="ngModel" required />
-        <div [hidden]="img_src.valid || img_src.untouched" class="alert alert-danger">
-          Please set Image source
-        </div>
-      </div>
-      <div class="form-group">
         <label>Cost</label>
-        <input class="form-control" name="Cost" [(ngModel)]="editableProduct.cost" #cost="ngModel" required />
+        <input type="number" class="form-control" name="Cost" [(ngModel)]="editableProduct.cost" #cost="ngModel" required />
         <div [hidden]="cost.valid || cost.untouched" class="alert alert-danger">
           Please set Cost
         </div>
       </div>
       <div class="form-group">
         <label>Category</label>
-        <input class="form-control" name="Category" [(ngModel)]="editableProduct.category.id" #category_id="ngModel"
-          required />
+        <select class="select form-control" name="Category" [(ngModel)]="editCategoryId" #category_id="ngModel" required>
+          <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+        </select>
         <div [hidden]="category_id.valid || category_id.untouched" class="alert alert-danger">
           Please set Category
         </div>
@@ -118,8 +114,8 @@
 
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" (click)="_addProduct()" [disabled]="name.invalid || short_description.invalid || full_description.invalid || img_src.invalid || cost.invalid || category_id.invalid">
-        {{editMode ? "Save": "Create"}}
+      <button type="button" class="btn btn-default" (click)="_addProduct()" [disabled]="name.invalid || full_description.invalid || cost.invalid || category_id.invalid">
+        Save
       </button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
 

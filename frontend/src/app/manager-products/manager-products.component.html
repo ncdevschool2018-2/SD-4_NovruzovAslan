@@ -1,0 +1,163 @@
+<ngx-spinner
+  bdColor = "rgba(51,51,51,0.8)"
+  size = "large"
+  color = "#27e9d2"
+  type = "ball-climbing-dot"
+></ngx-spinner>
+
+<div class="row justify-content-between mt-4">
+  <h3>Own products</h3>
+  <div>
+    <label class="mr-2">Number of products per page:</label>
+    <div class="btn-group">
+      <label (click)="loadProducts()" class="btn btn-primary" [(ngModel)]="numberOfProductsPerPage"
+             btnRadio="5" tabindex="0" role="button">5</label>
+      <label (click)="loadProducts()" class="btn btn-primary" [(ngModel)]="numberOfProductsPerPage"
+             btnRadio="8" tabindex="0" role="button">8</label>
+      <label (click)="loadProducts()" class="btn btn-primary" [(ngModel)]="numberOfProductsPerPage"
+             btnRadio="11" tabindex="0" role="button">11</label>
+    </div>
+  </div>
+</div>
+
+<div class="row text-center justify-content-around">
+  <div (click)="_openModal(reactiveCreateTempl)" class="card mp-cards col-sm-12 col-md-5 col-lg-3">
+    <div class="btn row justify-content-center ">
+      <span style="font-size: 120px; color: Dodgerblue;">
+        <span class="fas fa-plus"></span>
+      </span>
+    </div>
+  </div>
+  <div class="card col-sm-12 col-me-5 col-lg-3 mp-cards" *ngFor="let product of products">
+    <!--<img class="card-img-top" src="{{product.img_src}}" alt="Card image">-->
+    <div class="card-body">
+      <h5 class="card-title">{{product.name}}</h5>
+      <p class="card-text">{{_shortDescription(product.description)}}</p>
+      <div class="row justify-content-around">
+        <a routerLink="/products/id/{{product.id}}" class="btn btn-primary col-5">More</a>
+        <label class="col-5 p-0">{{product.cost+"$"}}</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="pagination d-flex justify-content-center" *ngIf="totalPages">
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="currentPage <= 1">
+      <a class="page-link" (click)="loadPrev()">Previous</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage == page" *ngFor="let page of pages">
+      <a class="page-link" (click)="currentPage = page; loadProducts(); ">{{ page }}</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage >= totalPages">
+      <a class="page-link" (click)="loadNext()">Next</a>
+    </li>
+  </ul>
+</div>
+
+<!-- Modal -->
+<ng-template #reactiveCreateTempl>
+  <form [formGroup]="formGroup" (validSubmit)="onSubmit()">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{editMode ? "Edit": "Create"}} new Product</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+    <div class="form-group">
+      <input type="text" placeholder="Name" class="form-control" formControlName="Name">
+    </div>
+    <div class="form-group">
+      <textarea type="text" placeholder="Description" class="form-control" formControlName="Description"></textarea>
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+        </div>
+        <input type="number" placeholder="Cost" class="form-control" formControlName="Cost">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fas fa-wallet"></i></span>
+        </div>
+        <select class="select form-control" formControlName="Wallet">
+          <option *ngFor="let wall of wallets" value="{{wall.id}}">{{wall.name}} ({{wall.value}}{{wall.valute}})</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <select class="select form-control" formControlName="Category">
+        <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+      </select>
+    </div>
+    <!--<div *ngIf="incorrect">-->
+      <!--<alert type="danger" dismissible="true" (onClosed)="closeAlert()">-->
+        <!--This username is already in use-->
+      <!--</alert>-->
+    <!--</div>-->
+
+    <div class="row justify-content-end">
+      <button class="btn btn-success m-2" type="submit">Create</button>
+      <button type="button" class="btn btn-secondary m-2" data-dismiss="modal" (click)="_closeModal()">Close</button>
+    </div>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #createTempl>
+  <form>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{editMode ? "Edit": "Create"}} new Product</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Name</label>
+        <input class="form-control" name="Name" [(ngModel)]="editableProduct.name" #name="ngModel" required />
+        <div [hidden]="name.valid || name.untouched" class="alert alert-danger">
+          Please set Name
+          <!--Easy way to create client validation-->
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <input class="form-control" name="Description" [(ngModel)]="editableProduct.description"
+               #description="ngModel" required />
+        <div [hidden]="description.valid || description.untouched" class="alert alert-danger">
+          Please set Description
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Cost</label>
+        <input class="form-control" name="Cost" [(ngModel)]="editableProduct.cost" #cost="ngModel" required />
+        <div [hidden]="cost.valid || cost.untouched" class="alert alert-danger">
+          Please set Cost
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <input class="form-control" name="Category" [(ngModel)]="editableProduct.category.id" #category_id="ngModel"
+               required />
+        <div [hidden]="category_id.valid || category_id.untouched" class="alert alert-danger">
+          Please set Category
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="_addProduct()" [disabled]="name.invalid || description.invalid || cost.invalid || category_id.invalid">
+        {{editMode ? "Save": "Create"}}
+      </button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
+
+    </div>
+  </form>
+</ng-template>

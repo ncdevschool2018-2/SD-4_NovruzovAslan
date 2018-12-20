@@ -96,6 +96,8 @@
   </ul>
 </div>
 
+
+<!-- Modals -->
 <ng-template #transactionTempl>
   <form>
     <div class="modal-header">
@@ -128,7 +130,7 @@
             </select>
           </div>
             <label>Amount of money</label>
-            <input class="form-control" name="Amount" [(ngModel)]="amountForTransfer" #amount="ngModel" required />
+            <input type="number" class="form-control" name="Amount" [(ngModel)]="amountForTransfer" #amount="ngModel" required />
             <div class="modal-footer">
             <button type="button" class="btn btn-default" (click)="_transaction()"
                     [disabled]="wallet.invalid || amount.invalid">
@@ -168,7 +170,7 @@
             </div>
           </div>
           <label>Amount of money</label>
-          <input class="form-control" name="Amount" [(ngModel)]="amountForTransfer" #amount="ngModel" required />
+          <input type="number"  class="form-control" name="Amount" [(ngModel)]="amountForTransfer" #amount="ngModel" required />
           <div class="modal-footer">
             <button type="button" class="btn btn-default" (click)="_topUp()"
                     [disabled]="amount.invalid">
@@ -182,11 +184,10 @@
   </form>
 </ng-template>
 
-<!-- Modals -->
 <ng-template #createTempl>
   <form>
     <div class="modal-header">
-      <h4 class="modal-title pull-left">{{editMode ? "Edit": "Create"}} new Product</h4>
+      <h4 class="modal-title pull-left">{{editMode ? "Edit": "Create new"}} Wallet</h4>
       <button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -202,13 +203,7 @@
               </div>
               <input class="form-control" name="Name" [(ngModel)]="editableWallet.name" #name="ngModel" required />
               <div class="input-group-append">
-                <select class="select form-control" name="Valute" [(ngModel)]="editableWallet.valute" #valute_edit="ngModel" required>
-                  <option value="$">$</option>
-                  <option value="€">€</option>
-                  <option value="£">£</option>
-                  <option value="¥">¥</option>
-                  <option value="₽">₽</option>
-                </select>
+                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
               </div>
             </div>
             <div [hidden]="name.valid || name.untouched" class="alert alert-danger">

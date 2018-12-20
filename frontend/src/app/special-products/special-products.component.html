@@ -1,0 +1,60 @@
+<!--<div class="row">-->
+<!--<div class="col">-->
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" (click)="_openModal(template)">-->
+<!--Create new product-->
+<!--</button>-->
+<!--</div>-->
+<!--</div>-->
+
+<ngx-spinner
+  bdColor = "rgba(51,51,51,0.8)"
+  size = "large"
+  color = "#27e9d2"
+  type = "ball-climbing-dot"
+></ngx-spinner>
+
+<!--<app-navbar></app-navbar>-->
+
+<div class="row justify-content-between mt-4">
+  <h3>{{titleOfPage}}</h3>
+  <div>
+    <label class="mr-2">Number of products per page:</label>
+    <div class="btn-group">
+      <label (click)="loadProducts()" class="btn btn-primary" [(ngModel)]="numberOfProductsPerPage"
+             btnRadio="6" tabindex="0" role="button">6</label>
+      <label (click)="loadProducts()" class="btn btn-primary" [(ngModel)]="numberOfProductsPerPage"
+             btnRadio="9" tabindex="0" role="button">9</label>
+      <label (click)="loadProducts()" class="btn btn-primary" [(ngModel)]="numberOfProductsPerPage"
+             btnRadio="12" tabindex="0" role="button">12</label>
+    </div>
+  </div>
+</div>
+
+<div class="row text-center justify-content-around" *ngIf="totalPages">
+  <div class="card col-sm-12 col-me-5 col-lg-3 mp-cards" *ngFor="let product of products">
+    <!--<img class="card-img-top" src="{{product.img_src}}" alt="Card image">-->
+    <div class="card-body">
+      <h5 class="card-title">{{product.name}}</h5>
+      <p class="card-text">{{_shortDescription(product.description)}}</p>
+      <div class="row justify-content-around">
+        <a routerLink="/products/id/{{product.id}}" class="btn btn-primary col-5">More</a>
+        <label class="col-5 p-0">{{product.cost+"$"}}</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="pagination d-flex justify-content-center" *ngIf="totalPages">
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="currentPage <= 1">
+      <a class="page-link" (click)="loadPrev()">Previous</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage == page" *ngFor="let page of pages">
+      <a class="page-link" (click)="currentPage = page; loadProducts(); ">{{ page }}</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage >= totalPages">
+      <a class="page-link" (click)="loadNext()">Next</a>
+    </li>
+  </ul>
+</div>

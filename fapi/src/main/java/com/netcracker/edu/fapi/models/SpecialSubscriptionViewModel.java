@@ -9,9 +9,9 @@ import java.sql.Date;
 public class SpecialSubscriptionViewModel {
 
     private Long id;
-    @JsonIgnore
+//    @JsonIgnore
     private SpecialProductViewModel product;
-    @JsonIgnore
+//    @JsonIgnore
     private WalletViewModel userWallet;
     private Date start;
     private Date end;

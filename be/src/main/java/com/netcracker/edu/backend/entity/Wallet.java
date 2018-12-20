@@ -34,6 +34,10 @@ public class Wallet {
         this.valute = valute;
     }
 
+    public Wallet(Long id) {
+        this.id = id;
+    }
+
     public Wallet() {
 
     }

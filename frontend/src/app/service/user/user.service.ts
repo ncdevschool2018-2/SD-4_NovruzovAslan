@@ -10,18 +10,30 @@ import { User } from "../../model/user";
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  // Ajax request for user data
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>("/api/users");
+  // getUsers(): Observable<User[]> {
+  //   return this.http.get<User[]>("/api/users");
+  // }
+
+  getUsers(page: number, size: string): Observable<User[]> {
+    return this.http.get<User[]>("/api/users?page="+page+"&size="+size);
+  }
+
+  getTotalPages(size: string): Observable<number> {
+    let url: string = "/api/users/total-pages?size="+size;
+    return this.http.get<number>(url);
+  }
+
+  changeRole(user: User, newRole: number): Observable<User> {
+    return this.http.post<User>("/api/users/change-role?new="+newRole, user);
   }
 
   saveUser(user: User): Observable<User> {
     return this.http.post<User>("/api/users", user);
   }
 
-  signupUser(user: User): Observable<User> {
-    return this.http.post<User>("/api/users/signup", user);
-  }
+  // signupUser(user: User): Observable<User> {
+  //   return this.http.post<User>("/api/users/signup", user);
+  // }
 
   deleteUser(userId: string): Observable<void> {
     return this.http.delete<void>("/api/users/" + userId);

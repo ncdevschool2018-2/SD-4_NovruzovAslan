@@ -13,4 +13,5 @@ public interface ProductService {
 //    Iterable<Product> getProductsByCategoryId(Long id);
     void deleteProduct(Long id);
     Page<Product> getPage(Integer page, Integer size, Long category_id);
+    Page<Product> getOwnPage(Integer page, Integer size, Long manager_id);
 }

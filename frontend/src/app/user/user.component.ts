@@ -4,6 +4,9 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { Subscription } from "rxjs/internal/Subscription";
 import { UserService } from "../service/user/user.service";
 import {NgxSpinnerService} from "ngx-spinner";
+import {Role} from "../model/role";
+import {RoleService} from "../service/role/role.service";
+import {toNumber} from "ngx-bootstrap/timepicker/timepicker.utils";
 
 @Component({
   selector: "app-users",
@@ -13,7 +16,14 @@ import {NgxSpinnerService} from "ngx-spinner";
 export class UserComponent implements OnInit, OnDestroy {
   public editMode = false;
 
+  public size: string = '10';
+  public currentPage: number = 1;
+  public totalPages: number;
+  public pages: number[] = [];
+
   public users: User[];
+  public roles: Role[];
+  public roleId: number;
   public editableUser: User = new User();
   public modalRef: BsModalRef;
 
@@ -21,12 +31,14 @@ export class UserComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserService,
+    private roleService: RoleService,
     private modalService: BsModalService,
     private loadingService: NgxSpinnerService,
   ) {}
 
   ngOnInit() {
     this.loadUsers();
+    this.loadRoles();
   }
 
   public _closeModal(): void {
@@ -37,6 +49,7 @@ export class UserComponent implements OnInit, OnDestroy {
     if (user) {
       this.editMode = true;
       this.editableUser = User.cloneBase(user);
+      this.roleId = toNumber(this.editableUser.role.id);
     } else {
       this.refreshUser();
       this.editMode = false;
@@ -47,14 +60,16 @@ export class UserComponent implements OnInit, OnDestroy {
 
   public _addUser(): void {
     this.loadingService.show();
-    this.subscriptions.push(
-      this.userService.saveUser(this.editableUser).subscribe(() => {
-        this._updateUsers();
-        this.refreshUser();
-        this._closeModal();
-        this.loadingService.hide();
-      })
-    );
+    if (this.editableUser.role.id != this.roleId.toString()) {
+      this.subscriptions.push(
+        this.userService.changeRole(this.editableUser, this.roleId).subscribe(() => {
+          this._updateUsers();
+          this.refreshUser();
+          this._closeModal();
+          this.loadingService.hide();
+        })
+      );
+    }
   }
 
   public _updateUsers(): void {
@@ -67,7 +82,6 @@ export class UserComponent implements OnInit, OnDestroy {
       this.userService.deleteUser(userId).subscribe(() => {
         this._updateUsers();
         this.loadingService.hide();
-        // todo: check how it will work, because there is loadingService using in updateUsers method
       })
     );
   }
@@ -79,12 +93,43 @@ export class UserComponent implements OnInit, OnDestroy {
   private loadUsers(): void {
     this.loadingService.show();
     this.subscriptions.push(
-      this.userService.getUsers().subscribe(users => {
+      this.userService.getUsers(this.currentPage, this.size).subscribe(users => {
         this.users = users as User[];
-        console.log(this.users);
+        this.getTotalPagesNumber();
         this.loadingService.hide();
       })
     );
+  }
+
+  private getTotalPagesNumber(): void {
+    this.subscriptions.push(
+      this.userService.getTotalPages(this.size).subscribe(num => {
+        this.totalPages = num;
+        this.pages = [];
+        for(let i=1; i<=this.totalPages; i++) {
+          this.pages.push(i);
+        }
+        this.loadingService.hide();
+      })
+    );
+  }
+
+  private loadRoles(): void {
+    this.subscriptions.push(
+      this.roleService.getRoles().subscribe(roles => {
+        this.roles = roles;
+      })
+    )
+  }
+
+  public loadNext(): void {
+    this.currentPage++;
+    this.loadUsers();
+  }
+
+  public loadPrev(): void {
+    this.currentPage--;
+    this.loadUsers();
   }
 
   ngOnDestroy(): void {

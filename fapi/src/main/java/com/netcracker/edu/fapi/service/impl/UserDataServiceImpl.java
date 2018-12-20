@@ -2,6 +2,7 @@ package com.netcracker.edu.fapi.service.impl;
 
 import com.netcracker.edu.fapi.config.Constants;
 import com.netcracker.edu.fapi.config.JwtTokenUtil;
+import com.netcracker.edu.fapi.models.RoleViewModel;
 import com.netcracker.edu.fapi.models.UserViewModel;
 import com.netcracker.edu.fapi.service.UserDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,16 @@ public class UserDataServiceImpl implements UserDetailsService, UserDataService 
     }
 
     @Override
-    public List<UserViewModel> getAll() {
+    public List<UserViewModel> getAll(Integer page, Integer size) {
         RestTemplate restTemplate = new RestTemplate();
-        UserViewModel[] userViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/users", UserViewModel[].class);
+        UserViewModel[] userViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/users?page="+page+"&size="+size, UserViewModel[].class);
         return userViewModelResponse == null ? Collections.emptyList() : Arrays.asList(userViewModelResponse);
+    }
+
+    @Override
+    public Integer getTotalPages(Integer size) {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(backendServerUrl+"/api/users/total-pages?size=" + size, Integer.class);
     }
 
     @Override
@@ -81,6 +88,12 @@ public class UserDataServiceImpl implements UserDetailsService, UserDataService 
     }
 
     @Override
+    public UserViewModel changeRole(UserViewModel user, Integer roleId) {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.postForEntity(backendServerUrl + "/api/users/change-role?new="+roleId, user, UserViewModel.class).getBody();
+    }
+
+    @Override
     public void deleteUser(Long id) {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete(backendServerUrl + "/api/users/" + id);
@@ -97,4 +110,5 @@ public class UserDataServiceImpl implements UserDetailsService, UserDataService 
         }
         return login;
     }
+
 }

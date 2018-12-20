@@ -18,9 +18,12 @@ public class SubscriptionDataServiceImpl implements SubscriptionDataService {
     private String backendServerUrl;
 
     @Override
-    public List<SubscriptionViewModel> getAll() {
+    public List<SubscriptionViewModel> getAll(Long userId) {
         RestTemplate restTemplate = new RestTemplate();
-        SubscriptionViewModel[] subscriptionViewModelResponse = restTemplate.getForObject(backendServerUrl + "/api/subscriptions", SubscriptionViewModel[].class);
+        String url = backendServerUrl + "/api/subscriptions";
+        if(userId != null)
+            url += "?user_id="+userId;
+        SubscriptionViewModel[] subscriptionViewModelResponse = restTemplate.getForObject(url, SubscriptionViewModel[].class);
         return subscriptionViewModelResponse == null ? Collections.emptyList() : Arrays.asList(subscriptionViewModelResponse);
     }
 
@@ -34,16 +37,28 @@ public class SubscriptionDataServiceImpl implements SubscriptionDataService {
     @Override
     public List<SubscriptionViewModel> getSubscriptionsPageByUserId(Integer page, Integer size, Long userId) {
         RestTemplate restTemplate = new RestTemplate();
-        String url = backendServerUrl + "/api/subscriptions/products?page=" + page + "&size=" + size + "&user_id=" + userId;
+        String url = backendServerUrl + "/api/subscriptions/products?page=" + page + "&size=" + size;
+        if(userId!=null)
+            url += "&user_id=" + userId;
         SubscriptionViewModel[] productViewModelResponse = restTemplate.getForObject(url, SubscriptionViewModel[].class);
         return productViewModelResponse == null ? Collections.emptyList() : Arrays.asList(productViewModelResponse);
 
     }
 
     @Override
+    public SubscriptionViewModel getSubscriptionByUserAndProductId(Long userId, Long productId) {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(
+                backendServerUrl+"/api/subscriptions/product?user_id=" + userId + "&product_id=" + productId, SubscriptionViewModel.class);
+    }
+
+
+    @Override
     public Integer getTotalPages(Integer size, Long user_id) {
         RestTemplate restTemplate = new RestTemplate();
-        String url = backendServerUrl+"/api/subscriptions/total-pages?size=" + size + "&user_id=" + user_id;
+        String url = backendServerUrl+"/api/subscriptions/total-pages?size=" + size;
+        if(user_id!=null)
+            url += "&user_id=" + user_id;
         return restTemplate.getForObject(url, Integer.class);
     }
 

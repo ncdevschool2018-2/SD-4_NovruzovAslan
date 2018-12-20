@@ -1,6 +1,7 @@
 package com.netcracker.edu.backend.service.impl;
 
 import com.netcracker.edu.backend.entity.Product;
+import com.netcracker.edu.backend.entity.Wallet;
 import com.netcracker.edu.backend.repository.ProductRepository;
 import com.netcracker.edu.backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product saveProduct(Product product) {
+        product.setImg_src("path");
+//        product.setWallet(new Wallet(2L));
+        if(product.getId()==null && repository.findProductByName(product.getName()).isPresent())
+            return null;
         return repository.save(product);
     }
 
@@ -54,6 +59,12 @@ public class ProductServiceImpl implements ProductService {
         if(category_id==null)
             return repository.findAll(pageable);
         return repository.findProductsByCategoryId(pageable, category_id);
+    }
+
+    @Override
+    public Page<Product> getOwnPage(Integer page, Integer size, Long manager_id) {
+        Pageable pageable = new PageRequest(page-1, size, new Sort(Sort.Direction.ASC, "id"));
+        return repository.findProductsByWalletUserId(pageable, manager_id);
     }
 
 }

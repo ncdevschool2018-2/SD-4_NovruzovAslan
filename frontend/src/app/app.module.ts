@@ -34,23 +34,26 @@ import { ButtonsModule } from "ngx-bootstrap";
 
 import {CUSTOM_ERROR_MESSAGES, NgBootstrapFormValidationModule} from 'ng-bootstrap-form-validation';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { MySpecialSubscriptionsComponent } from './my-special-subscriptions/my-special-subscriptions.component';
+import { ManagerProductsComponent } from './manager-products/manager-products.component';
+import { SpecialProductsComponent } from './special-products/special-products.component';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
   { path: 'products', component: ProductsComponent },
   { path: 'products/id/:id', component: ProductComponent },
   { path: 'products/category_id/:id', component: ProductsComponent },
-  { path: 'my-products', component: TabsetComponent/*todo: ManagerProductComponent where all products of this manager will be located*/ },
-  { path: 'special-products', component: ProductsComponent /* todo: SpecialProductsComponent */},
-  // { path: 'user', component: UserComponent },//?????
+  { path: 'my-products', component: ManagerProductsComponent },
+  { path: 'special-products', component: SpecialProductsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'users', component: UserComponent },
   { path: 'wallets', component: WalletsComponent },
   { path: 'all-wallets', component: WalletTableComponent },
   { path: 'subscriptions', component: MySubscriptionsComponent },
-  { path: 'special-subscriptions', component: MySubscriptionsComponent }, // todo: MySpecialSubscriptionsComponent
-  { path: 'all-subscriptions', component: MySubscriptionsComponent /* todo: SubscriptonsComponent where all subscriptions will be located*/ },
+  { path: 'special-subscriptions', component: MySpecialSubscriptionsComponent },
+  { path: 'all-subscriptions', component: SubscriptionsComponent },
   { path: 'all-special-subscriptions', component: MySubscriptionsComponent /* todo: SpecialSubscriptionsComponent where all subscriptions will be located*/ }
 ];
 
@@ -68,7 +71,11 @@ const appRoutes: Routes = [
     LoginComponent,
     RegisterComponent,
     ProductComponent,
-    MySubscriptionsComponent
+    MySubscriptionsComponent,
+    MySpecialSubscriptionsComponent,
+    ManagerProductsComponent,
+    SpecialProductsComponent,
+    SubscriptionsComponent
   ],
   imports: [
     HttpModule,

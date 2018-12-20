@@ -52,11 +52,11 @@ public class SpecialSubscription implements Subscr {
         this.id = id;
     }
 
-    public SpecialProduct getSpecialProduct() {
+    public SpecialProduct getProduct() {
         return specialProduct;
     }
 
-    public void setSpecialProduct(SpecialProduct specialProduct) {
+    public void setProduct(SpecialProduct specialProduct) {
         this.specialProduct = specialProduct;
     }
 
@@ -94,7 +94,7 @@ public class SpecialSubscription implements Subscr {
 
     @Override
     public Wallet getWallet() {
-        return null;//this.getSpecialProduct().getProduct().getWallet();
+        return null;// this.getProduct().getProduct().getWallet();
     }
 
     @Override
@@ -119,8 +119,8 @@ public class SpecialSubscription implements Subscr {
     public String toString() {
         return "SpecialSubscription{" +
                 "id=" + id +
-//                ", specialProduct=" + specialProduct +
-//                ", userWallet=" + userWallet +
+                ", specialProduct=" + specialProduct +
+                ", userWallet=" + userWallet +
                 ", start=" + start +
                 ", end=" + end +
                 ", isActive=" + isActive +

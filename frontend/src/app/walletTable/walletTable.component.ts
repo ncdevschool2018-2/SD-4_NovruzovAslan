@@ -4,7 +4,6 @@ import { User } from "../model/user";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { Subscription } from "rxjs/internal/Subscription";
 import { WalletService } from "../service/wallet/wallet.service";
-import { UserService } from "../service/user/user.service";
 import { toNumber } from "ngx-bootstrap/timepicker/timepicker.utils";
 import {NgxSpinnerService} from "ngx-spinner";
 
@@ -15,6 +14,11 @@ import {NgxSpinnerService} from "ngx-spinner";
 })
 export class WalletTableComponent implements OnInit, OnDestroy {
   public editMode = false;
+
+  public size: string = '10';
+  public currentPage: number = 1;
+  public totalPages: number;
+  public pages: number[] = [];
 
   public wallets: Wallet[];
   public usersForSelect: User[];
@@ -28,15 +32,11 @@ export class WalletTableComponent implements OnInit, OnDestroy {
   constructor(
     private walletService: WalletService,
     private modalService: BsModalService,
-    private userService: UserService,
     private loadingService: NgxSpinnerService
   ) {
   }
 
   ngOnInit() {
-    // this.loadWallets();
-    // this.loadUsers();
-    // this.editableWallet.user = new User();
     this._updateWallets();
   }
 
@@ -78,9 +78,7 @@ export class WalletTableComponent implements OnInit, OnDestroy {
   public _updateWallets(): void {
     this.loadingService.show();
     this.loadWallets();
-    // this.loadUsers();
     this.refreshWallet();
-    // this.loadingService.hide();
   }
 
   public _deleteWallet(walletId: string): void {
@@ -100,23 +98,46 @@ export class WalletTableComponent implements OnInit, OnDestroy {
 
   private loadWallets(): void {
     this.subscriptions.push(
-      this.walletService.getWallets().subscribe(wallets => {
+      this.walletService.getWalletsPageByUserId(this.currentPage, this.size).subscribe(wallets => {
         this.wallets = wallets as Wallet[];
-        console.log(this.wallets);
-        this.loadUsers();
+        this.getTotalPagesNumber();
       })
     );
   }
 
-  private loadUsers(): void {
+  // private loadWallets(): void {
+  //   this.subscriptions.push(
+  //     this.walletService.getUsers().subscribe(users => {
+  //       this.usersForSelect = users as User[];
+  //       console.log(this.usersForSelect);
+  //       this.loadingService.hide();
+  //     })
+  //   )
+  // }
+
+  private getTotalPagesNumber(): void {
     this.subscriptions.push(
-      this.userService.getUsers().subscribe(users => {
-        this.usersForSelect = users as User[];
-        console.log(this.usersForSelect);
+      this.walletService.getTotalPages(this.size).subscribe(num => {
+        this.totalPages = num;
+        this.pages = [];
+        for(let i=1; i<=this.totalPages; i++) {
+          this.pages.push(i);
+        }
         this.loadingService.hide();
       })
-    )
+    );
   }
+
+  public loadNext(): void {
+    this.currentPage++;
+    this.loadWallets();
+  }
+
+  public loadPrev(): void {
+    this.currentPage--;
+    this.loadWallets();
+  }
+
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());

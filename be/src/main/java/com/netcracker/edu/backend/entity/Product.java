@@ -45,8 +45,6 @@ public class Product {
             joinColumns = @JoinColumn(name = "prod_id"),
             inverseJoinColumns = @JoinColumn(name = "specprod_id")
     )
-//    @JsonManagedReference
-//    @JsonIgnore
     private Set<SpecialProduct> specialProducts = new HashSet<>();
 
     public Product(String name, String description, String img_src, Double cost, Category category, Wallet wallet, Set<SpecialProduct> specialProducts) {

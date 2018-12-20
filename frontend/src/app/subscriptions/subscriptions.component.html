@@ -1,0 +1,126 @@
+<ngx-spinner
+  bdColor = "rgba(51,51,51,0.8)"
+  size = "large"
+  color = "#5bff5b"
+  type = "ball-climbing-dot"
+></ngx-spinner>
+
+<div class="row justify-content-between mt-4">
+  <h3>All subscriptions</h3>
+  <div>
+    <label class="mr-2">Number of subscriptions per page:</label>
+    <div class="btn-group">
+      <label (click)="loadSubscriptions()" class="btn btn-primary" [(ngModel)]="size"
+             btnRadio="10" tabindex="0" role="button">10</label>
+      <label (click)="loadSubscriptions()" class="btn btn-primary" [(ngModel)]="size"
+             btnRadio="20" tabindex="0" role="button">20</label>
+      <label (click)="loadSubscriptions()" class="btn btn-primary" [(ngModel)]="size"
+             btnRadio="30" tabindex="0" role="button">30</label>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-lg-5">
+  <div class="row">
+
+    <div class="col">
+      <table class="table" *ngIf="totalPages">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Owner</th>
+          <th scope="col">Product</th>
+          <th scope="col">Start</th>
+          <th scope="col">End</th>
+          <th scope="col">Active</th>
+          <th scope="col"></th>
+          <!--<th scope="col"></th>-->
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let subscription of _subscriptions">
+            <td scope="row">{{subscription.id}}</td>
+            <td>{{subscription.userWallet.user.username}}</td>
+            <td>{{subscription.product.name}}</td>
+            <td>{{subscription.start}}</td>
+            <td>{{subscription.end}}</td>
+            <td *ngIf="!subscription.active">
+              <span style="color: #ff0f01;">
+               <i class="fas fa-thumbs-down"></i>
+              </span>
+            </td>
+            <td *ngIf="subscription.active">
+              <span style="color: #00ff03;">
+               <i class="fas fa-thumbs-up"></i>
+              </span>
+            </td>
+            <td><button type="button" class="btn btn-danger" (click)="_deleteSubscription(subscription.id)"><i class="fas fa-trash-alt"></i></button></td>
+            <!--<td><button type="button" class="btn btn-warning" (click)="_openModal(template, subscription)"><i class="fas fa-edit"></i></button></td>-->
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <!--<div class="row">-->
+    <!--<div class="col">-->
+      <!--<button type="button" class="btn btn-dark" (click)="_updateUsers()">Update</button>-->
+
+    <!--</div>-->
+    <!--<div class="col">-->
+      <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" (click)="_openModal(template)">-->
+        <!--Create new subscription-->
+      <!--</button>-->
+    <!--</div>-->
+  <!--</div>-->
+
+</div>
+
+<div class="pagination d-flex justify-content-center" *ngIf="totalPages">
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="currentPage <= 1">
+      <a class="page-link" (click)="loadPrev()">Previous</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage == page" *ngFor="let page of pages">
+      <a class="page-link" (click)="currentPage = page; loadSubscriptions(); ">{{ page }}</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage >= totalPages">
+      <a class="page-link" (click)="loadNext()">Next</a>
+    </li>
+  </ul>
+</div>
+
+
+<!-- Modal -->
+<!--<ng-template #template>-->
+  <!--<div class="modal-header">-->
+    <!--<h4 class="modal-title pull-left">{{editMode ? "Edit": "Create"}} new User</h4>-->
+    <!--<button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">-->
+      <!--<span aria-hidden="true">&times;</span>-->
+    <!--</button>-->
+  <!--</div>-->
+  <!--<div class="modal-body">-->
+    <!--<div class="form-group">-->
+      <!--<label>Username</label>-->
+      <!--<input class="form-control" name="subscriptionname" [(ngModel)]="editableUser.subscriptionname" #subscriptionname="ngModel" required />-->
+      <!--<div [hidden]="subscriptionname.valid || subscriptionname.untouched" class="alert alert-danger">-->
+        <!--Please set subscriptionname-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+      <!--<label>Password</label>-->
+      <!--<input class="form-control" name="password" [(ngModel)]="editableUser.password" #password="ngModel" required />-->
+      <!--<div [hidden]="password.valid || password.untouched" class="alert alert-danger">-->
+        <!--Please set password-->
+      <!--</div>-->
+    <!--</div>-->
+
+  <!--</div>-->
+  <!--<div class="modal-footer">-->
+    <!--<button type="button" class="btn btn-default" (click)="_addUser()" [disabled]="subscriptionname.invalid || password.invalid">{{editMode-->
+      <!--? "Save": "Create"}}-->
+    <!--</button>-->
+    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>-->
+
+  <!--</div>-->
+<!--</ng-template>-->

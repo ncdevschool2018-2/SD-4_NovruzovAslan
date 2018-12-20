@@ -21,36 +21,50 @@
         <li *ngIf="role=='3'" class="nav-item">
           <a routerLink="/special-subscriptions" class="nav-link">Special subscriptions</a>
         </li>
-        <li *ngIf="role=='2'" class="nav-item">
+        <li *ngIf="role=='2'||role=='1'" class="nav-item">
           <a routerLink="/my-products" class="nav-link">My products</a>
         </li>
-        <li *ngIf="role=='3'||role=='2'" class="nav-item">
+        <li *ngIf="role=='3'||role=='2'||role=='1'" class="nav-item">
           <a routerLink="/wallets" class="nav-link">Wallets</a>
         </li>
+        <!--<li *ngIf="role=='1'" class="nav-item">-->
+          <!--<a routerLink="/users" class="nav-link">Users</a>-->
+        <!--</li>-->
+        <!--<li *ngIf="role=='1'" class="nav-item">-->
+          <!--<a routerLink="/all-wallets" class="nav-link">All Wallets</a>-->
+        <!--</li>-->
+        <!--<li *ngIf="role=='1'" class="nav-item">-->
+          <!--<a routerLink="/all-subscriptions" class="nav-link">All Subscriptions</a>-->
+        <!--</li>-->
+        <!--<li *ngIf="role=='1'" class="nav-item">-->
+          <!--<a routerLink="/all-special-subscriptions" class="nav-link">All Special Subscriptions</a>-->
+        <!--</li>-->
         <li *ngIf="role=='1'" class="nav-item">
-          <a routerLink="/users" class="nav-link">Users</a>
-        </li>
-        <li *ngIf="role=='1'" class="nav-item">
-          <a routerLink="/all-wallets" class="nav-link">Wallets</a>
-        </li>
-        <li *ngIf="role=='1'" class="nav-item">
-          <a routerLink="/all-subscriptions" class="nav-link">Subscriptions</a>
-        </li>
-        <li *ngIf="role=='1'" class="nav-item">
-          <a routerLink="/all-special-subscriptions" class="nav-link">Special Subscriptions</a>
+          <div class="btn-group mr-sm-2" dropdown>
+            <button dropdownToggle type="button" class="btn btn-outline-info p-2 dropdown-toggle" aria-controls="dropdown-tables">
+              Tables <span class="caret"></span>
+            </button>
+            <ul id="dropdown-tables" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+              <li role="menuitem"><button class="btn dropdown-item" routerLink="/users">Users</button></li>
+              <li role="menuitem"><button class="btn dropdown-item" routerLink="/all-wallets">Wallets</button></li>
+              <li role="menuitem"><button class="btn dropdown-item" routerLink="/all-subscriptions">Subscriptions</button></li>
+              <li role="menuitem"><button class="btn dropdown-item" disabled="true" routerLink="/all-special-subscriptions">Special Subscriptions</button></li>
+            </ul>
+          </div>
         </li>
       </ul>
 
       <form class="form-inline my-2 my-lg-0">
+        <button *ngIf="role!='4'" disabled="true" class="btn btn-outline-warning mr-sm-2">{{userName}}</button>
         <div class="btn-group mr-sm-2" dropdown>
           <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
             Categories <span class="caret"></span>
           </button>
           <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-            <li role="menuitem"><button class="dropdown-item" routerLink="/special-products">Sales</button></li>
+            <li role="menuitem"><button class="btn dropdown-item" routerLink="/special-products">Sales</button></li>
             <li class="divider dropdown-divider"></li>
             <li role="menuitem" *ngFor="let category of categories" routerLink="/products/category_id/{{category.id}}">
-              <button class="dropdown-item">{{category.name}}</button>
+              <button class="btn dropdown-item">{{category.name}}</button>
             </li>
             <!--<li role="menuitem"><button class="dropdown-item">Text editors</button></li>-->
             <!--<li role="menuitem"><button class="dropdown-item">IDE's</button></li>-->

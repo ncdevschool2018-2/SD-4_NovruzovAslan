@@ -17,7 +17,7 @@
         <p class="balance col-auto">{{product.cost}}</p>
       </div>
       <div class="row justify-content-around">
-        <button *ngIf="!isSubscribed" type="button" class="btn btn-primary" (click)="_openModal(subscribeForm)">Subscribe</button>
+        <button *ngIf="!isSubscribed && (currentUser.role.id == '3' || currentUser.role.id == '4' )" type="button" class="btn btn-primary" (click)="_openModal(subscribeReactiveForm)">Subscribe</button>
         <button *ngIf="isSubscribed"  type="button" class="btn btn-danger" (click)="unsubscribe()">Unsubscribe</button>
       </div>
     </div>
@@ -26,6 +26,69 @@
     </div>
   </div>
 </div>
+
+<ng-template #subscribeReactiveForm>
+  <form [formGroup]="formGroup" (validSubmit)="onSubmit()">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Subscribe on {{product.name}}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+        </div>
+        <input type="text"
+               placeholder="Start of using"
+               class="form-control"
+               bsDatepicker
+               [minDate]="minDate"
+               [maxDate]="maxDate"
+               formControlName = "Start">
+      </div>
+    </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+          </div>
+          <input type="text"
+                 placeholder="End of using"
+                 class="form-control"
+                 bsDatepicker
+                 [minDate]="minDate"
+                 [maxDate]="maxDate"
+                 formControlName = "End">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-wallet"></i></span>
+          </div>
+          <select class="select form-control" formControlName="Wallet">
+            <option *ngFor="let wall of wallets" value="{{wall.id}}">{{wall.name}} ({{wall.value}}{{wall.valute}})</option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="incorrect">
+        <alert type="danger" dismissible="true" (onClosed)="closeAlert()">
+          End date must be later than start date!
+        </alert>
+      </div>
+
+      <div class="row justify-content-end">
+        <button type="button" class="btn btn-secondary m-2" data-dismiss="modal" (click)="_closeModal()">Close</button>
+        <button class="btn btn-success m-2" type="submit">Subscribe</button>
+      </div>
+      </div>
+  </form>
+
+</ng-template>
 
 <ng-template #subscribeForm>
   <form>

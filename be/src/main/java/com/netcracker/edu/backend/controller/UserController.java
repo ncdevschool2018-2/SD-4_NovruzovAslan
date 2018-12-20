@@ -4,6 +4,7 @@ import com.netcracker.edu.backend.entity.User;
 import com.netcracker.edu.backend.scheduler.ScheduleTask;
 import com.netcracker.edu.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,13 +43,32 @@ public class UserController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Iterable<User> getAllUsers() {
-        return userService.getAllUsers();
+    public Iterable<User> getAllUsers(
+            @RequestParam(name = "page") Integer pageNumber,
+            @RequestParam(name = "size") Integer size
+    ) {
+        Page page = userService.getAllUsers(pageNumber, size);
+        return page.getContent();
+    }
+
+    @RequestMapping(value = "/total-pages", method = RequestMethod.GET)
+    public Integer getTotalPages(
+            @RequestParam(name = "size") Integer size) {
+        Page page = userService.getAllUsers(1, size);
+        return page.getTotalPages();
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public User saveUser(@RequestBody User user) {
         return userService.saveUser(user);
+    }
+
+    @RequestMapping(value = "/change-role", method = RequestMethod.POST)
+    public User changeRole(
+            @RequestBody User user,
+            @RequestParam(name = "new") Long newRole
+    ) {
+        return userService.changeRole(user, newRole);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

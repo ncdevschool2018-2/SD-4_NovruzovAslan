@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   maxDate: Date;
 
   formGroup: FormGroup;
+  public incorrect: boolean = false;
 
 
   constructor(private router: Router,
@@ -68,14 +69,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.setFields();
     this.subscriptions.push(
       this.authService.signUp(this.editableUser).subscribe(
-        () => {
-          this.authService.attemptAuth(this.editableUser.username, this.editableUser.password).subscribe(
-            data => {
-              this.token.saveToken(data.token);
-              this.reloadPage();
-              this.router.navigate(['']);
-            }
-          );
+        newUser => {
+          if(newUser!=null) {
+            this.authService.attemptAuth(this.editableUser.username, this.editableUser.password).subscribe(
+              data => {
+                this.token.saveToken(data.token);
+                this.reloadPage();
+                this.router.navigate(['']);
+              }
+            );
+          } else this.incorrect = true;
         }
       )
     );
@@ -101,6 +104,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.maxDate = new Date();
     this.maxDate.setFullYear(this.maxDate.getFullYear()-6);
     console.log(this.minDate + " " + this.maxDate);
+  }
+
+  closeAlert(): void {
+    this.incorrect = false;
   }
 
   // private confirmPasswordValidator(): ValidationErrors {

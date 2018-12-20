@@ -15,6 +15,7 @@ import {CategoryService} from "../service/category/category.service";
 export class NavbarComponent implements OnInit, OnDestroy {
 
   public role: string = '4';
+  public userName: string;
 
   public categories: Category[] = [];
 
@@ -33,8 +34,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   setRole(): void {
     this.subscriptions.push(
       this.authService.getUser().subscribe( _user=>{
-        if(_user)
+        if(_user) {
           this.role = _user.role.id;
+          this.userName = _user.username;
+        }
         console.log(_user.role.name);
         this.loadCategories();
       })

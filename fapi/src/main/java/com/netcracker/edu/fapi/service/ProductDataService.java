@@ -14,5 +14,6 @@ public interface ProductDataService {
     ProductViewModel saveProduct(ProductViewModel product);
     void deleteProduct(Long id);
     List<ProductViewModel> getPage(Integer page, Integer size, Long category_id);
-    Integer getTotalPages(Integer size, Long category_id);
+    List<ProductViewModel> getOwnPage(Integer page, Integer size, Long manager_id);
+    Integer getTotalPages(Integer size, Long category_id, Long manager_id);
 }

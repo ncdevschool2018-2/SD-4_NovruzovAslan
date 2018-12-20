@@ -83,7 +83,7 @@ public class UserInfo {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", user=" + user +
+//                ", user=" + user +
                 '}';
     }
 

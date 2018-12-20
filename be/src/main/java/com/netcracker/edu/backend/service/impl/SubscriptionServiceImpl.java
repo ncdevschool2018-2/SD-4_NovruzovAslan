@@ -1,11 +1,9 @@
 package com.netcracker.edu.backend.service.impl;
 
-import com.netcracker.edu.backend.entity.Subscr;
 import com.netcracker.edu.backend.entity.Subscription;
-import com.netcracker.edu.backend.entity.User;
 import com.netcracker.edu.backend.repository.SubscriptionRepository;
-import com.netcracker.edu.backend.repository.UserRepository;
 import com.netcracker.edu.backend.service.SubscriptionService;
+import com.netcracker.edu.backend.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -22,16 +21,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 //    private UserRepository userRepository;
 
     @Autowired
-    private UserServiceImpl userService;
+    public WalletService walletService;
 
     @Autowired
     public SubscriptionServiceImpl(SubscriptionRepository repository) {
         this.repository = repository;
-    }
-
-    @Override
-    public Subscription saveSubscription(Subscription subscription) {
-        return repository.save(subscription);
     }
 
     @Override
@@ -41,20 +35,39 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public Iterable<Subscription> getSubscriptionsByUserId(Long id) {
-        return repository.findSubscriptionsByProductWalletUserId(id);
+        return repository.findSubscriptionsByUserWalletUserId(id);
     }
 
     @Override
     public Page<Subscription> getSubscriptionsPageByUserId(Integer page, Integer size, Long userId) {
         Pageable pageable = new PageRequest(page-1, size, new Sort(Sort.Direction.ASC, "id"));
-        User user = userService.getUserById(userId).get();
+        if(userId==null)
+            return repository.findAll(pageable);
         return repository.findSubscriptionsByUserWalletUserId(pageable, userId);
     }
 
+//    @Override
+//    public Subscription getSubscriptionByUserAndProductId(Long userId, Long productId) {
+//        Iterable<Subscription> subscriptions = repository.findSubscriptionsByUserWalletUserId(userId);
+//        for(Subscription subscription: subscriptions) {
+//            if(subscription.getProduct().getId().equals(productId))
+//                return subscription;
+//        }
+//        return null;
+//    }
 
     @Override
-    public Iterable<Subscription> getAllSubscriptions() {
-        return repository.findAll();
+    public Optional<Subscription> getSubscriptionByUserAndProductId(Long userId, Long productId) {
+        return repository.findSubscriptionsByUserWalletUserIdAndProductId(userId, productId);
+    }
+
+
+
+    @Override
+    public Iterable<Subscription> getAllSubscriptions(Long userId) {
+        if(userId == null)
+            return repository.findAll();
+        return repository.findSubscriptionsByUserWalletUserId(userId);
     }
 
     @Override
@@ -67,16 +80,34 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    public Subscription saveSubscription(Subscription subscription) {
+        Long userId = walletService.getWalletById(subscription.getUserWallet().getId()).get().getUser().getId();
+        Optional<Subscription> sub = repository.findSubscriptionsByUserWalletUserIdAndProductId(userId, subscription.getProduct().getId());
+        if(subscription.getId()==null && sub.isPresent())
+            return null;
+        return repository.save(subscription);
+    }
+
+    @Override
     public void unsubscribe(Long prodId, Long userId) {
-        Iterable<Subscription> subscriptions = repository.findSubscriptionsByProductWalletUserId(userId);
-        for(Subscription subscription: subscriptions) {
-            if(subscription.getProduct().getId().equals(prodId))
-                repository.deleteById(subscription.getId());
-        }
+        Optional<Subscription> subscription = repository.findSubscriptionsByUserWalletUserIdAndProductId(userId, prodId);
+        if(subscription.isPresent())
+            repository.deleteById(subscription.get().getId());
+//        Iterable<Subscription> subscriptions = repository.findSubscriptionsByProductWalletUserId(userId);
+//        for(Subscription subscription: subscriptions) {
+//            if(subscription.getProduct().getId().equals(prodId))
+//                repository.deleteById(subscription.getId());
+//        }
     }
 
     @Override
     public void deleteSubscription(Long id) {
-        repository.deleteById(id);
+        if(repository.findById(id).isPresent())
+            repository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAllByUserId(Long userId) {
+        repository.deleteAllByUserWalletUserId(userId);
     }
 }

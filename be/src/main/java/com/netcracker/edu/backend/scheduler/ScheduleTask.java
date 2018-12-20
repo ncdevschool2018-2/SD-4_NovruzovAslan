@@ -30,12 +30,12 @@ public class ScheduleTask {
 
     //(seconds, minutes, hours, day of month, month, day of week, year(optional))
 
-    @Scheduled(cron = "0 */2 * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     public void cronSchedule() {
         System.out.println("Date of transaction:" + new Date());
 
-        Iterable<Subscription> subscriptions = subscriptionService.getAllSubscriptions();
-        Iterable<SpecialSubscription> specialSubscriptions = specialSubscriptionService.getAllSpecialSubscriptions();
+        Iterable<Subscription> subscriptions = subscriptionService.getAllSubscriptions(null);
+        Iterable<SpecialSubscription> specialSubscriptions = specialSubscriptionService.getAllSpecialSubscriptions(null);
 
         for (Subscription subscription: subscriptions) {
             Double price = subscriptionService.calculatePrice(subscription);
@@ -48,11 +48,17 @@ public class ScheduleTask {
 //        }
     }
 
-    private static void transaction(Subscr subscription, WalletService walletService, Double price) {
+    private void transaction(Subscr subscription, WalletService walletService, Double price) {
         Wallet userWallet = subscription.getUserWallet();
         Wallet wallet = subscription.getWallet();
-        if (userWallet.getValue() - price <= 0 || !checkDateOfSubscr(subscription))
+        if (subscription.getActive() && (userWallet.getValue() - price <= 0 || !checkDateOfSubscr(subscription))) {
             subscription.setActive(false);
+            subscriptionService.saveSubscription((Subscription)subscription);
+        }
+        if(!subscription.getActive() && userWallet.getValue() - price >= 0 && checkDateOfSubscr(subscription)){
+            subscription.setActive(true);
+            subscriptionService.saveSubscription((Subscription)subscription);
+        }
         if (subscription.getActive()) {
             walletService.decreaseWallet(userWallet.getId(), price);
             System.out.println("The wallet of user " + userWallet.getUser().getUsername() + " had decreased by " + price + "$ by product purchase");

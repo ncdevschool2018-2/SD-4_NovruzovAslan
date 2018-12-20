@@ -19,17 +19,24 @@ export class SubscriptionService {
     return this.http.post<Subscription>("/api/subscriptions", subscription);
   }
 
-  getSubscriptionsPageByUserId(page: number, size: string, userId: string): Observable<Subscription[]> {
-    return this.http.get<Subscription[]>(
-      "/api/subscriptions/products?page="+page+"&size="+size+"&user_id="+userId
-    );
+  getSubscriptionsPageByUserId(page: number, size: string, userId?: string): Observable<Subscription[]> {
+    let url = "/api/subscriptions/products?page="+page+"&size="+size;
+    if(userId)
+      url += "&user_id="+userId;
+    return this.http.get<Subscription[]>(url);
+  }
+
+  getSubscriptionByUserAndProductId(userId:string, productId: string): Observable<Subscription> {
+    return this.http.get<Subscription>("/api/subscriptions/product?user_id="+userId+"&product_id="+productId);
   }
 
   getAllSubscriptionsByUserId(userId: string): Observable<Subscription[]> {
     return this.http.get<Subscription[]>("/api/subscriptions?user_id="+userId);
   }
 
-  getTotalPages(size: string, userId: string): Observable<number> {
+  getTotalPages(size: string, userId?: string): Observable<number> {
+    if(!userId)
+      return this.http.get<number>("/api/subscriptions/total-pages?size="+size);
     return this.http.get<number>("/api/subscriptions/total-pages?size="+size+"&user_id="+userId);
   }
 

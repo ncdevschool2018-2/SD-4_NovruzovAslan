@@ -17,12 +17,10 @@ public class SpecialProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    @Column(name = "name")  // todo: fix table in database
-//    private String name;
-//    @Column(name = "description")
-//    private String description;
-//    @Column(name = "img_src")
-//    private String img_src;
+//    @ManyToOne//(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "prod_id", nullable = false)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private Product product;
     @Column(name = "cost")
     private Double cost;
 //    @ManyToOne

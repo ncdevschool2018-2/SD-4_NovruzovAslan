@@ -58,6 +58,11 @@
           <!--Incorrect username or password-->
         <!--</alert>-->
       <!--</div>-->
+      <div *ngIf="incorrect">
+        <alert type="danger" dismissible="true" (onClosed)="closeAlert()">
+          This username is already in use
+        </alert>
+      </div>
 
       <div class="row justify-content-end">
         <button type="button" class="btn btn-primary pull-right m-2" routerLink="/login">Sign in</button>

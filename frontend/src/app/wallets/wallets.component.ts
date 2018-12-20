@@ -121,6 +121,7 @@ export class WalletsComponent implements OnInit, OnDestroy {
   }
 
   public _closeModal(): void {
+    this.walletsForTransfer = [];
     this.modalRef.hide();
   }
 

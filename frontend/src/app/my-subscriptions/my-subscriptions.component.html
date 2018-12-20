@@ -9,7 +9,7 @@
 
 <div class="row justify-content-between mt-4">
   <h3>Your subscriptions</h3>
-  <div>
+  <div *ngIf="totalPages">
     <label class="mr-2">Number of subscriptions per page:</label>
     <div class="btn-group">
       <label (click)="loadSubscriptions()" class="btn btn-primary" [(ngModel)]="size"
@@ -22,13 +22,24 @@
   </div>
 </div>
 
+<div class="row justify-content-end" *ngIf="!totalPages">
+  <br>
+  <h4 align="right">You have no subscriptions. If you want to subscribe on something:</h4>
+  <h4>1) Go to</h4>
+  <a routerLink="" class="btn btn-outline-success ml-2">Home page</a>
+  <h4>2) Press button 'more' on product you want. 3) Press subscribe.</h4>
+</div>
+
 <div class="row text-center justify-content-around" *ngIf="totalPages">
   <div class="card col-sm-12 col-md-5 col-lg-3 m-3" *ngFor="let sub of _subscriptions">
     <div class="card-body">
       <h5 class="card-title">{{sub.product.name}}</h5>
       <p class="card-text">{{_shortDescription(sub.product.description)}}</p>
-      <div (click)="_openModal(changeSub, sub)" class="row btn btn-outline-warning justify-content-around mb-2">
-        {{sub.start}} / {{sub.end}}
+      <div *ngIf="sub.active" (click)="_openModal(changeSub, sub)" class="row btn btn-outline-warning justify-content-around mb-2">
+        {{sub.start}} / {{sub.end}}<br>
+      </div>
+      <div *ngIf="!sub.active" (click)="_openModal(changeSub, sub)" class="row btn btn-outline-danger justify-content-around mb-2">
+        Inactive
       </div>
       <div class="row justify-content-around">
         <a routerLink="/products/id/{{sub.product.id}}" class="btn btn-primary col-5">More</a>
@@ -74,7 +85,9 @@
                  placeholder="Start of using"
                  class="form-control"
                  bsDatepicker
-                 [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">
+                 [minDate]="minDate"
+                 [maxDate]="maxDate"
+                 [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" required>
         </div>
         <div [hidden]="end.valid || end.untouched" class="alert alert-danger">
           Please set end date
