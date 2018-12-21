@@ -27,6 +27,16 @@ public class UserController {
         this.userService = userService;
     }
 
+    @RequestMapping(value = "/best", method = RequestMethod.GET)
+    public ResponseEntity<User> getBestUser() {
+        User user = userService.getBestManager();
+        if (user!=null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<User> getUserById(@PathVariable(name = "id") Long id) {
         Optional<User> user = userService.getUserById(id);

@@ -8,6 +8,9 @@ import {ActivatedRoute} from "@angular/router";
 import {CategoryService} from "../service/category/category.service";
 import {toNumber} from "ngx-bootstrap/timepicker/timepicker.utils";
 import {Category} from "../model/category";
+import {User} from "../model/user";
+import {UserService} from "../service/user/user.service";
+import {AuthService} from "../service/auth/auth.service";
 
 @Component({
   selector: "products",
@@ -20,6 +23,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   public categoryId: string;
   public editCategoryId: number;
   public currentPage: number = 1;
+  public currentUser: User;
 
   public titleOfPage: string;
   public numberOfProductsPerPage: string = '6';
@@ -35,6 +39,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
+    private authService: AuthService,
     private modalService: BsModalService,
     private loadingService: NgxSpinnerService,
     private route: ActivatedRoute
@@ -43,6 +48,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getId();
     this.loadCategories();
+    this.loadUser();
     // this.loadProducts();
   }
 
@@ -157,6 +163,14 @@ export class ProductsComponent implements OnInit, OnDestroy {
   public loadPrev(): void {
     this.currentPage--;
     this.loadProducts();
+  }
+
+  public loadUser(): void {
+    this.subscriptions.push(
+      this.authService.getUser().subscribe(user => {
+        this.currentUser = user;
+      })
+    )
   }
 
   public _shortDescription(description: string): string {

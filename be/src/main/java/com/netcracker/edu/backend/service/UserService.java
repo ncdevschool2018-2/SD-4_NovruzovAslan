@@ -10,6 +10,7 @@ public interface UserService {
     User saveUser(User user);
     Optional<User> getUserById(Long id);
     Optional<User> getUserByUsername(String username);
+    User getBestManager();
     Page<User> getAllUsers(Integer page, Integer size);
     User changeRole(User user, Long roleId);
     void deleteUser(Long id);

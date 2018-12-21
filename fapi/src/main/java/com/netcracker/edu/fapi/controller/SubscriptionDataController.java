@@ -4,6 +4,7 @@ import com.netcracker.edu.fapi.models.SubscriptionViewModel;
 import com.netcracker.edu.fapi.service.SubscriptionDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -62,6 +63,7 @@ public class SubscriptionDataController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('admin')")
     public void deleteSubscription(@PathVariable String id) {
         subscriptionDataService.deleteSubscription(Long.valueOf(id));
     }

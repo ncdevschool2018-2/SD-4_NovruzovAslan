@@ -27,6 +27,7 @@ public class ProductDataController {
     }
 
     @RequestMapping(value = "/own", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin') or hasAuthority('content_manager')")
     public ResponseEntity<List<ProductViewModel>> getOwnProducts(
             @RequestParam(name = "page") Integer page,
             @RequestParam(name = "size") Integer size,
@@ -56,7 +57,24 @@ public class ProductDataController {
         return null;
     }
 
-//    @RequestMapping(value = "/{category_id}",method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('admin')")
+    public void deleteProduct(@PathVariable String id) {
+        productDataService.deleteProduct(Long.valueOf(id));
+    }
+
+//    @RequestMapping(value = "", method = RequestMethod.DELETE)
+//    @PreAuthorize("hasAuthority('content_manager')")
+//    public void deleteOwnProduct(@RequestParam(name = "product_id") String prodId, @RequestParam(name = "user_id") String userId) {
+//        productDataService.deleteProduct(Long.valueOf(prodId));
+//    }
+
+//    @RequestMapping(value = "", method = RequestMethod.GET)
+//    public RestPageImpl<ProductViewModel> getPage(HttpServletRequest request) {
+//        return productDataService.getPage(request);
+//    }
+
+    //    @RequestMapping(value = "/{category_id}",method = RequestMethod.POST)
 //    @PreAuthorize("hasAuthority('admin') or hasAuthority('content_manager')")
 //    public ResponseEntity<ProductViewModel> saveProduct(@RequestBody ProductViewModel product, @PathVariable(name = "category_id") long category_id /*todo server validation*/) {
 //        if (product != null) {
@@ -66,23 +84,6 @@ public class ProductDataController {
 //        return null;
 //    }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @PreAuthorize("hasAuthority('admin')")
-    public void deleteProduct(@PathVariable String id) {
-        productDataService.deleteProduct(Long.valueOf(id));
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.DELETE)
-    @PreAuthorize("hasAuthority('content_manager')")
-    public void deleteOwnProduct(@RequestParam(name = "product_id") String prodId, @RequestParam(name = "user_id") String userId) {
-        // todo: checking on backend is this user author of this product
-        productDataService.deleteProduct(Long.valueOf(prodId));
-    }
-
-//    @RequestMapping(value = "", method = RequestMethod.GET)
-//    public RestPageImpl<ProductViewModel> getPage(HttpServletRequest request) {
-//        return productDataService.getPage(request);
-//    }
 
     //    @RequestMapping(value = "", method = RequestMethod.GET)
 //    public ResponseEntity<List<ProductViewModel>> getAllProducts() {

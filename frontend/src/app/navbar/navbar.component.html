@@ -18,9 +18,9 @@
         <li *ngIf="role=='3'" class="nav-item">
           <a routerLink="/subscriptions" class="nav-link">Subscriptions</a>
         </li>
-        <li *ngIf="role=='3'" class="nav-item">
-          <a routerLink="/special-subscriptions" class="nav-link">Special subscriptions</a>
-        </li>
+        <!--<li *ngIf="role=='3'" class="nav-item">-->
+          <!--<a routerLink="/special-subscriptions" class="nav-link">Special subscriptions</a>-->
+        <!--</li>-->
         <li *ngIf="role=='2'||role=='1'" class="nav-item">
           <a routerLink="/my-products" class="nav-link">My products</a>
         </li>
@@ -48,24 +48,34 @@
               <li role="menuitem"><button class="btn dropdown-item" routerLink="/users">Users</button></li>
               <li role="menuitem"><button class="btn dropdown-item" routerLink="/all-wallets">Wallets</button></li>
               <li role="menuitem"><button class="btn dropdown-item" routerLink="/all-subscriptions">Subscriptions</button></li>
-              <li role="menuitem"><button class="btn dropdown-item" disabled="true" routerLink="/all-special-subscriptions">Special Subscriptions</button></li>
+              <li role="menuitem"><button class="btn dropdown-item" (click)="getBest()">Get best</button></li>
+              <!--<li role="menuitem"><button class="btn dropdown-item" disabled="true" routerLink="/all-special-subscriptions">Special Subscriptions</button></li>-->
             </ul>
           </div>
         </li>
       </ul>
 
       <form class="form-inline my-2 my-lg-0">
-        <button *ngIf="role!='4'" disabled="true" class="btn btn-outline-warning mr-sm-2">{{userName}}</button>
+        <button *ngIf="role!='4'" (click)="_openModal(editTemplate)" class="btn btn-outline-warning mr-sm-2">{{currentUser.username}}</button>
         <div class="btn-group mr-sm-2" dropdown>
           <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
             Categories <span class="caret"></span>
           </button>
           <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-            <li role="menuitem"><button class="btn dropdown-item" routerLink="/special-products">Sales</button></li>
-            <li class="divider dropdown-divider"></li>
+            <!--<li role="menuitem"><button class="btn dropdown-item" routerLink="/special-products">Sales</button></li>-->
+            <!--<li class="divider dropdown-divider"></li>-->
             <li role="menuitem" *ngFor="let category of categories" routerLink="/products/category_id/{{category.id}}">
               <button class="btn dropdown-item">{{category.name}}</button>
             </li>
+            <!--<li *ngIf="role=='1'" role="menuitem">-->
+              <!--<div class="row justify-content-center">-->
+                <!--&lt;!&ndash;<button >&ndash;&gt;-->
+                  <!--<span class="btn" (click)="_openModal(template)" style="color: Dodgerblue;">-->
+                    <!--<i class="fas fa-plus"></i>-->
+                  <!--</span>-->
+                <!--&lt;!&ndash;</button>&ndash;&gt;-->
+              <!--</div>-->
+            <!--</li>-->
             <!--<li role="menuitem"><button class="dropdown-item">Text editors</button></li>-->
             <!--<li role="menuitem"><button class="dropdown-item">IDE's</button></li>-->
             <!--<li role="menuitem"><button class="dropdown-item">Graphic editors</button></li>-->
@@ -83,3 +93,122 @@
     </div>
   </div>
 </nav>
+
+<ng-template #template>
+  <form [formGroup]="formGroup" (validSubmit)="addCategory()">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Create new category</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label>Name</label>
+      <input class="form-control" formControlName="Name" />
+      <!--<div [hidden]="categ_name.valid || categ_name.untouched" class="alert alert-danger">-->
+        <!--Please set name of category-->
+      <!--</div>-->
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
+  </div>
+  </form>
+</ng-template>
+
+<ng-template #editTemplate>
+  <form [formGroup]="editUserGroup" (validSubmit)="editUser()">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Edit user</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Username</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+        <input class="form-control" formControlName="Username" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Name</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+        <input class="form-control" formControlName="Name" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Date of birth</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+          </div>
+          <input type="text"
+                 placeholder="Date of birth"
+                 class="form-control"
+                 bsDatepicker
+                 [minDate]="minDate"
+                 [maxDate]="maxDate"
+                 formControlName = "DateOfBirth">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
+    </div>
+  </form>
+</ng-template>
+
+
+<!--<ng-template #editTemplate>-->
+  <!--<form>-->
+  <!--<div class="modal-header">-->
+    <!--<h4 class="modal-title pull-left">Edit user</h4>-->
+    <!--<button type="button" class="close pull-right" aria-label="Close" (click)="_closeModal()">-->
+      <!--<span aria-hidden="true">&times;</span>-->
+    <!--</button>-->
+  <!--</div>-->
+  <!--<div class="modal-body">-->
+    <!--<div class="form-group">-->
+      <!--<label>Username</label>-->
+      <!--<input class="form-control" name="Username" [(ngModel)]="currentUser.username" #username1 required />-->
+      <!--<div [hidden]="username1.valid || username1.untouched" class="alert alert-danger">-->
+        <!--Please set username-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+      <!--<label>Name</label>-->
+      <!--<input class="form-control" name="Name" [(ngModel)]="currentUser.username" #user_name required />-->
+      <!--<div [hidden]="user_name.valid || user_name.untouched" class="alert alert-danger">-->
+        <!--Please set name-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+      <!--&lt;!&ndash;<input type="text"&ndash;&gt;-->
+             <!--&lt;!&ndash;name="DateOfBirth"&ndash;&gt;-->
+             <!--&lt;!&ndash;[(ngModel)]="currentUser.userInfo.dateOfBirth"&ndash;&gt;-->
+             <!--&lt;!&ndash;#dateOfBirth&ndash;&gt;-->
+             <!--&lt;!&ndash;placeholder="Date of Birth"&ndash;&gt;-->
+             <!--&lt;!&ndash;class="form-control"&ndash;&gt;-->
+             <!--&lt;!&ndash;bsDatepicker>&ndash;&gt;-->
+      <!--&lt;!&ndash;<div [hidden]="dateOfBirth.valid || dateOfBirth.untouched" class="alert alert-danger">&ndash;&gt;-->
+        <!--&lt;!&ndash;Please set date of birth&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+  <!--</div>-->
+  <!--<div class="modal-footer">-->
+    <!--<button type="button" class="btn btn-warning" [disabled]="!username1.valid || !user_name.valid || !dateOfBirth.valid" (click)="editUser()">Save</button>-->
+    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>-->
+  <!--</div>-->
+  <!--</form>-->
+<!--</ng-template>-->

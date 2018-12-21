@@ -19,14 +19,12 @@ public class ProductViewModel {
     @NotBlank
     @Size(max = 255)
     private String description;
-//    private String img_src;
     @NotBlank
+    @Size(max = 10)
     private Double cost;
-//    @JsonIgnore
     @NotNull
     @Valid
     private CategoryViewModel category;
-//    @JsonIgnore
     @NotNull
     @Valid
     private WalletViewModel wallet;

@@ -19,4 +19,5 @@ public interface ProductRepository extends
     Page<Product> findProductsByCategoryId(Pageable pageable, Long id);
     Page<Product> findProductsByWalletUserId(Pageable pageable, Long userId);
     Optional<Product> findProductByName(String name);
+    Iterable<Product> findProductsByWalletUserId(Long id);
 }

@@ -14,7 +14,6 @@ import {toNumber} from "ngx-bootstrap/timepicker/timepicker.utils";
   styleUrls: ["./user.component.css"]
 })
 export class UserComponent implements OnInit, OnDestroy {
-  public editMode = false;
 
   public size: string = '10';
   public currentPage: number = 1;
@@ -45,15 +44,9 @@ export class UserComponent implements OnInit, OnDestroy {
     this.modalRef.hide();
   }
 
-  public _openModal(template: TemplateRef<any>, user?: User): void {
-    if (user) {
-      this.editMode = true;
-      this.editableUser = User.cloneBase(user);
-      this.roleId = toNumber(this.editableUser.role.id);
-    } else {
-      this.refreshUser();
-      this.editMode = false;
-    }
+  public _openModal(template: TemplateRef<any>, user: User): void {
+    this.editableUser = User.cloneBase(user);
+    this.roleId = toNumber(this.editableUser.role.id);
 
     this.modalRef = this.modalService.show(template);
   }
@@ -63,8 +56,9 @@ export class UserComponent implements OnInit, OnDestroy {
     if (this.editableUser.role.id != this.roleId.toString()) {
       this.subscriptions.push(
         this.userService.changeRole(this.editableUser, this.roleId).subscribe(() => {
-          this._updateUsers();
+          // this._updateUsers();
           this.refreshUser();
+          this.loadUsers();
           this._closeModal();
           this.loadingService.hide();
         })
@@ -72,15 +66,16 @@ export class UserComponent implements OnInit, OnDestroy {
     }
   }
 
-  public _updateUsers(): void {
-    this.loadUsers();
-  }
+  // public _updateUsers(): void {
+  //   this.loadUsers();
+  // }
 
   public _deleteUser(userId: string): void {
     this.loadingService.show();
     this.subscriptions.push(
       this.userService.deleteUser(userId).subscribe(() => {
-        this._updateUsers();
+        // this._updateUsers();
+        this.loadUsers();
         this.loadingService.hide();
       })
     );

@@ -56,7 +56,7 @@
         <div class="col">
           <div class="row justify-content-between">
           <h5 class="card-title">{{ wallet.name }}</h5>
-            <h6>{{ wallet.value + wallet.valute }}</h6>
+            <h6>{{ wallet.value }}$</h6>
           </div>
           <p class="card-text">{{ wallet.description }}</p>
         </div>
@@ -108,7 +108,6 @@
     </div>
     <div class="modal-body">
       <div class="container-fluid">
-        <form>
           <div class="form-group">
             <label>Name</label>
             <div class="row">
@@ -119,27 +118,34 @@
                 <input class="form-control" name="Wallet name" [(ngModel)]="editableWallet.name" #wallet_name="ngModel" readonly/>
               </div>
               <div class="col-3">
-                <label>{{editableWallet.value}}{{editableWallet.valute}}</label>
+                <label>{{editableWallet.value}}$</label>
               </div>
             </div>
           </div>
           <div class="form-group">
             <label>Choose a wallet for transfer</label>
             <select class="select form-control" name="Wallet" [(ngModel)]="transferWalletId" #wallet="ngModel" required>
-              <option *ngFor="let wallet of walletsForTransfer" value="{{wallet.id}}">{{wallet.name}} ({{wallet.valute}})</option>
+              <option *ngFor="let wallet of walletsForTransfer" value="{{wallet.id}}">{{wallet.name}} ({{wallet.value}}$)</option>
             </select>
           </div>
-            <label>Amount of money</label>
+          <div class="form-group">
+          <label>Amount of money</label>
             <input type="number" class="form-control" name="Amount" [(ngModel)]="amountForTransfer" #amount="ngModel" required />
-            <div class="modal-footer">
-            <button type="button" class="btn btn-default" (click)="_transaction()"
-                    [disabled]="wallet.invalid || amount.invalid">
-              Transfer
-            </button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
           </div>
-        </form>
+          <div *ngIf="incorrect">
+            <alert type="danger" dismissible="true" (onClosed)="closeAlert()">
+              Wrong amount of money
+            </alert>
+          </div>
+
       </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="_transaction()"
+              [disabled]="wallet.invalid || amount.invalid">
+        Transfer
+      </button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
     </div>
   </form>
 </ng-template>
@@ -165,22 +171,30 @@
                 <input class="form-control" name="Wallet name" [(ngModel)]="editableWallet.name" #wallet_name="ngModel" readonly/>
               </div>
               <div class="col-3">
-                <label>{{editableWallet.value}}{{editableWallet.valute}}</label>
+                <label>{{editableWallet.value}}$</label>
               </div>
             </div>
           </div>
-          <label>Amount of money</label>
-          <input type="number"  class="form-control" name="Amount" [(ngModel)]="amountForTransfer" #amount="ngModel" required />
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" (click)="_topUp()"
-                    [disabled]="amount.invalid">
-              Top up
-            </button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
+          <div class="form-group">
+            <label>Amount of money</label>
+            <input type="number"  class="form-control" name="Amount" [(ngModel)]="amountForTransfer" #amount="ngModel" required />
+          </div>
+          <div *ngIf="incorrect">
+            <alert type="danger" dismissible="true" (onClosed)="closeAlert()">
+              Wrong amount of money
+            </alert>
           </div>
         </form>
       </div>
     </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="_topUp()"
+              [disabled]="amount.invalid">
+        Top up
+      </button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="_closeModal()">Close</button>
+    </div>
+
   </form>
 </ng-template>
 

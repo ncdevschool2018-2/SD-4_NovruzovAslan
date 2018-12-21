@@ -1,7 +1,9 @@
 package com.netcracker.edu.backend.service.impl;
 
+import com.netcracker.edu.backend.entity.Product;
 import com.netcracker.edu.backend.entity.User;
 import com.netcracker.edu.backend.repository.UserRepository;
+import com.netcracker.edu.backend.service.ProductService;
 import com.netcracker.edu.backend.service.RoleService;
 import com.netcracker.edu.backend.service.SubscriptionService;
 import com.netcracker.edu.backend.service.UserService;
@@ -23,6 +25,8 @@ public class UserServiceImpl implements UserService {
     private SubscriptionService subscriptionService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     public UserServiceImpl(UserRepository repository) {
@@ -45,6 +49,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getUserByUsername(String username) {
         return repository.findByUsername(username);
+    }
+
+    @Override
+    public User getBestManager() {
+        Iterable<User> users = repository.findAllUsersByRoleId(2L);
+        Iterable<Product> products;
+        User bestUser = null;
+        Integer counter = 0;
+        Integer bestCounter = 0;
+        for(User user: users) {
+            products = productService.getProductsByUserId(user.getId());
+            for(Product product: products) {
+                counter++;
+            }
+            if(counter>bestCounter) {
+                bestCounter = counter;
+                bestUser = user;
+                counter = 0;
+            }
+        }
+        return bestUser;
     }
 
     @Override

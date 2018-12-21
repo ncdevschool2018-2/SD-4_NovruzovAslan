@@ -13,6 +13,7 @@ public interface UserDataService {
     UserViewModel getUserByUsername(String username);
     UserViewModel saveUser(UserViewModel user);
     UserViewModel changeRole(UserViewModel user, Integer roleId);
+    UserViewModel getBestUser();
     String getUsername(String token);
     void deleteUser(Long id);
 }

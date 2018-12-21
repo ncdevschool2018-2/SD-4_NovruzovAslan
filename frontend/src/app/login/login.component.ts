@@ -50,10 +50,8 @@ export class LoginComponent implements OnInit {
         this.token.saveToken(data.token);
         this.reloadPage();
         this.router.navigate(['']);
-        // this.navbar.setRole();
       }, () => {
         this.incorrect = true;
-        // console.log("Thaat is a n error");
       }
     );
   }

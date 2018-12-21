@@ -45,16 +45,16 @@ const appRoutes: Routes = [
   { path: 'products/id/:id', component: ProductComponent },
   { path: 'products/category_id/:id', component: ProductsComponent },
   { path: 'my-products', component: ManagerProductsComponent },
-  { path: 'special-products', component: SpecialProductsComponent },
+  // { path: 'special-products', component: SpecialProductsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'users', component: UserComponent },
   { path: 'wallets', component: WalletsComponent },
   { path: 'all-wallets', component: WalletTableComponent },
   { path: 'subscriptions', component: MySubscriptionsComponent },
-  { path: 'special-subscriptions', component: MySpecialSubscriptionsComponent },
+  // { path: 'special-subscriptions', component: MySpecialSubscriptionsComponent },
   { path: 'all-subscriptions', component: SubscriptionsComponent },
-  { path: 'all-special-subscriptions', component: MySubscriptionsComponent /* todo: SpecialSubscriptionsComponent where all subscriptions will be located*/ }
+  // { path: 'all-special-subscriptions', component: MySubscriptionsComponent /* todo: SpecialSubscriptionsComponent where all subscriptions will be located*/ }
 ];
 
 @NgModule({

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -18,6 +19,7 @@ public class UserInfoViewModel {
     @JsonBackReference
     private UserViewModel user;
     @NotBlank
+    @Size(max = 40)
     private String name;
     @Past
     private Date dateOfBirth;

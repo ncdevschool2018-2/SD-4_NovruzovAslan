@@ -51,7 +51,15 @@ public class UserDataController {
         return null;
     }
 
+
+    @RequestMapping(value = "/best", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<UserViewModel> getBestUser() {
+        return ResponseEntity.ok(userDataService.getBestUser());
+    }
+
     @RequestMapping(method = RequestMethod.POST)
+//    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<UserViewModel> saveUser(@RequestBody UserViewModel user) {
         if (user != null) {
             return ResponseEntity.ok(userDataService.saveUser(user));
@@ -60,7 +68,7 @@ public class UserDataController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseEntity<UserViewModel> registerUser(@RequestBody UserViewModel user /*todo server validation*/) {
+    public ResponseEntity<UserViewModel> registerUser(@RequestBody UserViewModel user) {
         if (user != null) {
             return ResponseEntity.ok(userDataService.saveUser(user));
         }

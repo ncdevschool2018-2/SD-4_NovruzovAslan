@@ -25,8 +25,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product saveProduct(Product product) {
-        product.setImg_src("path");
-//        product.setWallet(new Wallet(2L));
         if(product.getId()==null && repository.findProductByName(product.getName()).isPresent())
             return null;
         return repository.save(product);
@@ -41,6 +39,13 @@ public class ProductServiceImpl implements ProductService {
     public Iterable<Product> getAllProducts() {
         return repository.findAll();
     }
+
+    @Override
+    public Iterable<Product> getProductsByUserId(Long id) {
+        return repository.findProductsByWalletUserId(id);
+    }
+
+
 
 //    @Override
 //    public Iterable<Product> getProductsByCategoryId(Long id) {

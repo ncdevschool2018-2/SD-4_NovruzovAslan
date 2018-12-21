@@ -12,11 +12,9 @@ import java.sql.Date;
 public class SubscriptionViewModel {
 
     private Long id;
-//    @JsonIgnore
     @NotNull
     @Valid
     private ProductViewModel product;
-//    @JsonIgnore
     @NotNull
     @Valid
     private WalletViewModel userWallet;

@@ -13,7 +13,7 @@ public class UserViewModel {
 
     private Long id;
     @NotBlank
-    @Size(min=4)
+    @Size(min=4, max = 40)
     private String username;
     @NotBlank
     @Size(min=6, max = 20)

@@ -24,6 +24,7 @@ export class WalletsComponent implements OnInit, OnDestroy {
   public walletsForTransfer: Wallet[] = [];
   public total: Wallet;
   private currentUser: User;
+  public incorrect: boolean = false;
 
   public editMode: boolean = false;
   public editableWallet: Wallet;
@@ -122,6 +123,8 @@ export class WalletsComponent implements OnInit, OnDestroy {
 
   public _closeModal(): void {
     this.walletsForTransfer = [];
+    this.incorrect = false;
+    this.amountForTransfer = null;
     this.modalRef.hide();
   }
 
@@ -168,6 +171,10 @@ export class WalletsComponent implements OnInit, OnDestroy {
   }
 
   public _transaction(): void {
+    if(this.amountForTransfer>this.editableWallet.value || this.amountForTransfer<=0) {
+      this.incorrect = true;
+      return;
+    }
     this.subscriptions.push(
       this.walletService.transaction(this.editableWallet.id, this.transferWalletId.toString(), this.amountForTransfer).subscribe(() => {
         this._closeModal();
@@ -177,11 +184,20 @@ export class WalletsComponent implements OnInit, OnDestroy {
   }
 
   public _topUp(): void {
+    if(this.amountForTransfer<=0) {
+      this.incorrect = true;
+      // this.modalRef.hide();
+      return;
+    }
     this.subscriptions.push(
       this.walletService.transaction(null, this.editableWallet.id, this.amountForTransfer).subscribe(() => {
         this._closeModal();
         this._updateWallets();
       }))
+  }
+
+  closeAlert(): void {
+    this.incorrect = false;
   }
 
   public loadNext(): void {

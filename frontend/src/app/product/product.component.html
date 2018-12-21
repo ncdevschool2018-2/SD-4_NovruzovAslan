@@ -7,14 +7,14 @@
 ></ngx-spinner>
 
 <div class="container" *ngIf="product">
-  <div class="row">
-    <div class="col-4">
+  <div class="row justify-content-around">
+    <div class="col-auto m-3">
       <!--<img class="card-img-top p-20" src="{{product.img_src}}" alt="Product image">-->
       <div class="row justify-content-center">
         <h3>{{product.name}}</h3>
       </div>
       <div class="row justify-content-center">
-        <p class="balance col-auto">{{product.cost}}</p>
+        <p class="balance col-auto">{{product.cost}}$</p>
       </div>
       <div class="row justify-content-around">
         <button *ngIf="!isSubscribed && (currentUser.role.id == '3' || currentUser.role.id == '4' )" type="button" class="btn btn-primary" (click)="_openModal(subscribeReactiveForm)">Subscribe</button>
@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="col-8">
-      <p>{{product.description}}</p>
+      <h5 class="mt-3">{{product.description}}</h5>
     </div>
   </div>
 </div>

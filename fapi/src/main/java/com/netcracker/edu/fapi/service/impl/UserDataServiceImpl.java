@@ -94,6 +94,13 @@ public class UserDataServiceImpl implements UserDetailsService, UserDataService 
     }
 
     @Override
+    public UserViewModel getBestUser() {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(backendServerUrl + "/api/users/best", UserViewModel.class);
+
+    }
+
+    @Override
     public void deleteUser(Long id) {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete(backendServerUrl + "/api/users/" + id);

@@ -14,6 +14,10 @@ export class UserService {
   //   return this.http.get<User[]>("/api/users");
   // }
 
+  getBest(): Observable<User> {
+    return this.http.get<User>("/api/users/best");
+  }
+
   getUsers(page: number, size: string): Observable<User[]> {
     return this.http.get<User[]>("/api/users?page="+page+"&size="+size);
   }

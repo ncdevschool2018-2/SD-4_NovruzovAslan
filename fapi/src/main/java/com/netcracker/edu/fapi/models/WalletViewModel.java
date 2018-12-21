@@ -1,6 +1,5 @@
 package com.netcracker.edu.fapi.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.validation.Valid;
@@ -23,20 +22,21 @@ public class WalletViewModel {
     @Size(max = 255)
     private String description;
     @NotBlank
+    @Size(max = 10)
     private Double value;
-    @NotBlank
-    private Character valute;
+//    @NotBlank
+//    private Character valute;
 
     public WalletViewModel() {
     }
 
-    public WalletViewModel(Long id, UserViewModel user, String name, String description, Double value, Character valute) {
+    public WalletViewModel(Long id, UserViewModel user, String name, String description, Double value) {
         this.id = id;
         this.user = user;
         this.name = name;
         this.description = description;
         this.value = value;
-        this.valute = valute;
+//        this.valute = valute;
     }
 
     public Long getId() {
@@ -79,11 +79,11 @@ public class WalletViewModel {
         this.value = value;
     }
 
-    public Character getValute() {
-        return valute;
-    }
+//    public Character getValute() {
+//        return valute;
+//    }
 
-    public void setValute(Character valute) {
-        this.valute = valute;
-    }
+//    public void setValute(Character valute) {
+//        this.valute = valute;
+//    }
 }

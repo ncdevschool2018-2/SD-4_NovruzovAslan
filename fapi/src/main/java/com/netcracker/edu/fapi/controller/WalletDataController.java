@@ -5,6 +5,7 @@ import com.netcracker.edu.fapi.models.WalletViewModel;
 import com.netcracker.edu.fapi.service.WalletDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public class WalletDataController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<WalletViewModel> getWalletById(@PathVariable(name="id") String id) {
         return ResponseEntity.ok(walletDataService.getWalletById(Long.valueOf(id)));
     }

@@ -23,15 +23,13 @@ public class Wallet {
     private String description;
     @Column(name = "value")
     private Double value;
-    @Column(name = "valute")
-    private Character valute;
 
-    public Wallet(User user, String name, String description, Double value, Character valute) {
+
+    public Wallet(User user, String name, String description, Double value) {
         this.user = user;
         this.name = name;
         this.description = description;
         this.value = value;
-        this.valute = valute;
     }
 
     public Wallet(Long id) {
@@ -82,14 +80,6 @@ public class Wallet {
         this.value = value;
     }
 
-    public Character getValute() {
-        return valute;
-    }
-
-    public void setValute(Character valute) {
-        this.valute = valute;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,7 +87,6 @@ public class Wallet {
         Wallet wallet = (Wallet) o;
         return id == wallet.id &&
                 Double.compare(wallet.value, value) == 0 &&
-                valute == wallet.valute &&
                 Objects.equals(user, wallet.user) &&
                 Objects.equals(name, wallet.name) &&
                 Objects.equals(description, wallet.description);
@@ -105,7 +94,7 @@ public class Wallet {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, name, description, value, valute);
+        return Objects.hash(id, user, name, description, value);
     }
 
     @Override
@@ -116,7 +105,6 @@ public class Wallet {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", value=" + value +
-                ", valute=" + valute +
                 '}';
     }
 

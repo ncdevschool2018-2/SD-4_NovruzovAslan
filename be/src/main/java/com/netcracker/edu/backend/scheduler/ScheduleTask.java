@@ -35,7 +35,7 @@ public class ScheduleTask {
         System.out.println("Date of transaction:" + new Date());
 
         Iterable<Subscription> subscriptions = subscriptionService.getAllSubscriptions(null);
-        Iterable<SpecialSubscription> specialSubscriptions = specialSubscriptionService.getAllSpecialSubscriptions(null);
+//        Iterable<SpecialSubscription> specialSubscriptions = specialSubscriptionService.getAllSpecialSubscriptions(null);
 
         for (Subscription subscription: subscriptions) {
             Double price = subscriptionService.calculatePrice(subscription);
@@ -71,7 +71,7 @@ public class ScheduleTask {
         LocalDate currentDate = LocalDate.now();
         LocalDate endDate = subscription.getEnd().toLocalDate();
         LocalDate startDate = subscription.getStart().toLocalDate();
-        return currentDate.isAfter(startDate) && currentDate.isBefore(endDate);
+        return (currentDate.isAfter(startDate)||currentDate.isEqual(startDate)) && currentDate.isBefore(endDate);
     }
 
 }

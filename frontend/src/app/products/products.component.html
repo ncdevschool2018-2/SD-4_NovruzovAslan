@@ -36,7 +36,7 @@
     <div class="card-body">
       <div class="card-title">
         <h5>{{product.name}}</h5>
-        <div class="btn-group">
+        <div *ngIf="currentUser.role.id=='1'" class="btn-group">
           <button type="button" class="btn btn-warning mt-1" (click)="_openModal(template, product)"><i class="fas fa-edit"></i></button>
           <button type="button" class="btn btn-danger mt-1" (click)="_deleteProduct(product.id)"><i class="fas fa-trash-alt"></i></button>
         </div>

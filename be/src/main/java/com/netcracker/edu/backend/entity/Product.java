@@ -1,7 +1,5 @@
 package com.netcracker.edu.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -20,8 +18,6 @@ public class Product {
     private String name;
     @Column(name = "description")
     private String description;
-    @Column(name = "img_src")
-    private String img_src;
     @Column(name = "cost")
     private Double cost;
 
@@ -47,10 +43,9 @@ public class Product {
     )
     private Set<SpecialProduct> specialProducts = new HashSet<>();
 
-    public Product(String name, String description, String img_src, Double cost, Category category, Wallet wallet, Set<SpecialProduct> specialProducts) {
+    public Product(String name, String description, Double cost, Category category, Wallet wallet, Set<SpecialProduct> specialProducts) {
         this.name = name;
         this.description = description;
-        this.img_src = img_src;
         this.cost = cost;
         this.category = category;
         this.wallet = wallet;
@@ -83,14 +78,6 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getImg_src() {
-        return img_src;
-    }
-
-    public void setImg_src(String img_src) {
-        this.img_src = img_src;
     }
 
     public Double getCost() {
@@ -134,7 +121,6 @@ public class Product {
                 cost == product.cost &&
                 Objects.equals(name, product.name) &&
                 Objects.equals(description, product.description) &&
-                Objects.equals(img_src, product.img_src) &&
                 Objects.equals(category, product.category) &&
                 Objects.equals(wallet, product.wallet) &&
                 Objects.equals(specialProducts, product.specialProducts);
@@ -142,7 +128,7 @@ public class Product {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, img_src, cost, category, wallet, specialProducts);
+        return Objects.hash(id, name, description, cost, category, wallet, specialProducts);
     }
 
     @Override
@@ -151,7 +137,6 @@ public class Product {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", img_src='" + img_src + '\'' +
                 ", cost=" + cost +
                 ", category=" + category +
                 ", wallet=" + wallet +
